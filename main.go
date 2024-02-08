@@ -9,7 +9,7 @@ import (
 
 func main() {
 	if len(os.Args) == 1 {
-		fs := http.FileServer(http.Dir("./web/"))
+		fs := http.FileServer(http.Dir("./web/static"))
 		http.Handle("/static/", http.StripPrefix("/static/", fs))
 		for _, route := range handlers.Routes {
 			http.Handle(route.Path, handlers.ErrorMiddleware(route.Handler))

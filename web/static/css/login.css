@@ -9,7 +9,12 @@
     padding: 0;
 }
 
-
+.sign-logo{
+    margin-top: 10px;
+    margin-left: 10px;
+    display: flex;
+    width: 12px;
+}
 
 body {
     background-color: var(--bg-color);

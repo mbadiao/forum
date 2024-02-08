@@ -1,6 +1,8 @@
-package models
+package handlers
 
-import "net/http"
+import (
+	"net/http"
+)
 
 type Error struct {
 	Code    int
@@ -29,4 +31,20 @@ var Err = map[int]Error{
 type Route struct {
 	Path    string
 	Handler http.HandlerFunc
+	Method  []string
 }
+
+var Routes = []Route{
+	{
+		Path:    "login",
+		Handler: LoginHandler,
+		Method:  []string{"GET"},
+	},
+	{
+		Path:    "home",
+		Handler: HomeHandler,
+		Method:  []string{"GET", "POST"},
+	},
+}
+
+var Port = "8081"

@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-var TempPath = "./../../web/templates"
+var TempPath = "./web/templates/"
 
 func Render(w http.ResponseWriter, tmplName string, data interface{}) {
 	tmpl, err := template.ParseFiles(TempPath + tmplName + ".html")

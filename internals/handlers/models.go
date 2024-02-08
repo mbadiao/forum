@@ -12,19 +12,15 @@ type Error struct {
 var Err = map[int]Error{
 	404: {
 		http.StatusNotFound,
-		"Not Found",
+		http.StatusText(404),
 	},
 	500: {
 		http.StatusInternalServerError,
-		"Internal Server Error",
+		http.StatusText(500),
 	},
 	400: {
 		http.StatusBadRequest,
-		"Bad Request",
-	},
-	0: {
-		0,
-		"result found",
+		http.StatusText(400),
 	},
 }
 
@@ -36,15 +32,15 @@ type Route struct {
 
 var Routes = []Route{
 	{
-		Path:    "login",
+		Path:    "/login",
 		Handler: LoginHandler,
 		Method:  []string{"GET"},
 	},
 	{
-		Path:    "home",
+		Path:    "/",
 		Handler: HomeHandler,
 		Method:  []string{"GET", "POST"},
 	},
 }
 
-var Port = "8081"
+var Port = ":8080"

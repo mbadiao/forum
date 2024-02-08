@@ -9,14 +9,12 @@ import (
 
 func main() {
 	if len(os.Args) == 1 {
-		fs := http.FileServer(http.Dir("./web/static/css"))
-		http.Handle("/static/", http.StripPrefix("web/static/css", fs))
+		fs := http.FileServer(http.Dir("./web/"))
+		http.Handle("/static/", http.StripPrefix("/static/", fs))
 		for _, route := range handlers.Routes {
 			http.Handle(route.Path, handlers.ErrorMiddleware(route.Handler))
 		}
-		fmt.Println("http://localhost:" + handlers.Port)
+		fmt.Println("http://localhost" + handlers.Port)
 		http.ListenAndServe(handlers.Port, nil)
-	} else {
-		fmt.Println("Usage: go run .")
 	}
 }

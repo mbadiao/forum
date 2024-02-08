@@ -7,16 +7,16 @@ import (
 
 func ErrorMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		page := r.URL.Path
 		found := false
 		for _, route := range Routes {
-			if route.Path == page {
+			if route.Path == r.URL.Path {
 				found = true
 			}
 		}
 		if !found {
 			w.WriteHeader(404)
 			utils.Render(w, "error", Err[404])
+			return
 		}
 		next.ServeHTTP(w, r)
 	})

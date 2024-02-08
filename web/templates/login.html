@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./../static/css/login.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>forum login</title>
+</head>
+
+<body>
+    <div id="all-page">
+        <div id="login-left">
+            <div id="login-left-content">
+                <h1 id="login-title">Sign in</h1>
+                <div id="new-user">New user? <button onclick="Toggle()"> Create an account</button></div>
+                <p>Welcome back! Please login to your account.</p>
+                <form action="/" method="post">
+                    <div id="login-form">
+                        <input type="email" name="login-name" id="email" placeholder="Email Adress"><br>
+                        <input type="password" name="login-password" id="password" placeholder="Password">
+                        <p style="color: red; top: 0px !important;bottom: 0px !important;">{{.Badpassword}}</p>
+                    </div>
+                    <input id="bouton-login" class="btn" type="submit" value="LOGIN">
+                    <div id="Or">
+                        <span></span>
+                        OR
+                        <span></span>
+                    </div>
+                </form>
+                <button id="button-google" class="btn">
+                    <img src="./../assets/google-icon.svg" alt="Google">
+                    <span>Continue with Google</span>
+                </button>
+            </div>
+
+            <div id="Signup-left-content" style="display: none;">
+                <h1 id="login-title">Sign up</h1>
+                <div id="new-user">Already have an account? <button onclick="Toggle()"> Sign in </button></div>
+                <form action="/login" method="post">
+                    <div id="login-form">
+                        <input type="text" name="signup-name" id="username" placeholder="Username"><br>
+                        <input type="email" name="signup-email" id="email" placeholder="Email Adress"><br>
+                        <input type="password" name="signup-password" id="password" placeholder="Password">
+                        <p style="color: red; top: 0px !important;bottom: 0px !important;">{{.Badpassword}}</p>
+                    </div>
+                    <input id="bouton-login" class="btn" type="submit" value="SIGN UP">
+                    <div id="Or">
+                        <span></span>
+                        OR
+                        <span></span>
+                    </div>
+                </form>
+                <button id="button-google" class="btn">
+                    <img src="./../assets/google-icon.svg" alt="Google">
+                    <span>Continue with Google</span>
+                </button>
+            </div>
+        </div>
+        <div id="login-right"></div>
+    </div>
+    <script src="./../static/signup.js"></script>
+</body>
+
+</html>

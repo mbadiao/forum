@@ -1,10 +1,11 @@
 package handlers
 
-import (
-	"forum/internals/utils"
-	"net/http"
-)
+import "net/http"
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	utils.Render(w, "home", nil)
+	if r.URL.Path == "/" {
+		if r.Method == "GET" || r.Method == "POST" {
+			FileService("/home.html", w, nil)
+		}
+	}
 }

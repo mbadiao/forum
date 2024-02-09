@@ -30,11 +30,13 @@ func CreateTable() *sql.DB {
 	}
 	return db
 }
+
 func GeneratePrepare(text string) string {
 	nb := len(strings.Split(text, ","))
 	a := strings.Repeat("?,", nb)
 	return "(" + a[:len(a)-1] + ")"
 }
+
 func Insert(db *sql.DB, table, values string, data ...interface{}) {
 	prepare := GeneratePrepare(values)
 	Query := fmt.Sprintf("INSERT INTO %v %v values %v", table, values, prepare)
@@ -50,6 +52,7 @@ func Insert(db *sql.DB, table, values string, data ...interface{}) {
 		return
 	}
 }
+
 func Scan(db *sql.DB, request string, data Table) ([]Table, error) {
 	stmt, err := db.Prepare(request)
 	if err != nil {

@@ -3,6 +3,7 @@
 @import 'right.css';
 @import 'root.css';
 @import 'modal.css';
+@import 'comment.css';
 
 * {
     margin: 0;

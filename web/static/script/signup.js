@@ -13,13 +13,14 @@ function Toggle() {
 
 const modalContainer = document.querySelector(".modal-container");
 const modalTrigger = document.querySelectorAll(".modal-trigger");
+const commentContainer = document.querySelector(".main-comment");
+const commentTrigger = document.querySelectorAll(".comment-trigger");
+
+commentTrigger.forEach(trigger => trigger.addEventListener("click",commentModal));
 modalTrigger.forEach(trigger => trigger.addEventListener("click",toggleModal));
+function commentModal(){
+    commentContainer.classList.toggle("active1");
+}
 function toggleModal(){
     modalContainer.classList.toggle("active");
-}
-function toggleCategorie(){
-    const parent = document.querySelector('.Category-checkbox');
-    //on verifie si l'element est deja visible
-    const isVisible = window.getComputedStyle(parent).display !== 'none'; 
-    parent.style.display = isVisible ? 'none' : 'flex';
 }

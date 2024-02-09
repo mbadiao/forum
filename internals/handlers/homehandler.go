@@ -1,11 +1,10 @@
 package handlers
 
-import "net/http"
-
-func LoginHandler(w http.ResponseWriter, r *http.Request) {
-
-}
+import (
+	"forum/internals/utils"
+	"net/http"
+)
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-
+	utils.Render(w, "home", nil)
 }

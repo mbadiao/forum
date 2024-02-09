@@ -9,7 +9,12 @@
     padding: 0;
 }
 
-
+.sign-logo{
+    margin-top: 10px;
+    margin-left: 10px;
+    display: flex;
+    width: 12px;
+}
 
 body {
     background-color: var(--bg-color);
@@ -44,7 +49,7 @@ body {
 }
 
 #login-right {
-    background-image: url(./../../assets/login-bg.svg);
+    background-image: url(./../assets/login-bg.svg);
     background-position: left center;
     background-repeat: no-repeat;
     background-size: cover;

@@ -12,24 +12,6 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-type Users struct {
-	Id           int
-	Username     string
-	FirstName    string
-	LastName     string
-	Email        string
-	Password     string
-	Registration string
-}
-
-type Table interface {
-	ScanRows(rows *sql.Rows) error
-}
-
-func (u *Users) ScanRows(rows *sql.Rows) error {
-	return rows.Scan(&u.Id, &u.Username, &u.FirstName, &u.LastName, &u.Email, &u.Password, &u.Registration)
-}
-
 func CreateTable() *sql.DB {
 	_, errNofile := os.Stat("./internals/database/database.db")
 

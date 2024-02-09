@@ -1,0 +1,19 @@
+// type Users struct {
+// 	Id           int
+// 	Username     string
+// 	FirstName    string
+// 	LastName     string
+// 	Email        string
+// 	Password     string
+// 	Registration string
+// }
+// var data *database.Users
+// datas, err := database.Scan(database.CreateTable(), "Users", data)
+// if err != nil {
+// 	fmt.Println(err.Error())
+// 	return
+// }
+// for _, v := range datas {
+// 	u := v.(*database.Users)
+
+// }

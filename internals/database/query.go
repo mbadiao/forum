@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -10,6 +11,24 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 )
+
+type Users struct {
+	Id           int
+	Username     string
+	FirstName    string
+	LastName     string
+	Email        string
+	Password     string
+	Registration string
+}
+
+type Table interface {
+	ScanRows(rows *sql.Rows) error
+}
+
+func (u *Users) ScanRows(rows *sql.Rows) error {
+	return rows.Scan(&u.Id, &u.Username, &u.FirstName, &u.LastName, &u.Email, &u.Password, &u.Registration)
+}
 
 func CreateTable() *sql.DB {
 	_, errNofile := os.Stat("./internals/database/database.db")
@@ -55,48 +74,32 @@ func Insert(db *sql.DB, table, values string, data ...interface{}) {
 	}
 }
 
-type Table interface {
-	ScanRows(rows *sql.Rows) error
-}
-
-func (u Users) ScanRows(rows *sql.Rows) error {
-	return rows.Scan(&u.Id, &u.Username, &u.FirstName, &u.LastName, &u.Email, &u.Password, &u.Registration)
-}
-
-type Users struct {
-	Id           int
-	Username     string
-	FirstName    string
-	LastName     string
-	Email        string
-	Password     string
-	Registration string
-}
-
-func Scan(db *sql.DB, table string, data Table) ([]Table, error) {
-	Query := fmt.Sprintf("SELECT * FROM %v", table)
-	stmt, err := db.Prepare(Query)
+func Scan(db *sql.DB, request string, data Table) ([]Table, error) {
+	stmt, err := db.Prepare(request)
 	if err != nil {
-		fmt.Println(err.Error())
-		return nil, fmt.Errorf(err.Error())
+		return nil, err
 	}
-	row, err := stmt.Query()
+	defer stmt.Close() // Ensure the statement is closed
+
+	rows, err := stmt.Query()
 	if err != nil {
-		fmt.Println(err.Error())
-		return nil, fmt.Errorf(err.Error())
+		return nil, err
 	}
+	defer rows.Close() // Ensure the rows are closed
 
 	tableData := []Table{}
 
-	for row.Next() {
+	val := reflect.ValueOf(data)
+	if val.Kind() != reflect.Ptr {
+		return nil, errors.New("data must be a pointer to a struct that implements the Table interface")
+	}
 
+	for rows.Next() {
 		dynamicType := reflect.New(reflect.TypeOf(data).Elem()).Interface().(Table)
-
-		if err := dynamicType.ScanRows(row); err != nil {
+		if err := dynamicType.ScanRows(rows); err != nil {
 			return nil, err
 		}
-
-		tableData = append(tableData, data)
+		tableData = append(tableData, dynamicType)
 	}
 	return tableData, nil
 }

@@ -18,6 +18,10 @@ body {
     overflow: hidden;
 }
 
+
+a{
+    text-decoration: none;
+}
 #all-page {
     display: grid;
     /* display: flex;
@@ -55,9 +59,11 @@ body {
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px;
+    margin-top: 10px;
     position: sticky;
     z-index: -1;
     top: 0;
     background-color: #06141D;
     height: 5%;
 }
+

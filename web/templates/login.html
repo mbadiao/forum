@@ -11,9 +11,15 @@
 </head>
 
 <body>
+    <a href="/">
+        <div class="sign-logo00">
+            <img src="./static/assets/0.svg" alt="">
+            <img src="./static/assets/1.svg" alt="">
+        </div>
+    </a>
     <div id="all-page">
         <div id="login-left">
-            <a href="/home">
+            <a href="/">
                 <div class="sign-logo">
                     <img src="./static/assets/0.svg" alt="">
                     <img src="./static/assets/1.svg" alt="">
@@ -21,8 +27,8 @@
             </a>
             <div id="login-left-content">
                 <h1 id="login-title">Sign in</h1>
-                <div id="new-user">New user? <button onclick="Toggle()"> Create an account</button></div>
-                <p>Welcome back! Please login to your account.</p>
+                <div class="new-user" id="new-user">New user? <button onclick="Toggle()"> Create an account</button></div>
+                <p id="welcome">Welcome back! Please login to your account.</p>
                 <form action="/" method="post">
                     <div id="login-form">
                         <input type="email" name="login-name" id="email" placeholder="Email Adress"><br>
@@ -40,11 +46,13 @@
                     <img src="./static/assets/google-icon.svg" alt="Google">
                     <span>Continue with Google</span>
                 </button>
+                <div class="new-user" id="new-user-media">New user? <button onclick="Toggle()"> Create an account</button></div>
+
             </div>
 
             <div id="Signup-left-content" style="display: none;">
                 <h1 id="login-title">Sign up</h1>
-                <div id="new-user">Already have an account? <button onclick="Toggle()"> Sign in </button></div>
+                <div class="new-user" id="new-user">Already have an account? <button onclick="Toggle()"> Sign in </button></div>
                 <form action="/login" method="post">
                     <div id="login-form">
                         <input type="text" name="firstname" id="username" placeholder="First Name"><br>
@@ -65,6 +73,10 @@
                     <img src="./static/assets/google-icon.svg" alt="Google">
                     <span>Continue with Google</span>
                 </button>
+
+                <div class="new-user" id="new-user-media">Already have an account? <button onclick="Toggle()"> Sign in </button></div>
+                
+
             </div>
         </div>
         <div id="login-right"></div>

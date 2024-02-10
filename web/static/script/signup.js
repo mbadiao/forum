@@ -23,3 +23,5 @@ function toggleCategorie(){
     const isVisible = window.getComputedStyle(parent).display !== 'none'; 
     parent.style.display = isVisible ? 'none' : 'flex';
 }
+
+  

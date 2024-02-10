@@ -9,17 +9,25 @@
     padding: 0;
 }
 
-.sign-logo{
+.sign-logo {
     margin-top: 10px;
     margin-left: 10px;
     display: flex;
     width: 12px;
 }
 
+.sign-logo00{
+    display: none;
+}
+
 body {
     background-color: var(--bg-color);
     margin: 0;
     padding: 0;
+}
+
+#new-user-media {
+    display: none;
 }
 
 #all-page {
@@ -66,7 +74,7 @@ body {
     word-wrap: break-word;
 }
 
-#new-user {
+.new-user {
     margin-bottom: 5vh;
     color: white;
     font-size: 1.5vw;
@@ -75,7 +83,7 @@ body {
     word-wrap: break-word
 }
 
-#new-user button {
+.new-user button {
     cursor: pointer;
     background-color: var(--bg-color);
     border: none;
@@ -87,7 +95,7 @@ body {
 #login-left-content p {
     margin-bottom: 2vh;
     color: white;
-    font-size: 0.99vw !important;
+    font-size: 20px;
     font-family: 'Roboto';
     font-weight: 400;
     word-wrap: break-word
@@ -130,7 +138,7 @@ body {
 
 form #bouton-login {
     cursor: pointer;
-    background-color:#87B29E;
+    background-color: #87B29E;
     color: #FFF;
     font-size: 22px;
     font-weight: 800;
@@ -200,4 +208,156 @@ fieldset {
     font-family: 'Roboto';
     line-height: normal;
     font-style: normal;
+}
+
+
+@media only screen and (max-width: 1200px) {
+    #login-left-content p{
+        font-size: 0.7rem;
+    }
+}
+
+@media only screen and (max-width: 300px) {
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    #media-login {
+        display: grid;
+        grid-template-rows: 40% 60%;
+
+        #meet-img {
+            background-color: blue;
+        }
+    }
+
+    .sign-logo00 {
+        margin-top: 10px;
+        margin-left: 10px;
+        display: flex;
+        width: 12px;
+    }
+
+    .sign-logo {
+        display: none;
+
+    }
+
+    #test00 {
+        border-radius: 25px 0px 0px 0px;
+        width: 100%;
+        background-color: red;
+    }
+
+    #all-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .new-user {
+        font-size: 15px;
+    }
+
+    #login-left-content p {
+        margin-bottom: 2vh;
+        color: white;
+        font-size: 10px;
+        font-family: 'Roboto';
+        font-weight: 400;
+        word-wrap: break-word
+    }
+
+    .new-user button {
+        font-size: 15px;
+    }
+
+    #sign-logo {
+        margin-top: 0;
+    }
+
+    #login-right {
+        display: none;
+    }
+
+
+    #login-title {
+        font-size: 60px;
+    }
+
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    #media-login {
+        display: grid;
+        grid-template-rows: 40% 60%;
+
+        #meet-img {
+            background-color: blue;
+        }
+    }
+
+    .sign-logo00 {
+        margin-top: 10px;
+        margin-left: 10px;
+        display: flex;
+        width: 12px;
+    }
+
+    .sign-logo {
+        display: none;
+
+    }
+
+    #test00 {
+        border-radius: 25px 0px 0px 0px;
+        width: 100%;
+        background-color: red;
+    }
+
+    #all-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .new-user {
+        font-size: 15px;
+    }
+
+    #login-left-content p {
+        margin-bottom: 2vh;
+        color: white;
+        font-size: 10px;
+        font-family: 'Roboto';
+        font-weight: 400;
+        word-wrap: break-word
+    }
+
+    .new-user button {
+        font-size: 15px;
+    }
+
+    #sign-logo {
+        margin-top: 0;
+    }
+
+    #login-right {
+        display: none;
+    }
+
+    #login-left-content {
+        margin: 100px;
+    }
+
+    #login-title {
+        font-size: 60px;
+    }
+
 }

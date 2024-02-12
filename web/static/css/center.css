@@ -1,23 +1,18 @@
-#centerside {
+#centerside{
     overflow-y: scroll;
     overflow-x: hidden;
-    scrollbar-width: thin;
-    /* Pour Firefox */
-    scrollbar-color: transparent transparent;
-    /* Pour Firefox */
+    scrollbar-width: thin; /* Pour Firefox */
+    scrollbar-color: transparent transparent; /* Pour Firefox */
 
     /* Masquer la barre de défilement dans les navigateurs WebKit (Chrome, Safari) */
     &::-webkit-scrollbar {
-        width: 0.5em;
-        /* Largeur de la barre de défilement */
+        width: 0.5em; /* Largeur de la barre de défilement */
     }
 
     &::-webkit-scrollbar-thumb {
-        background-color: transparent;
-        /* Couleur de la poignée de défilement */
+        background-color: transparent; /* Couleur de la poignée de défilement */
     }
 }
-
 #centercontainer {
     display: flex;
     flex-direction: column;
@@ -57,8 +52,7 @@
     font-family: 'Impact', 'Haettenschweiler', 'Arial Narrow Bold', sans-serif;
 }
 
-#username,
-#time {
+#username, #time {
     color: #62707d;
     font-family: 'Impact', 'Haettenschweiler', 'Arial Narrow Bold', sans-serif;
     font-size: 13px;
@@ -67,15 +61,14 @@
 #title {
     color: white;
     font-family: 'Impact', 'Haettenschweiler', 'Arial Narrow Bold', sans-serif;
-    font-size: 15px;
-    /* Ajout de l'unité px manquante */
+    font-size: 15px; /* Ajout de l'unité px manquante */
     font-weight: 900;
 }
 
 #imgcontainer img {
-    max-width: 100%;
-    width: auto;
-    height: auto;
+    /* max-width: 100%; */
+    width: 100%;
+    height: 100%;
     border-radius: 10px;
     background-color: blue;
 }
@@ -110,8 +103,7 @@
     width: 80%;
     max-width: 600px;
     display: grid;
-    grid-template-columns: repeat(3, 25%);
-    /* Modification pour améliorer la lisibilité */
+    grid-template-columns: repeat(3, 25%); /* Modification pour améliorer la lisibilité */
     justify-content: space-between;
 }
 
@@ -175,83 +167,33 @@
     background-color: #62707d;
 }
 
-#logout-none {
-    display: none;
-}
-
-#profile-none {
-    display: none;
-}
-
 @media screen and (max-width: 700px) {
-
     #like,
     #dislike {
         font-size: medium;
     }
 }
 
-@media screen and (max-width: 600px) {
-    #profile-none {
-        display: flex;
-    }
-
-    #logout-button {
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    #logout {
-        background: #1B2730;
-        margin-top: 20px;
-        border: solid #354450;
-        color: white;
-        font-size: 2.5vw;
-        bottom: 10px;
-        width: 115px;
-        height: 5vw;
-        border-radius: 23px;
-        cursor: pointer;
-    }
-
-    #logout:hover {
-        background-color: #87B29E;
-    }
-
-    #all-page {
-        display: grid;
-        height: 100%;
-        grid-template-columns: 75% 25% !important;
-        overflow: auto;
-        height: 95%;
-    }
-
-    #leftside {
+@media screen and (max-width: 500px) {
+    #profile{
         display: none;
     }
-
     #like,
     #dislike {
         font-size: small;
     }
-
-    #user #name {
+    #user #name{
         font-size: 14px;
         white-space: nowrap;
         /* overflow: auto; */
     }
-
-    #user #time {
+    #user #time{
         font-size: 7px;
     }
-
-    #user #username {
+    #user #username{
         font-size: 7px;
     }
-
-    #pp {
+    #pp{
         display: none;
     }
 }

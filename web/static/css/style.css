@@ -3,6 +3,7 @@
 @import 'right.css';
 @import 'root.css';
 @import 'modal.css';
+@import 'comment.css';
 
 * {
     margin: 0;
@@ -18,10 +19,6 @@ body {
     overflow: hidden;
 }
 
-
-a{
-    text-decoration: none;
-}
 #all-page {
     display: grid;
     /* display: flex;
@@ -59,11 +56,9 @@ a{
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px;
-    margin-top: 10px;
     position: sticky;
     z-index: -1;
     top: 0;
     background-color: #06141D;
     height: 5%;
 }
-

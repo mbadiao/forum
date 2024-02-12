@@ -52,5 +52,6 @@ type LikeDislike struct {
 type Session struct {
 	SessionID      int
 	UserID         int
+	Cookie_value   string
 	ExpirationDate time.Time
 }

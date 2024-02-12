@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS Users (
     user_id INTEGER PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
-    firstname TEXT  NOT NULL,
-    lastname TEXT  NOT NULL,
+    firstname TEXT UNIQUE NOT NULL,
+    lastname TEXT UNIQUE NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
     registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -54,7 +54,9 @@ CREATE TABLE IF NOT EXISTS LikesDislikes (
 
 CREATE TABLE IF NOT EXISTS Sessions (
     session_id INTEGER PRIMARY KEY,
-    user_id INTEGER,
-    expiration_date TIMESTAMP NOT NULL,
+    user_id INTEGER NOT NULL,
+    cookie_value TEXT NOT NULL,
+    expiration_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
+

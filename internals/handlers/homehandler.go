@@ -1,10 +1,11 @@
 package handlers
 
 import (
-	"forum/internals/utils"
+	"forum/internals/database"
 	"net/http"
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	utils.Render(w, "home", nil)
+	db := database.CreateTable()
+	CookieHandler(w, r, db)
 }

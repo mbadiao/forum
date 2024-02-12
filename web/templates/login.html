@@ -11,15 +11,9 @@
 </head>
 
 <body>
-    <a href="/">
-        <div class="sign-logo00">
-            <img src="./static/assets/0.svg" alt="">
-            <img src="./static/assets/1.svg" alt="">
-        </div>
-    </a>
     <div id="all-page">
         <div id="login-left">
-            <a href="/">
+            <a href="/home">
                 <div class="sign-logo">
                     <img src="./static/assets/0.svg" alt="">
                     <img src="./static/assets/1.svg" alt="">
@@ -27,12 +21,13 @@
             </a>
             <div id="login-left-content">
                 <h1 id="login-title">Sign in</h1>
-                <div class="new-user" id="new-user">New user? <button onclick="Toggle()"> Create an account</button></div>
-                <p id="welcome">Welcome back! Please login to your account.</p>
-                <form action="/" method="post">
+                <div id="new-user">New user? <button onclick="showSignup()"> Create an account</button></div>
+                <p>Welcome back! Please login to your account.</p>
+                <form action="/login" method="post">
                     <div id="login-form">
-                        <input type="email" name="login-name" id="email" placeholder="Email Adress"><br>
-                        <input type="password" name="login-password" id="password" placeholder="Password">
+                        <p style="color: red;">{{.Message}}</p>
+                        <input type="email" name="login-name" id="email" placeholder="Email Adress" required><br>
+                        <input type="password" name="login-password" id="password" placeholder="Password" required>
                         <p style="color: red; top: 0px !important;bottom: 0px !important;">{{.Badpassword}}</p>
                     </div>
                     <input id="bouton-login" class="btn" type="submit" value="LOGIN">
@@ -46,22 +41,22 @@
                     <img src="./static/assets/google-icon.svg" alt="Google">
                     <span>Continue with Google</span>
                 </button>
-                <div class="new-user" id="new-user-media">New user? <button onclick="Toggle()"> Create an account</button></div>
-
             </div>
 
-            <div id="Signup-left-content" style="display: none;">
+            <div id="Signup-left-content">
                 <h1 id="login-title">Sign up</h1>
-                <div class="new-user" id="new-user">Already have an account? <button onclick="Toggle()"> Sign in </button></div>
+                <div id="new-user">Already have an account? <button onclick="showSignin()"> Sign in </button></div>
+                <div id="errorSignup">
+                </div>
                 <form action="/login" method="post">
-                    <div id="login-form">
-                        <input type="text" name="firstname" id="username" placeholder="First Name"><br>
-                        <input type="text" name="lastname" id="username" placeholder="Last Name"><br>
-                        <input type="text" name="username" id="username" placeholder="Username"><br>
-                        <input type="email" name="signup-email" id="email" placeholder="Email Adress"><br>
-                        <input type="password" name="signup-password" id="password" placeholder="Password">
-                        <p style="color: red; top: 0px !important;bottom: 0px !important;">{{.Complete}}</p>
-                    </div>
+                    <div id="signup-form">
+                        <div style="color: red;">{{.Message}}</div>
+                        <input type="text" name="firstname" id="username" placeholder="Firstname" required><br>
+                        <input type="text" name="lastname" id="username" placeholder="Lastname" required><br>
+                        <input type="text" name="username" id="username" placeholder="Username" required><br>
+                        <input type="email" name="signup-email" id="email" placeholder="Email Adress" required><br>
+                        <input type="password" name="signup-password" id="password" placeholder="Password" required>
+                     </div>
                     <input id="bouton-login" class="btn" type="submit" value="SIGN UP">
                     <div id="Or">
                         <span></span>
@@ -73,15 +68,19 @@
                     <img src="./static/assets/google-icon.svg" alt="Google">
                     <span>Continue with Google</span>
                 </button>
-
-                <div class="new-user" id="new-user-media">Already have an account? <button onclick="Toggle()"> Sign in </button></div>
-                
-
             </div>
         </div>
         <div id="login-right"></div>
     </div>
     <script src="./static/script/signup.js"></script>
+    <script>
+        var defaultForm = "{{.Page}}";
+        if (defaultForm === "signin") {
+            showSignin();
+        } else {
+            showSignup();
+        }
+    </script>
 </body>
 
 </html>

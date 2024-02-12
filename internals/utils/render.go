@@ -1,19 +1,24 @@
 package utils
 
 import (
+	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 )
 
-var TempPath = "./web/templates/"
-
-func Render(w http.ResponseWriter, tmplName string, data interface{}) {
-	tmpl, err := template.ParseFiles(TempPath + tmplName + ".html")
+func FileService(str string, w http.ResponseWriter, data any) {
+	tmpl, err := template.ParseFiles("./web/templates/" + str)
 	if err != nil {
-		http.Error(w, "Failed to parse template", http.StatusInternalServerError)
-		log.Println("Error parsing template:", err)
+		fmt.Println("error while parsing the indicated templates")
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
-	tmpl.Execute(w, data)
+	err = tmpl.Execute(w, data)
+	if err != nil {
+		fmt.Println("error while executing the template")
+		fmt.Println(err.Error())
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
 }

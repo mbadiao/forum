@@ -15,7 +15,7 @@ func ErrorMiddleware(next http.Handler) http.Handler {
 		}
 		if !found {
 			w.WriteHeader(404)
-			utils.Render(w, "error", Err[404])
+			utils.FileService("error.html", w, Err[404])
 			return
 		}
 		next.ServeHTTP(w, r)

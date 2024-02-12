@@ -23,10 +23,8 @@
         <span class="log-not">
             <img src="./static/assets/bell 1.svg" alt="">
         </span>
-        
     </div>
     <div id="all-page">
-        <!-- Left-side -->
         <div id="leftside">
             <div id="allleftside">
                 <div id="profile">
@@ -47,11 +45,10 @@
                         </span></div>
                 </div>
                 <div id="logout-button">
-                    <a href="/login"><button id="logout">Logout</button></a>
+                    <a href="/login"><button id="logout"><span id="statusplace"></span></button></a>
                 </div>
             </div>
         </div>
-        <!-- Center-side -->
         <div id="centerside">
             <div id="centercontainer">
                 <div id="postouz">
@@ -89,7 +86,7 @@
                                     <div id="nbrdislike">0</div>
                                 </div>
                             </button>
-                            <button class="ldc">
+                            <button class="ldc comment-trigger">
                                 <div id="comment">
                                     <div><img src="./static/assets/message-circle-more 1.svg" alt=""></div>
                                     <div id="titlecomment">...</div>
@@ -134,7 +131,7 @@
                                     <div id="nbrdislike">0</div>
                                 </div>
                             </button>
-                            <button class="ldc">
+                            <button class="ldc comment-trigger">
                                 <div id="comment">
                                     <div><img src="./static/assets/message-circle-more 1.svg" alt=""></div>
                                     <div id="titlecomment">...</div>
@@ -179,7 +176,7 @@
                                     <div id="nbrdislike">0</div>
                                 </div>
                             </button>
-                            <button class="ldc">
+                            <button class="ldc comment-trigger">
                                 <div id="comment">
                                     <div><img src="./static/assets/message-circle-more 1.svg" alt=""></div>
                                     <div id="titlecomment">...</div>
@@ -190,7 +187,6 @@
                 </div>
             </div>
         </div>
-        <!-- Right-side -->
         <div id="rightside">
             <div id="rightsidecontainer">
                 <div id="btnposte">
@@ -259,16 +255,10 @@
                         </form>
                     </div>
                 </div>
-                <div id="profile-none">
-                    <div id="logout-button">
-                        <a href="/login"><button id="logout">Logout</button></a>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 
-    <!--Modal post -->
     <div class="main">
         <div class="headermodal">
             <div>
@@ -359,6 +349,135 @@
                 </div>
             </form>
         </div>
+    </div>
+
+    <div class="mains">
+        <div class="main-comment">
+            <div class="overlay-comment comment-trigger"></div>
+            <div class="modal-comment">
+                <button class="close-comment comment-trigger">X</button>
+                <div class="comment-element">
+                    <div id="allcommentous">
+                        <div class="onecommentous">
+                            <div id="commentpp">
+                                <img src="./../assets/Group 58.svg" alt="">
+                            </div>
+                            <div id="userandcomment">
+                                <div id="usernameous">
+                                    @wiwadev
+                                </div>
+                                <div id="usercomment">
+                                    <p>Wiwa, un nom qui résonne dans les couloirs de la technologie comme une
+                                        légende vivante.
+                                        Son parcours de développement est un récit tissé de lignes de code et
+                                        d'innovations révolutionnaires. Né avec un clavier entre les mains et une
+                                        passion dévorante pour la programmation,
+                                        Wiwa a évolué pour devenir bien plus qu'un simple développeur ; il incarne
+                                        la quintessence de l'ingénierie logicielle.</p>
+                                </div> <br>
+                                <hr>
+                                <br>
+                            </div>
+                        </div>
+                        <div class="onecommentous">
+                            <div id="commentpp">
+                                <img src="./../assets/Group 58.svg" alt="">
+                            </div>
+                            <div id="userandcomment">
+                                <div id="usernameous">
+                                    @wiwadev
+                                </div>
+                                <div id="usercomment">
+                                    <p>Wiwa, un nom qui résonne dans les couloirs de la technologie comme une
+                                        légende vivante.
+                                        Son parcours de développement est un récit tissé de lignes de code et
+                                        d'innovations révolutionnaires. Né avec un clavier entre les mains et une
+                                        passion dévorante pour la programmation,
+                                        Wiwa a évolué pour devenir bien plus qu'un simple développeur ; il incarne
+                                        la quintessence de l'ingénierie logicielle.</p>
+                                </div> <br>
+                                <hr><br>
+                            </div>
+                        </div>
+                        <div class="onecommentous">
+                            <div id="commentpp">
+                                <img src="./../assets/Group 58.svg" alt="">
+                            </div>
+                            <div id="userandcomment">
+                                <div id="usernameous">
+                                    @wiwadev
+                                </div>
+                                <div id="usercomment">
+                                    <p>Wiwa, un nom qui résonne dans les couloirs de la technologie comme une
+                                        légende vivante.
+                                        Son parcours de développement est un récit tissé de lignes de code et
+                                        d'innovations révolutionnaires. Né avec un clavier entre les mains et une
+                                        passion dévorante pour la programmation,
+                                        Wiwa a évolué pour devenir bien plus qu'un simple développeur ; il incarne
+                                        la quintessence de l'ingénierie logicielle.</p>
+                                </div> <br>
+                                <hr><br>
+                            </div>
+                        </div>
+                        <div class="onecommentous">
+                            <div id="commentpp">
+                                <img src="./../assets/Group 58.svg" alt="">
+                            </div>
+                            <div id="userandcomment">
+                                <div id="usernameous">
+                                    @wiwadev
+                                </div>
+                                <div id="usercomment">
+                                    <p>Wiwa, un nom qui résonne dans les couloirs de la technologie comme une
+                                        légende vivante.
+                                        Son parcours de développement est un récit tissé de lignes de code et
+                                        d'innovations révolutionnaires. Né avec un clavier entre les mains et une
+                                        passion dévorante pour la programmation,
+                                        Wiwa a évolué pour devenir bien plus qu'un simple développeur ; il incarne
+                                        la quintessence de l'ingénierie logicielle.</p>
+                                </div> <br>
+                                <hr><br>
+                            </div>
+                        </div>
+                        <div class="onecommentous">
+                            <div id="commentpp">
+                                <img src="./../assets/Group 58.svg" alt="">
+                            </div>
+                            <div id="userandcomment">
+                                <div id="usernameous">
+                                    @wiwadev
+                                </div>
+                                <div id="usercomment">
+                                    <p>Wiwa, un nom qui résonne dans les couloirs de la technologie comme une
+                                        légende vivante.
+                                        Son parcours de développement est un récit tissé de lignes de code et
+                                        d'innovations révolutionnaires. Né avec un clavier entre les mains et une
+                                        passion dévorante pour la programmation,
+                                        Wiwa a évolué pour devenir bien plus qu'un simple développeur ; il incarne
+                                        la quintessence de l'ingénierie logicielle.</p>
+                                </div> <br>
+                                <hr><br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sendcomment">
+                        <textarea placeholder="add a comment..." class="textcomment" name="comment" id=""></textarea>
+                        <button class="send-imgcomment">
+                            <input type="image" src="./../assets/send-horizontal 1.svg" alt="Submit">
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        var defaultStatus = "{{.Status}}";
+        if (defaultStatus === "") {
+            defaultStatus="login"
+        }
+        document.getElementById("statusplace").innerText = defaultStatus;
+    </script>
 </body>
 
 </html>

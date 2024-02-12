@@ -51,6 +51,7 @@ func Insert(db *sql.DB, table, values string, data ...interface{}) {
 	}
 	_, err = insert.Exec(data...)
 	if err != nil {
+		fmt.Println("1")
 		fmt.Println(err.Error())
 		return
 	}
@@ -59,12 +60,14 @@ func Insert(db *sql.DB, table, values string, data ...interface{}) {
 func Scan(db *sql.DB, request string, data Table) ([]Table, error) {
 	stmt, err := db.Prepare(request)
 	if err != nil {
+		fmt.Println("1")
 		return nil, err
 	}
 	defer stmt.Close() // Ensure the statement is closed
 
 	rows, err := stmt.Query()
 	if err != nil {
+		fmt.Println("scan")
 		return nil, err
 	}
 	defer rows.Close() // Ensure the rows are closed
@@ -79,6 +82,7 @@ func Scan(db *sql.DB, request string, data Table) ([]Table, error) {
 	for rows.Next() {
 		dynamicType := reflect.New(reflect.TypeOf(data).Elem()).Interface().(Table)
 		if err := dynamicType.ScanRows(rows); err != nil {
+			fmt.Println("tttttt")
 			return nil, err
 		}
 		tableData = append(tableData, dynamicType)

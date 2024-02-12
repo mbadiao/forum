@@ -40,5 +40,5 @@ func (ld *LikeDislike) ScanRows(rows *sql.Rows) error {
 
 // Pour la structure Session
 func (s *Session) ScanRows(rows *sql.Rows) error {
-	return rows.Scan(&s.SessionID, &s.UserID, &s.ExpirationDate)
+	return rows.Scan(&s.SessionID, &s.UserID, &s.Cookie_value, &s.ExpirationDate)
 }

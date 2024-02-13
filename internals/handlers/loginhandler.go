@@ -12,11 +12,11 @@ import (
 )
 
 type Data struct {
+	ActualUser  database.User
 	Page        string
 	Badpassword string
 	Message     string
 	Status      string
-	Name        string
 }
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {

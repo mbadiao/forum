@@ -6,7 +6,6 @@ import (
 	"forum/internals/database"
 	"forum/internals/utils"
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/gofrs/uuid/v5"
@@ -60,7 +59,14 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		for _, data := range datas {
 			u := data.(*database.Session)
 			if u.Cookie_value == ActualCookie {
-				donnees.Name = strconv.Itoa(u.UserID)
+				CurrentUser := database.User{}
+				query := "SELECT user_id, username, firstname, lastname, email, password_hash, registration_date FROM Users WHERE user_id=?"
+				err := db.QueryRow(query, u.UserID).Scan(&CurrentUser.UserID, &CurrentUser.Username, &CurrentUser.Firstname, &CurrentUser.Lastname, &CurrentUser.Email, &CurrentUser.PasswordHash, &CurrentUser.RegistrationDate)
+				if err != nil {
+					fmt.Println(err.Error())
+					return
+				}
+				donnees.ActualUser = CurrentUser
 				utils.FileService("home.html", w, donnees)
 				found = true
 				return

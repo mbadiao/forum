@@ -41,6 +41,11 @@ var Routes = []Route{
 		Handler: HomeHandler,
 		Method:  []string{"GET", "POST"},
 	},
+	{
+		Path:    "/logout",
+		Handler: LogoutHandler,
+		Method:  []string{"GET", "POST"},
+	},
 }
 
 var Port = ":8080"

@@ -20,15 +20,33 @@ type Data struct {
 }
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
+	db := database.CreateTable()
 	if r.URL.Path == "/login" {
 		if r.Method == "GET" {
 			daTa := Data{
 				Page: "signin",
 			}
-			utils.FileService("login.html", w, daTa)
-			return
+			found := false
+			datas, err := database.Scan(db, "SELECT * FROM SESSIONS ", &database.Session{})
+			if err != nil {
+				fmt.Println("data")
+				fmt.Println(err.Error())
+				return
+			}
+			ActualCookie := GetCookieHandler(w, r)
+			for _, data := range datas {
+				s := data.(*database.Session)
+				if s.Cookie_value == ActualCookie {
+					found = true
+					http.Redirect(w, r, "/", http.StatusSeeOther)
+					return
+				}
+			}
+			if !found {
+				utils.FileService("login.html", w, daTa)
+				return
+			}
 		} else if r.Method == "POST" {
-			db := database.CreateTable()
 			if (Empty(r.FormValue("login-name")) && Empty(r.FormValue("login-password")) &&
 				Empty(r.FormValue("firstname")) && Empty(r.FormValue("lastname")) && Empty(r.FormValue("username")) &&
 				Empty(r.FormValue("signup-email")) && Empty(r.FormValue("signup-password"))) || (Empty(r.FormValue("login-name")) && !Empty(r.FormValue("login-password"))) ||
@@ -152,6 +170,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	} else {
+		fmt.Println("404")
 		w.WriteHeader(404)
 		utils.FileService("error.html", w, Err[404])
 		return

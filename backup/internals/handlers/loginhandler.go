@@ -1,0 +1,231 @@
+package handlers
+
+import (
+	"fmt"
+	"forum/internals/database"
+	"forum/internals/utils"
+	"net/http"
+	"strconv"
+	"strings"
+
+	"golang.org/x/crypto/bcrypt"
+)
+
+type Data struct {
+	Page        string
+	Badpassword string
+	Message     string
+	Status      string
+	Name        string
+}
+
+func LoginHandler(w http.ResponseWriter, r *http.Request) {
+	db := database.CreateTable()
+	fmt.Println("try")
+
+	if r.URL.Path == "/login" {
+		if r.Method == "GET" {
+			fmt.Println("return")
+
+			found := false
+			datas, err := database.Scan(db, "SELECT * FROM SESSIONS ", &database.Session{})
+			if err != nil {
+				fmt.Println("data")
+				fmt.Println(err.Error())
+				return
+			}
+			ActualCookie := GetCookieHandler(w, r)
+			for _, data := range datas {
+				s := data.(*database.Session)
+				if s.Cookie_value == ActualCookie {
+					fmt.Println("exist")
+					found = true
+					http.Redirect(w, r, "/", http.StatusSeeOther)
+					return
+				}
+			}
+			fmt.Println("doesn't exist")
+
+			if !found {
+				daTa := Data{
+					Page: "signin",
+				}
+				utils.FileService("login.html", w, daTa)
+				return
+			}
+		} else if r.Method == "POST" {
+			if firstcase(r) {
+				data := Data{
+					Page:    "signin",
+					Message: "All fields must be completed",
+				}
+				w.WriteHeader(400)
+				utils.FileService("login.html", w, data)
+				return
+			} else if !Empty(r.FormValue("login-name")) && !Empty(r.FormValue("login-password")) {
+				var (
+					id             int
+					passwordhashed string
+				)
+				err := db.QueryRow("SELECT user_id, password_hash FROM Users WHERE email = ? OR username = ?", r.FormValue("login-name"), r.FormValue("login-name")).Scan(&id, &passwordhashed)
+				if err != nil {
+					data := Data{
+						Page:    "signin",
+						Message: "Invalid Email or Username",
+					}
+					w.WriteHeader(400)
+					utils.FileService("login.html", w, data)
+					return
+				}
+				err = bcrypt.CompareHashAndPassword([]byte(passwordhashed), []byte(r.FormValue("login-password")))
+				if err != nil {
+					data := Data{
+						Page:        "signin",
+						Badpassword: "Invalid Password",
+					}
+					w.WriteHeader(400)
+					utils.FileService("login.html", w, data)
+					return
+				}
+				found := false
+				datas, err := database.Scan(db, "SELECT * FROM SESSIONS ", &database.Session{})
+				if err != nil {
+					fmt.Println("data")
+					fmt.Println(err.Error())
+					return
+				}
+				for _, data := range datas {
+					u := data.(*database.Session)
+					if u.UserID == id {
+						found = true
+						db.Exec(`DELETE FROM Sessions WHERE user_id =` + strconv.Itoa(id))
+						database.Insert(db, "Sessions", "(user_id, cookie_value)", id, CreateCookie(w).Value)
+						http.Redirect(w, r, "/", http.StatusSeeOther)
+						return
+					}
+				}
+				if !found {
+					database.Insert(db, "Sessions", "(user_id, cookie_value)", id, CreateCookie(w).Value)
+					http.Redirect(w, r, "/", http.StatusSeeOther)
+					return
+				}
+			} else {
+				value,user:=secondecase(r)
+				if value{
+					data1 := Data{
+						Page:    "signup",
+						Message: "all fields must be completed",
+					}
+					w.WriteHeader(400)
+					utils.FileService("login.html", w, data1)
+					return
+				} else {
+					var nbremail, nbrusername int
+					err := db.QueryRow("SELECT COUNT(*) FROM Users WHERE email=?", user.emaildata).Scan(&nbremail)
+					err1 := db.QueryRow("SELECT COUNT(*) FROM Users WHERE username=?", user.usernamedata).Scan(&nbrusername)
+					if err1 != nil || err != nil {
+						fmt.Println("database error")
+						w.WriteHeader(500)
+						utils.FileService("error.html", w, Err[500])
+						return
+					}
+					if nbremail > 0 {
+						fmt.Println("email already used")
+						data := Data{
+							Page:    "signup",
+							Message: "Email already used",
+						}
+						w.WriteHeader(405)
+						utils.FileService("login.html", w, data)
+						return
+					}
+					if nbrusername > 0 {
+						fmt.Println("Username already used")
+						data := Data{
+							Page:    "signup",
+							Message: "Username already used",
+						}
+						w.WriteHeader(405)
+						utils.FileService("login.html", w, data)
+						return
+					}
+					hashedpassword, errr := bcrypt.GenerateFromPassword([]byte(user.passworddata), 5)
+					if errr != nil {
+						fmt.Println("failed to generate password")
+						w.WriteHeader(500)
+						utils.FileService("error.html", w, Err[500])
+						return
+					}
+					database.Insert(db, "Users", "(username, firstname, lastname, email, password_hash)", user.usernamedata, user.firstnamedata, user.lastnamedata, user.emaildata, string(hashedpassword))
+				}
+				data := Data{
+					Page: "signin",
+				}
+				utils.FileService("login.html", w, data)
+				return
+			}
+		} else {
+			w.WriteHeader(405)
+			utils.FileService("error.html", w, Err[405])
+			return
+		}
+	} else {
+		fmt.Println("404")
+		w.WriteHeader(404)
+		utils.FileService("error.html", w, Err[404])
+		return
+	}
+}
+
+func IsEmpty(str string) (string, error) {
+	if strings.TrimSpace(str) == "" {
+		return "", fmt.Errorf("all fields must be completed")
+	}
+	return str, nil
+}
+
+func Empty(str string) bool {
+	if strings.TrimSpace(str) == "" {
+		return true
+	} else {
+		return false
+	}
+}
+
+func firstcase(r *http.Request) bool {
+	if (Empty(r.FormValue("login-name")) && Empty(r.FormValue("login-password")) &&
+		Empty(r.FormValue("firstname")) && Empty(r.FormValue("lastname")) && Empty(r.FormValue("username")) &&
+		Empty(r.FormValue("signup-email")) && Empty(r.FormValue("signup-password"))) || (Empty(r.FormValue("login-name")) && !Empty(r.FormValue("login-password"))) ||
+		(!Empty(r.FormValue("login-name")) && Empty(r.FormValue("login-password"))) {
+		return true
+	}
+	return false
+}
+
+type userdata struct {
+	firstnamedata string
+	lastnamedata  string
+	usernamedata  string
+	emaildata     string
+	passworddata  string
+}
+
+func secondecase(r *http.Request) (bool, userdata) {
+	firstname, err1 := IsEmpty(r.FormValue("firstname"))
+	lastname, err2 := IsEmpty(r.FormValue("lastname"))
+	username, err3 := IsEmpty(r.FormValue("username"))
+	email, err4 := IsEmpty(r.FormValue("signup-email"))
+	password, err5 := IsEmpty(r.FormValue("signup-password"))
+	if err1 != nil || err2 != nil || err3 != nil || err4 != nil || err5 != nil {
+		
+		datatopass := userdata{
+			firstnamedata: firstname,
+			lastnamedata:  lastname,
+			usernamedata:  username,
+			emaildata:     email,
+			passworddata:  password,
+		}
+		return true, datatopass
+	}
+	return false, userdata{}
+}

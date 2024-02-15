@@ -1,13 +1,11 @@
-function Toggle() {
-    let signin = document.getElementById('login-left-content')
-    let signup = document.getElementById('Signup-left-content')
-    if (signin.style.display === 'none') {
-        signin.style.display = 'flex'
-        signup.style.display = 'none'
-    } else {
-        signup.style.display = 'flex'
-        signin.style.display = 'none'
-    }
+function showSignup() {
+    document.getElementById('login-left-content').style.display = 'none';
+    document.getElementById('Signup-left-content').style.display = 'flex';
+}
+
+function showSignin() {
+    document.getElementById('Signup-left-content').style.display = 'none';
+    document.getElementById('login-left-content').style.display = 'flex';
 }
 
 

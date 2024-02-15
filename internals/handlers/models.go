@@ -22,6 +22,10 @@ var Err = map[int]Error{
 		http.StatusBadRequest,
 		http.StatusText(400),
 	},
+	405: {
+		http.StatusMethodNotAllowed,
+		http.StatusText(http.StatusMethodNotAllowed),
+	},	
 }
 
 type Route struct {
@@ -41,11 +45,11 @@ var Routes = []Route{
 		Handler: HomeHandler,
 		Method:  []string{"GET", "POST"},
 	},
-	// {
-	// 	Path:    "/",
-	// 	Handler: PostHandler,
-	// 	Method:  []string{"GET", "POST"},
-	// },
+	{
+		Path:    "/filter",
+		Handler: FilterHandler,
+		Method:  []string{"POST"},
+	},
 	{
 		Path:    "/logout",
 		Handler: LogoutHandler,

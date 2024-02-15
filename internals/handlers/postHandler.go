@@ -22,12 +22,13 @@ type Category struct {
 var db = database.CreateTable()
 var postID int64 // Declare postID outside the if statement
 
-func PostHandler(w http.ResponseWriter, r *http.Request, user database.User) {
+func PostHandler(w http.ResponseWriter, r *http.Request, userid database.User) {
 	// var Posts []database.Post
 	var PostS database.Post
 	// var MyPostCAt PostCAt
 	if r.Method == "POST" {
 		err := r.ParseMultipartForm(20 << 20)
+		fmt.Println(err)
 		if err != nil {
 			utils.FileService("error.html", w, Err[400])
 			// http.Error(w, err.Error(), http.StatusBadRequest)
@@ -63,7 +64,7 @@ func PostHandler(w http.ResponseWriter, r *http.Request, user database.User) {
 			return
 		}
 		PostS = database.Post{
-			UserID:   user.UserID,
+			UserID:   userid.UserID,
 			Title:    title,
 			PhotoURL: PhotoURL,
 			Content:  thread,

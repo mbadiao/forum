@@ -16,7 +16,6 @@ func FileService(str string, w http.ResponseWriter, data any) {
 	err = tmpl.Execute(w, data)
 	if err != nil {
 		fmt.Println("error while executing the template")
-		fmt.Println(err.Error())
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}

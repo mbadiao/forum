@@ -17,7 +17,7 @@ type Data struct {
 	Badpassword string
 	Message     string
 	Status      string
-	UserPost    []database.Post
+	Alldata    AllData	
 }
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {

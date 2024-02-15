@@ -34,12 +34,23 @@ var Routes = []Route{
 	{
 		Path:    "/login",
 		Handler: LoginHandler,
-		Method:  []string{"GET","POST"},
+		Method:  []string{"GET"},
 	},
 	{
 		Path:    "/",
 		Handler: HomeHandler,
 		Method:  []string{"GET", "POST"},
 	},
+	// {
+	// 	Path:    "/",
+	// 	Handler: PostHandler,
+	// 	Method:  []string{"GET", "POST"},
+	// },
+	{
+		Path:    "/logout",
+		Handler: LogoutHandler,
+		Method:  []string{"GET", "POST"},
+	},
 }
+
 var Port = ":8080"

@@ -31,7 +31,9 @@
     right: 40%;
     top: 30%;
     position: absolute;
+    display: inline-block;
 }
+
 #bg-profile img{
     width: 6vw;
 }

@@ -13,13 +13,17 @@ type User struct {
 	PasswordHash     string
 	RegistrationDate time.Time
 }
+
 type Post struct {
 	PostID       int
 	UserID       int
 	Title        string
+	PhotoURL     string
 	Content      string
 	CreationDate time.Time
+	Categories   []string
 }
+
 type Comment struct {
 	CommentID    int
 	PostID       int
@@ -27,14 +31,17 @@ type Comment struct {
 	Content      string
 	CreationDate time.Time
 }
+
 type Category struct {
 	CategoryID int
 	Name       string
 }
+
 type PostCategory struct {
 	PostID     int
 	CategoryID int
 }
+
 type LikeDislike struct {
 	LikeDislikeID   int
 	PostID          int
@@ -43,8 +50,10 @@ type LikeDislike struct {
 	LikeDislikeType string
 	CreationDate    time.Time
 }
+
 type Session struct {
 	SessionID      int
 	UserID         int
+	Cookie_value   string
 	ExpirationDate time.Time
 }

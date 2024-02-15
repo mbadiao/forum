@@ -15,7 +15,7 @@ func (u *User) ScanRows(rows *sql.Rows) error {
 
 // Pour la structure Post
 func (p *Post) ScanRows(rows *sql.Rows) error {
-	return rows.Scan(&p.PostID, &p.UserID, &p.Title, &p.Content, &p.CreationDate)
+	return rows.Scan(&p.PostID, &p.UserID, &p.Title, &p.PhotoURL, &p.Content, &p.CreationDate)
 }
 
 // Pour la structure Comment
@@ -40,5 +40,5 @@ func (ld *LikeDislike) ScanRows(rows *sql.Rows) error {
 
 // Pour la structure Session
 func (s *Session) ScanRows(rows *sql.Rows) error {
-	return rows.Scan(&s.SessionID, &s.UserID, &s.ExpirationDate)
+	return rows.Scan(&s.SessionID, &s.UserID, &s.Cookie_value, &s.ExpirationDate)
 }

@@ -109,7 +109,7 @@ body {
     word-wrap: break-word
 }
 
-#login-form input {
+#login-form input, #signup-form input{
     cursor: text;
     border: solid white;
     color: rgba(0, 0, 0, 0.61);
@@ -200,4 +200,19 @@ fieldset {
     font-family: 'Roboto';
     line-height: normal;
     font-style: normal;
+}
+
+#errorSignup {
+    color: red;
+    font-weight: bold;
+    border-radius: 8px;
+    text-align: left;
+    width: 86%;
+    margin-bottom: 16px;
+}
+.red-cross {
+    font-weight: bolder;
+}
+.error {
+    display: block;
 }

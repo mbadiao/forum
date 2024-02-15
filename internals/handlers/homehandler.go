@@ -1,11 +1,31 @@
 package handlers
 
-import "net/http"
+import (
+	"fmt"
+	"forum/internals/database"
+	"net/http"
+)
+
+
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path == "/" {
-		if r.Method == "GET" || r.Method == "POST" {
-			FileService("/home.html", w, nil)
-		}
+	db := database.CreateTable()
+	CookieHandler(w, r, db)
+}
+
+func LogoutHandler(w http.ResponseWriter, r *http.Request) {
+	db := database.CreateTable()
+	ActualCookie := GetCookieHandler(w, r)
+	fmt.Println(ActualCookie)
+	stmt, err := db.Prepare(`DELETE FROM Sessions WHERE cookie_value =?`)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
 	}
+	_, err = stmt.Exec(ActualCookie)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
 }

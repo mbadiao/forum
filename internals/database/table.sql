@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXIST Users (
+CREATE TABLE IF NOT EXISTS Users (
     user_id INTEGER PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
     firstname TEXT UNIQUE NOT NULL,
@@ -8,16 +8,17 @@ CREATE TABLE IF NOT EXIST Users (
     registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXIST Posts (
+CREATE TABLE IF NOT EXISTS Posts (
     post_id INTEGER PRIMARY KEY,
     user_id INTEGER NOT NULL,
     title TEXT NOT NULL,
+	PhotoURL TEXT NOT NULL,
     content TEXT NOT NULL,
     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
-CREATE TABLE IF NOT EXIST Comments (
+CREATE TABLE IF NOT EXISTS Comments (
     comment_id INTEGER PRIMARY KEY,
     post_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
@@ -27,12 +28,12 @@ CREATE TABLE IF NOT EXIST Comments (
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
-CREATE TABLE IF NOT EXIST Categories (
+CREATE TABLE IF NOT EXISTS Categories (
     category_id INTEGER PRIMARY KEY,
-    name TEXT UNIQUE NOT NULL,
+    name TEXT UNIQUE NOT NULL
 );
 
-CREATE TABLE IF NOT EXIST PostCategories (
+CREATE TABLE IF NOT EXISTS PostCategories (
     post_id INTEGER,
     category_id INTEGER,
     PRIMARY KEY (post_id, category_id),
@@ -40,7 +41,7 @@ CREATE TABLE IF NOT EXIST PostCategories (
     FOREIGN KEY (category_id) REFERENCES Categories(category_id)
 );
 
-CREATE TABLE IF NOT EXIST LikesDislikes (
+CREATE TABLE IF NOT EXISTS LikesDislikes (
     like_dislike_id INTEGER PRIMARY KEY,
     post_id INTEGER,
     comment_id INTEGER,
@@ -52,10 +53,17 @@ CREATE TABLE IF NOT EXIST LikesDislikes (
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
-CREATE TABLE IF NOT EXIST Sessions (
+CREATE TABLE IF NOT EXISTS Sessions (
     session_id INTEGER PRIMARY KEY,
     user_id INTEGER NOT NULL,
-    expiration_date TIMESTAMP NOT NULL,
+    cookie_value TEXT NOT NULL,
+    expiration_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
+INSERT INTO Categories (name) VALUES
+('Tech'),
+('Actu'),
+('Mode'),
+('Sport'),
+('Edu');

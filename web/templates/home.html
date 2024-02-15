@@ -25,15 +25,16 @@
         </span>
     </div>
     <div id="all-page">
-        <!-- Left-side -->
+
+        <!-- left side -->
         <div id="leftside">
             <div id="allleftside">
                 <div id="profile">
                     <div id="bg-profile">
                         <div id="test">
                             <div><img src="./static/assets/profilepic.svg" alt=""></div>
-                            <div style="font-size: 1.1vw;">{{.Name}}</div>
-                            <div style="font-size: 0.9vw;">@{{.Name}}</div>
+                            <div style="font-size: 1.1vw;">{{.ActualUser.Firstname}}{{.ActualUser.Lastname}}</div>
+                            <div style="font-size: 0.9vw;">@{{.ActualUser.Username}}</div>
                         </div>
                     </div>
                 </div>
@@ -46,123 +47,38 @@
                         </span></div>
                 </div>
                 <div id="logout-button">
-                    <a href="/login"><button id="logout">Logout</button></a>
+                    <a href="/logout"><button id="logout"><span id="statusplace"></span></button></a>
                 </div>
             </div>
         </div>
+
         <!-- Center-side -->
         <div id="centerside">
+            {{range .UserPost}}
             <div id="centercontainer">
                 <div id="postouz">
                     <div id="profileouz">
-                        <div id="pp"><img src="./static/assets/Group 60.svg" alt="">
-                        </div>
+                        <div id="pp"><img src="./static/assets/Group 60.svg" alt=""></div>
                         <div id="user">
                             <div id="name">Faux Dev</div>
                             <div id="username">@wiwa</div>
-                            <div id="time">1 hours ago</div>
+                            <div id="time">{{.CreationDate}}</div>
                         </div>
                     </div>
-                    <div id="title">Tamkharit 2k23</div>
+                    <div id="title">{{.Title}}</div>
+                    {{ if ne .PhotoURL "NoPhoto" }}
                     <div id="image">
-                        <div id="imgcontainer"> <img src="./static/assets/thiop.jpg" alt=""></div>
+                        <div id="imgcontainer"> <img src="{{.PhotoURL}}" alt="Photo"></div>
                     </div>
+                    {{ end }}
                     <div id="text">
-                        <p>
-                            How to eat chicken?
-                        </p>
+                        <p>{{.Content}}</p>
                     </div>
-                    <div id="categories"> #poulet #thierembam #zone01</div>
-                    <div id="nbrcomment">10 comments</div>
-                    <div id="info">
-                        <div id="infocontainer">
-                            <button class="ldc">
-                                <div id="like">
-                                    <div><img src="./static/assets/like 1.svg" alt=""></div>
-                                    <div id="nbrlike">1k</div>
-                                </div>
-                            </button>
-                            <button class="ldc">
-                                <div id="dislike">
-                                    <div><img src="./static/assets/Group 66.svg" alt=""></div>
-                                    <div id="nbrdislike">0</div>
-                                </div>
-                            </button>
-                            <button class="ldc comment-trigger">
-                                <div id="comment">
-                                    <div><img src="./static/assets/message-circle-more 1.svg" alt=""></div>
-                                    <div id="titlecomment">...</div>
-                                </div>
-                            </button>
-                        </div>
+                    <div id="categories">
+                        {{range .Categories}}
+                        <div>#{{.}}</div>
+                        {{end}}
                     </div>
-                </div>
-
-                <div id="postouz">
-                    <div id="profileouz">
-                        <div id="pp"><img src="./static/assets/Group 60.svg" alt="">
-                        </div>
-                        <div id="user">
-                            <div id="name">Elie Malo</div>
-                            <div id="username">@johndoe</div>
-                            <div id="time">1 hours ago</div>
-                        </div>
-                    </div>
-                    <div id="title">Mansour le CYBORG</div>
-                    <div id="image">
-                        <div id="imgcontainer"> <img src="./static/assets/haaland.jpg" alt=""></div>
-                    </div>
-                    <div id="text">
-                        <p>
-                            C'est fait la pepite de teungeth fc qui signe a Zone01 FC
-                        </p>
-                    </div>
-                    <div id="categories"> #Sport #player #GOAT</div>
-                    <div id="nbrcomment">10 comments</div>
-                    <div id="info">
-                        <div id="infocontainer">
-                            <button class="ldc">
-                                <div id="like">
-                                    <div><img src="./static/assets/like 1.svg" alt=""></div>
-                                    <div id="nbrlike">1k</div>
-                                </div>
-                            </button>
-                            <button class="ldc">
-                                <div id="dislike">
-                                    <div><img src="./static/assets/Group 66.svg" alt=""></div>
-                                    <div id="nbrdislike">0</div>
-                                </div>
-                            </button>
-                            <button class="ldc comment-trigger">
-                                <div id="comment">
-                                    <div><img src="./static/assets/message-circle-more 1.svg" alt=""></div>
-                                    <div id="titlecomment">...</div>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="postouz">
-                    <div id="profileouz">
-                        <div id="pp"><img src="./static/assets/Group 60.svg" alt="">
-                        </div>
-                        <div id="user">
-                            <div id="name">Ousmane Sene</div>
-                            <div id="username">@ouz</div>
-                            <div id="time">1 hours ago</div>
-                        </div>
-                    </div>
-                    <div id="title">Can 2k23</div>
-                    <div id="image">
-                        <div id="imgcontainer"> <img src="./static/assets/goumba.jpg" alt=""></div>
-                    </div>
-                    <div id="text">
-                        <p>
-                            coup du marteau touy touy touy
-                        </p>
-                    </div>
-                    <div id="categories"> #aveugle #actu #NSFW</div>
                     <div id="nbrcomment">10 comments</div>
                     <div id="info">
                         <div id="infocontainer">
@@ -188,7 +104,9 @@
                     </div>
                 </div>
             </div>
+            {{end}}
         </div>
+
         <!-- Right-side -->
         <div id="rightside">
             <div id="rightsidecontainer">
@@ -200,49 +118,49 @@
                 </div>
                 <div class="filter">
                     <div id="filtercontent">
-                        <form action="" method="get">
+                        <form action="/filter" method="post">
                             <div id="intern">
                                 <div>
                                     <p>Filter by</p>
                                 </div>
                                 <div class="filter_form">
                                     <label class="button">
-                                        <input type="checkbox" name="Category" id="Categoryall" value="all">
+                                        <input type="checkbox" name="Category" id="Categoryall" value="All">
                                         <div class="button-circle"></div>
                                         <span class="button-label">All</span>
                                     </label>
                                     <label class="button">
-                                        <input type="checkbox" name="Category" id="Categorytech" value="tech">
+                                        <input type="checkbox" name="Category" id="Categorytech" value="Tech">
                                         <div class="button-circle"></div>
                                         <span class="button-label">Tech</span>
                                     </label>
                                     <label class="button">
-                                        <input type="checkbox" name="Category" id="Categoryactu" value="actu">
+                                        <input type="checkbox" name="Category" id="Categoryactu" value="Actu">
                                         <div class="button-circle"></div>
                                         <span class="button-label">Actu</span>
                                     </label>
                                     <label class="button">
-                                        <input type="checkbox" name="Category" id="Categorymode" value="mode">
+                                        <input type="checkbox" name="Category" id="Categorymode" value="Mode">
                                         <div class="button-circle"></div>
                                         <span class="button-label">Mode</span>
                                     </label>
                                     <label class="button">
-                                        <input type="checkbox" name="Category" id="Categorysports" value="sport">
+                                        <input type="checkbox" name="Category" id="Categorysports" value="Sport">
                                         <div class="button-circle"></div>
                                         <span class="button-label">Sport</span>
                                     </label>
                                     <label class="button">
-                                        <input type="checkbox" name="Category" id="Categoryedu" value="edu">
+                                        <input type="checkbox" name="Category" id="Categoryedu" value="Edu">
                                         <div class="button-circle"></div>
                                         <span class="button-label">Edu</span>
                                     </label>
                                     <label class="button">
-                                        <input type="checkbox" name="Liked post" id="LikedPost" value="Liked">
+                                        <input type="checkbox" name="Category" id="LikedPost" value="Like">
                                         <div class="button-circle"></div>
                                         <span class="button-label">Liked</span>
                                     </label>
                                     <label class="button">
-                                        <input type="checkbox" name="Created post" id="CreatedPost" value="Createdp">
+                                        <input type="checkbox" name="Category" id="CreatedPost" value="Created">
                                         <div class="button-circle"></div>
                                         <span class="button-label">Created</span>
                                     </label>
@@ -260,222 +178,231 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <!--Modal post -->
-    <div class="main">
-        <div class="headermodal">
-            <div>
-                <img src="../static/images/0.svg" alt="">
-                <img src="../static/images/1.svg" alt="">
+        <!--Modal post -->
+        <div class="main">
+            <div class="headermodal">
+                <div>
+                    <img src="../static/images/0.svg" alt="">
+                    <img src="../static/images/1.svg" alt="">
+                </div>
+                <span class="log-not">
+                    <img src="../static/images/bell 1.svg" alt="">
+                </span>
             </div>
-            <span class="log-not">
-                <img src="../static/images/bell 1.svg" alt="">
-            </span>
+            <div class="modal-container">
+                <form action="/" method="post" enctype="multipart/form-data">
+                    <div class=" overlay modal-trigger"></div>
+                    <div class="modal">
+                        <div class="close-modal modal-trigger">X</div>
+                        <div class="modal-element">
+                            <h1>Create a new post</h1>
+                            <textarea placeholder="Add Title" class="textarea-title" name="title" id=""></textarea>
+                            <div class="elemnent">
+                                <div class="sep">
+                                    <span class="separator">
+                                    </span>
+                                </div>
+                                <h2>Image</h2>
+                                <div class="sep">
+                                    <span class="separator">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="Photo">
+                                <img class="img-button-photo" src="./static/assets/image1.svg" alt="tags">
+                                <input type="file" accept="image/png,image/svg, image/jpeg, image/gif" name="file">
+                            </div>
+                            <div class="elemnent">
+                                <div class="sep">
+                                    <span class="separator">
+                                    </span>
+                                </div>
+                                <h2>Categories</h2>
+                                <div class="sep">
+                                    <span class="separator">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="Category-checkbox">
+                                <div>
+                                    <label>
+                                        <input type="checkbox" name="checkbox" value="All">
+                                        <span>All</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label>
+                                        <input type="checkbox" name="checkbox" value="Tech">
+                                        <span>Tech</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label>
+                                        <input type="checkbox" name="checkbox" value="Actu">
+                                        <span>Actu</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label>
+                                        <input type="checkbox" name="checkbox" value="Mode">
+                                        <span>Mode</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label>
+                                        <input type="checkbox" name="checkbox" value="Sport">
+                                        <span>Sport</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label>
+                                        <input type="checkbox" name="checkbox" value="Edu">
+                                        <span>Edu</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="send">
+                                <textarea placeholder="Add Thread" class="text" name="thread" id=""></textarea>
+                                <button class="send-img">
+                                    <input type="image" src="./static/assets/send-horizontal 1.svg" alt="Submit">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="modal-container">
-            <form action="">
-                <div class=" overlay modal-trigger"></div>
-                <div class="modal">
-                    <button class="close-modal modal-trigger">X</button>
-                    <div class="modal-element">
-                        <h1>Create a new post</h1>
-                        <textarea placeholder="Add Title" class="textarea-title" name="title" id=""></textarea>
-                        <div class="elemnent">
-                            <div class="sep">
-                                <span class="separator">
-                                </span>
+
+        <!-- comment post -->
+        <div class="mains">
+            <div class="main-comment">
+                <div class="overlay-comment comment-trigger"></div>
+                <div class="modal-comment">
+                    <button class="close-comment comment-trigger">X</button>
+                    <div class="comment-element">
+                        <div id="allcommentous">
+                            <div class="onecommentous">
+                                <div id="commentpp">
+                                    <img src="./../assets/Group 58.svg" alt="">
+                                </div>
+                                <div id="userandcomment">
+                                    <div id="usernameous">
+                                        @wiwadev
+                                    </div>
+                                    <div id="usercomment">
+                                        <p>Wiwa, un nom qui résonne dans les couloirs de la technologie comme une
+                                            légende vivante.
+                                            Son parcours de développement est un récit tissé de lignes de code et
+                                            d'innovations révolutionnaires. Né avec un clavier entre les mains et une
+                                            passion dévorante pour la programmation,
+                                            Wiwa a évolué pour devenir bien plus qu'un simple développeur ; il incarne
+                                            la quintessence de l'ingénierie logicielle.</p>
+                                    </div> <br>
+                                    <hr>
+                                    <br>
+                                </div>
                             </div>
-                            <h2>Image</h2>
-                            <div class="sep">
-                                <span class="separator">
-                                </span>
+                            <div class="onecommentous">
+                                <div id="commentpp">
+                                    <img src="./../assets/Group 58.svg" alt="">
+                                </div>
+                                <div id="userandcomment">
+                                    <div id="usernameous">
+                                        @wiwadev
+                                    </div>
+                                    <div id="usercomment">
+                                        <p>Wiwa, un nom qui résonne dans les couloirs de la technologie comme une
+                                            légende vivante.
+                                            Son parcours de développement est un récit tissé de lignes de code et
+                                            d'innovations révolutionnaires. Né avec un clavier entre les mains et une
+                                            passion dévorante pour la programmation,
+                                            Wiwa a évolué pour devenir bien plus qu'un simple développeur ; il incarne
+                                            la quintessence de l'ingénierie logicielle.</p>
+                                    </div> <br>
+                                    <hr><br>
+                                </div>
+                            </div>
+                            <div class="onecommentous">
+                                <div id="commentpp">
+                                    <img src="./../assets/Group 58.svg" alt="">
+                                </div>
+                                <div id="userandcomment">
+                                    <div id="usernameous">
+                                        @wiwadev
+                                    </div>
+                                    <div id="usercomment">
+                                        <p>Wiwa, un nom qui résonne dans les couloirs de la technologie comme une
+                                            légende vivante.
+                                            Son parcours de développement est un récit tissé de lignes de code et
+                                            d'innovations révolutionnaires. Né avec un clavier entre les mains et une
+                                            passion dévorante pour la programmation,
+                                            Wiwa a évolué pour devenir bien plus qu'un simple développeur ; il incarne
+                                            la quintessence de l'ingénierie logicielle.</p>
+                                    </div> <br>
+                                    <hr><br>
+                                </div>
+                            </div>
+                            <div class="onecommentous">
+                                <div id="commentpp">
+                                    <img src="./../assets/Group 58.svg" alt="">
+                                </div>
+                                <div id="userandcomment">
+                                    <div id="usernameous">
+                                        @wiwadev
+                                    </div>
+                                    <div id="usercomment">
+                                        <p>Wiwa, un nom qui résonne dans les couloirs de la technologie comme une
+                                            légende vivante.
+                                            Son parcours de développement est un récit tissé de lignes de code et
+                                            d'innovations révolutionnaires. Né avec un clavier entre les mains et une
+                                            passion dévorante pour la programmation,
+                                            Wiwa a évolué pour devenir bien plus qu'un simple développeur ; il incarne
+                                            la quintessence de l'ingénierie logicielle.</p>
+                                    </div> <br>
+                                    <hr><br>
+                                </div>
+                            </div>
+                            <div class="onecommentous">
+                                <div id="commentpp">
+                                    <img src="./../assets/Group 58.svg" alt="">
+                                </div>
+                                <div id="userandcomment">
+                                    <div id="usernameous">
+                                        @wiwadev
+                                    </div>
+                                    <div id="usercomment">
+                                        <p>Wiwa, un nom qui résonne dans les couloirs de la technologie comme une
+                                            légende vivante.
+                                            Son parcours de développement est un récit tissé de lignes de code et
+                                            d'innovations révolutionnaires. Né avec un clavier entre les mains et une
+                                            passion dévorante pour la programmation,
+                                            Wiwa a évolué pour devenir bien plus qu'un simple développeur ; il incarne
+                                            la quintessence de l'ingénierie logicielle.</p>
+                                    </div> <br>
+                                    <hr><br>
+                                </div>
                             </div>
                         </div>
-                        <div class="Photo"><img class="img-button-photo" src="./static/assets/image 1.svg" alt="tags">
-                            Photo</div>
-                        <div class="elemnent">
-                            <div class="sep">
-                                <span class="separator">
-                                </span>
-                            </div>
-                            <h2>Categories</h2>
-                            <div class="sep">
-                                <span class="separator">
-                                </span>
-                            </div>
-                        </div>
-                        <div class="Category-checkbox">
-                            <div>
-                                <label>
-                                    <input type="checkbox">
-                                    <span>Sport</span>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input type="checkbox">
-                                    <span>Sport</span>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input type="checkbox">
-                                    <span>Sport</span>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input type="checkbox">
-                                    <span>Sport</span>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input type="checkbox">
-                                    <span>Sport</span>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input type="checkbox">
-                                    <span>Sport</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="send">
-                            <textarea placeholder="Add Thread" class="text" name="thread" id=""></textarea>
-                            <button class="send-img">
-                                <input type="image" src="./static/assets/send-horizontal 1.svg" alt="Submit">
+                        <div class="sendcomment">
+                            <textarea placeholder="add a comment..." class="textcomment" name="comment"
+                                id=""></textarea>
+                            <button class="send-imgcomment">
+                                <input type="image" src="./../assets/send-horizontal 1.svg" alt="Submit">
                             </button>
                         </div>
                     </div>
-                </div>
-            </form>
-        </div>
-    </div>
 
-    <!-- Modal comment -->
-    <div class="mains">
-        <div class="main-comment">
-            <div class="overlay-comment comment-trigger"></div>
-            <div class="modal-comment">
-                <button class="close-comment comment-trigger">X</button>
-                <div class="comment-element">
-                    <div id="allcommentous">
-                        <div class="onecommentous">
-                            <div id="commentpp">
-                                <img src="./../assets/Group 58.svg" alt="">
-                            </div>
-                            <div id="userandcomment">
-                                <div id="usernameous">
-                                    @wiwadev
-                                </div>
-                                <div id="usercomment">
-                                    <p>Wiwa, un nom qui résonne dans les couloirs de la technologie comme une
-                                        légende vivante.
-                                        Son parcours de développement est un récit tissé de lignes de code et
-                                        d'innovations révolutionnaires. Né avec un clavier entre les mains et une
-                                        passion dévorante pour la programmation,
-                                        Wiwa a évolué pour devenir bien plus qu'un simple développeur ; il incarne
-                                        la quintessence de l'ingénierie logicielle.</p>
-                                </div> <br>
-                                <hr>
-                                <br>
-                            </div>
-                        </div>
-                        <div class="onecommentous">
-                            <div id="commentpp">
-                                <img src="./../assets/Group 58.svg" alt="">
-                            </div>
-                            <div id="userandcomment">
-                                <div id="usernameous">
-                                    @wiwadev
-                                </div>
-                                <div id="usercomment">
-                                    <p>Wiwa, un nom qui résonne dans les couloirs de la technologie comme une
-                                        légende vivante.
-                                        Son parcours de développement est un récit tissé de lignes de code et
-                                        d'innovations révolutionnaires. Né avec un clavier entre les mains et une
-                                        passion dévorante pour la programmation,
-                                        Wiwa a évolué pour devenir bien plus qu'un simple développeur ; il incarne
-                                        la quintessence de l'ingénierie logicielle.</p>
-                                </div> <br>
-                                <hr><br>
-                            </div>
-                        </div>
-                        <div class="onecommentous">
-                            <div id="commentpp">
-                                <img src="./../assets/Group 58.svg" alt="">
-                            </div>
-                            <div id="userandcomment">
-                                <div id="usernameous">
-                                    @wiwadev
-                                </div>
-                                <div id="usercomment">
-                                    <p>Wiwa, un nom qui résonne dans les couloirs de la technologie comme une
-                                        légende vivante.
-                                        Son parcours de développement est un récit tissé de lignes de code et
-                                        d'innovations révolutionnaires. Né avec un clavier entre les mains et une
-                                        passion dévorante pour la programmation,
-                                        Wiwa a évolué pour devenir bien plus qu'un simple développeur ; il incarne
-                                        la quintessence de l'ingénierie logicielle.</p>
-                                </div> <br>
-                                <hr><br>
-                            </div>
-                        </div>
-                        <div class="onecommentous">
-                            <div id="commentpp">
-                                <img src="./../assets/Group 58.svg" alt="">
-                            </div>
-                            <div id="userandcomment">
-                                <div id="usernameous">
-                                    @wiwadev
-                                </div>
-                                <div id="usercomment">
-                                    <p>Wiwa, un nom qui résonne dans les couloirs de la technologie comme une
-                                        légende vivante.
-                                        Son parcours de développement est un récit tissé de lignes de code et
-                                        d'innovations révolutionnaires. Né avec un clavier entre les mains et une
-                                        passion dévorante pour la programmation,
-                                        Wiwa a évolué pour devenir bien plus qu'un simple développeur ; il incarne
-                                        la quintessence de l'ingénierie logicielle.</p>
-                                </div> <br>
-                                <hr><br>
-                            </div>
-                        </div>
-                        <div class="onecommentous">
-                            <div id="commentpp">
-                                <img src="./../assets/Group 58.svg" alt="">
-                            </div>
-                            <div id="userandcomment">
-                                <div id="usernameous">
-                                    @wiwadev
-                                </div>
-                                <div id="usercomment">
-                                    <p>Wiwa, un nom qui résonne dans les couloirs de la technologie comme une
-                                        légende vivante.
-                                        Son parcours de développement est un récit tissé de lignes de code et
-                                        d'innovations révolutionnaires. Né avec un clavier entre les mains et une
-                                        passion dévorante pour la programmation,
-                                        Wiwa a évolué pour devenir bien plus qu'un simple développeur ; il incarne
-                                        la quintessence de l'ingénierie logicielle.</p>
-                                </div> <br>
-                                <hr><br>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="sendcomment">
-                        <textarea placeholder="add a comment..." class="textcomment" name="comment" id=""></textarea>
-                        <button class="send-imgcomment">
-                            <input type="image" src="./../assets/send-horizontal 1.svg" alt="Submit">
-                        </button>
-                    </div>
                 </div>
-
             </div>
         </div>
-    </div>
+        <script>
+            var defaultStatus = "{{.Status}}";
+            if (defaultStatus === "") {
+                defaultStatus = "login"
+            }
+            document.getElementById("statusplace").innerText = defaultStatus;
+        </script>
 </body>
 
 </html>

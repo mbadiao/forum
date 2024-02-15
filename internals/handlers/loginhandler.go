@@ -17,6 +17,7 @@ type Data struct {
 	Badpassword string
 	Message     string
 	Status      string
+	Isconnected bool
 	Alldata    AllData	
 }
 

@@ -81,6 +81,7 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 				donnees := Data{
 					Status:     "logout",
 					ActualUser: CurrentUser,
+					Isconnected: true,
 					Alldata: AllData,
 				}
 				utils.FileService("home.html", w, donnees)
@@ -89,13 +90,13 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 			}
 		}
 		if !found {
-			fmt.Println("test01")
 			AllData, err := getAll(r)
 			if err != nil {
 				fmt.Println(err)
 				return
 			}
 			donnees := Data{
+				Isconnected: false,
 				Alldata: AllData,
 			}
 			utils.FileService("home.html", w, donnees)

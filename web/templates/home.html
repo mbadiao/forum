@@ -113,10 +113,12 @@
         <div id="rightside">
             <div id="rightsidecontainer">
                 <div id="btnposte">
+                    {{if  .Isconnected}}
                     <button id="postbabs" class="modal-btn modal-trigger">
                         <img src="./static/assets/iconeadd.svg">
                         <span id="addpost"> NEW POST </span>
                     </button>
+                    {{end}}
                 </div>
                 <div class="filter">
                     <div id="filtercontent">

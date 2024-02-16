@@ -1,5 +1,4 @@
 package handlers
-
 import (
 	"database/sql"
 	"fmt"
@@ -7,16 +6,12 @@ import (
 	"forum/internals/utils"
 	"net/http"
 	"time"
-
 	"github.com/gofrs/uuid/v5"
 )
-
 func CreateCookie(w http.ResponseWriter) http.Cookie {
 	Tokens, _ := uuid.NewV4()
-
 	now := time.Now()
 	expires := now.Add(time.Hour * 1)
-
 	cookie := http.Cookie{
 		Name:     "ForumCookie",
 		Value:    Tokens.String(),
@@ -30,7 +25,6 @@ func CreateCookie(w http.ResponseWriter) http.Cookie {
 	http.SetCookie(w, &cookie)
 	return cookie
 }
-
 func GetCookieHandler(w http.ResponseWriter, r *http.Request) string {
 	cookie, err := r.Cookie("ForumCookie")
 	if err != nil {
@@ -38,7 +32,6 @@ func GetCookieHandler(w http.ResponseWriter, r *http.Request) string {
 	}
 	return (cookie.Value)
 }
-
 func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	var CurrentUser database.User 
 	if r.URL.Path == "/" && r.Method == "GET" {
@@ -56,7 +49,6 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 			utils.FileService("home.html", w, donnees)
 			return
 		}
-
 		datas, err := database.Scan(db, "SELECT * FROM SESSIONS ", &database.Session{})
 		if err != nil {
 			fmt.Println(err.Error())
@@ -85,7 +77,6 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 					Alldata: AllData,
 				}
 				utils.FileService("home.html", w, donnees)
-
 				return
 			}
 		}
@@ -129,7 +120,6 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		}
 	}
 }
-
 func Getpost(r *http.Request, db *sql.DB) []database.Post {
 	var Posts []database.Post
 	if r.Method == "GET" {
@@ -140,7 +130,6 @@ func Getpost(r *http.Request, db *sql.DB) []database.Post {
 			return []database.Post{}
 		}
 		defer rows.Close()
-
 		for rows.Next() {
 			var post database.Post
 			if err := rows.Scan(&post.PostID, &post.UserID, &post.Title, &post.PhotoURL, &post.Content, &post.CreationDate); err != nil {
@@ -186,12 +175,10 @@ func GetUser(db *sql.DB) ([]database.User, error) {
 type AllData struct {
     Posts []PostWithUser
 }
-
 type PostWithUser struct {
     Post   database.Post
     User   database.User
 }
-
 func getAll(r *http.Request) (AllData, error) {
     Posts := GetPostsWithUser(r, db)
     DATA := AllData{
@@ -199,10 +186,8 @@ func getAll(r *http.Request) (AllData, error) {
     }
     return DATA, nil
 }
-
 func GetPostsWithUser(r *http.Request, db *sql.DB) []PostWithUser {
     var postsWithUser []PostWithUser
-
     posts := Getpost(r, db)
     for _, post := range posts {
         // Fetch user for each post
@@ -216,10 +201,8 @@ func GetPostsWithUser(r *http.Request, db *sql.DB) []PostWithUser {
             User: user,
         })
     }
-
     return postsWithUser
 }
-
 func GetUserByID(db *sql.DB, userID int) (database.User, error) {
     var user database.User
     query := "SELECT user_id, username, firstname, lastname, email, password_hash, registration_date FROM Users WHERE user_id = ?"

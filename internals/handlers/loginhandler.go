@@ -1,5 +1,4 @@
 package handlers
-
 import (
 	"fmt"
 	"forum/internals/database"
@@ -7,10 +6,8 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-
 	"golang.org/x/crypto/bcrypt"
 )
-
 type Data struct {
 	ActualUser  database.User
 	Page        string
@@ -20,7 +17,6 @@ type Data struct {
 	Isconnected bool
 	Alldata    AllData	
 }
-
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	db := database.CreateTable()
 	if r.URL.Path == "/login" {

@@ -26,6 +26,10 @@ var Err = map[int]Error{
 		http.StatusMethodNotAllowed,
 		http.StatusText(http.StatusMethodNotAllowed),
 	},	
+	0: {
+		0,
+		"Result",
+	},
 }
 
 type Route struct {

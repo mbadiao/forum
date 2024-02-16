@@ -12,6 +12,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 )
 
 type Category struct {
@@ -35,7 +36,7 @@ func PostHandler(w http.ResponseWriter, r *http.Request, userid database.User) {
 			return
 		}
 		CheckboxValues := r.Form["checkbox"]
-		title := r.FormValue("title")
+		title := strings.TrimSpace(r.FormValue("title"))
 		PhotoURL := uploadHandler(w, r)
 		fmt.Println(CheckboxValues)
 		fmt.Println(title)
@@ -54,7 +55,7 @@ func PostHandler(w http.ResponseWriter, r *http.Request, userid database.User) {
 				PhotoURL = PhotoURL[5:]
 			}
 		}
-		thread := r.FormValue("thread")
+		thread := strings.TrimSpace(r.FormValue("thread"))
 		fmt.Println()
 		if len(CheckboxValues) == 0 || title == "" || thread == "" {
 			return

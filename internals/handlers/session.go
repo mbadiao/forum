@@ -107,7 +107,9 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 			utils.FileService("home.html", w, donnees)
 			return
 		}
-	} else if r.URL.Path == "/" && r.Method == "POST" {
+	}
+	
+	if r.URL.Path == "/" && r.Method == "POST" {
 		ActualCookie := GetCookieHandler(w, r)
 		datas, err := database.Scan(db, "SELECT * FROM SESSIONS ", &database.Session{})
 		if err != nil {
@@ -133,7 +135,35 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 			}
 		}
 	}
+
+	if r.URL.Path == "/filter" && r.Method == "POST" {
+		ActualCookie := GetCookieHandler(w, r)
+		datas, err := database.Scan(db, "SELECT * FROM SESSIONS ", &database.Session{})
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+		Found := false
+		for _, data := range datas {
+			u := data.(*database.Session)
+			if u.Cookie_value == ActualCookie {
+				Found = true
+				CurrentUser = database.User{}
+				query := "SELECT user_id, username, firstname, lastname, email, password_hash, registration_date FROM Users WHERE user_id=?"
+				err := db.QueryRow(query, u.UserID).Scan(&CurrentUser.UserID, &CurrentUser.Username, &CurrentUser.Firstname, &CurrentUser.Lastname, &CurrentUser.Email, &CurrentUser.PasswordHash, &CurrentUser.RegistrationDate)
+				if err != nil {
+					fmt.Println(err.Error())
+					return
+				}
+			}
+			FilterHandler(w, r, CurrentUser)
+			if !Found {
+				utils.FileService("login.html", w, nil)
+			}
+		}
+	} 
 }
+
 
 func Getpost(r *http.Request, db *sql.DB) []database.Post {
 	var Posts []database.Post

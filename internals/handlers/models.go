@@ -51,17 +51,12 @@ var Routes = []Route{
 	},
 	{
 		Path:    "/filter",
-		Handler: FilterHandler,
+		Handler: HomeHandler,
 		Method:  []string{"POST"},
 	},
 	{
 		Path:    "/logout",
 		Handler: LogoutHandler,
-		Method:  []string{"GET", "POST"},
-	},
-	{
-		Path:    "/comment",
-		Handler: CommentHandler,
 		Method:  []string{"GET", "POST"},
 	},
 }

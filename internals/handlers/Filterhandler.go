@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func FilterHandler(w http.ResponseWriter, r *http.Request) {
+func FilterHandler(w http.ResponseWriter, r *http.Request, CurrentUser database.User) {
 	if r.Method == http.MethodPost {
 		r.ParseForm()
 		checkboxfilter := r.Form["Category"]
@@ -42,27 +42,26 @@ func FilterHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("filter by", query)
 
 		AllData, err1 := getAllFilter(w, r, query, categorypost)
-		if err1 != nil {
-			fmt.Println(err)
+		fmt.Println("alldata", AllData)
+		if len(AllData.Posts) ==  0 {
+			utils.FileService("error.html", w, Err[0])
 			return
 		}
+		if err1 != nil {
+			fmt.Println(err)
+			w.WriteHeader(400)
+			utils.FileService("error.html", w, Err[400])
+			return
+		}
+
 		donnees := Data{
 			Status:      "logout",
-			// ActualUser:  CurrentUser,
+			ActualUser:  CurrentUser,
 			Isconnected: true,
 			Alldata:     AllData,
 		}
 		utils.FileService("home.html", w, donnees)
 		return
-		// post := Getpostbyfilter(r, db, query, categorypost)
-		// if post == nil {
-		// 	utils.FileService("error.html", w, Err[0])
-		// 	return
-		// } else {
-		// 	utils.FileService("home.html", w, post)
-		// 	return
-		// }
-
 	} else {
 		fmt.Println("filter method different de POST")
 		w.WriteHeader(405)
@@ -73,6 +72,7 @@ func FilterHandler(w http.ResponseWriter, r *http.Request) {
 
 func getAllFilter(w http.ResponseWriter, r *http.Request, query string, categorypost []string) (AllData, error) {
 	Posts := GetFilterWithUser(w, r, db, query, categorypost)
+	fmt.Println("post vid", Posts)
 	DATA := AllData{
 		Posts: Posts,
 	}
@@ -83,7 +83,6 @@ func GetFilterWithUser(w http.ResponseWriter, r *http.Request, db *sql.DB, query
 	var postsWithUser []PostWithUser
 	posts := Getpostbyfilter(r, db, query, categorypost)
 	if posts == nil {
-		utils.FileService("error.html", w, Err[0])
 		return []PostWithUser{}
 	}
 	for _, post := range posts {

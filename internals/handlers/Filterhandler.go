@@ -25,7 +25,7 @@ func FilterHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// cette partie correspond au session
-		Isconnected := false
+		Isconnected := true
 		categorypost, createdlikedpost, foundAll := utils.SplitFilter(checkboxfilter)
 
 		query, err := utils.QueryFilter(categorypost, createdlikedpost, foundAll, Isconnected)
@@ -34,22 +34,34 @@ func FilterHandler(w http.ResponseWriter, r *http.Request) {
 			data := Data{
 				Page: "signin",
 			}
-
 			fmt.Println("filtre sans login")
-
 			utils.FileService("login.html", w, data)
 			return
 		}
 
 		fmt.Println("filter by", query)
-		post := Getpostbyfilter(r, db, query, categorypost)
-		if post == nil {
-			utils.FileService("error.html", w, Err[0])
-			return
-		} else {
-			utils.FileService("home.html", w, post)
+
+		AllData, err1 := getAllFilter(w, r, query, categorypost)
+		if err1 != nil {
+			fmt.Println(err)
 			return
 		}
+		donnees := Data{
+			Status:      "logout",
+			// ActualUser:  CurrentUser,
+			Isconnected: true,
+			Alldata:     AllData,
+		}
+		utils.FileService("home.html", w, donnees)
+		return
+		// post := Getpostbyfilter(r, db, query, categorypost)
+		// if post == nil {
+		// 	utils.FileService("error.html", w, Err[0])
+		// 	return
+		// } else {
+		// 	utils.FileService("home.html", w, post)
+		// 	return
+		// }
 
 	} else {
 		fmt.Println("filter method different de POST")
@@ -59,39 +71,77 @@ func FilterHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func Getpostbyfilter(r *http.Request, db *sql.DB, query string, categorypost []string) []database.Post {
-    var Posts []database.Post
-    var categoryInterfaces []interface{}
-    for _, cat := range categorypost {
-        categoryInterfaces = append(categoryInterfaces, cat)
-    }
-
-    rows, err := db.Query(query, categoryInterfaces...)
-    if err != nil {
-        fmt.Println(err)
-        return []database.Post{}
-    }
-    defer rows.Close()
-    for rows.Next() {
-        var post database.Post
-        if err := rows.Scan(&post.PostID, &post.UserID, &post.Title, &post.PhotoURL, &post.Content, &post.CreationDate); err != nil {
-            fmt.Println(err)
-            return []database.Post{}
-        }
-        categories, err := GetPostCategories(db, post.PostID)
-        if err != nil {
-            fmt.Println(err)
-            return []database.Post{}
-        }
-        post.Categories = categories
-        Posts = append(Posts, post)
-    }
-    if err := rows.Err(); err != nil {
-        fmt.Println(err)
-        return []database.Post{}
-    }
-    fmt.Println("posts", Posts)
-    return Posts
+func getAllFilter(w http.ResponseWriter, r *http.Request, query string, categorypost []string) (AllData, error) {
+	Posts := GetFilterWithUser(w, r, db, query, categorypost)
+	DATA := AllData{
+		Posts: Posts,
+	}
+	return DATA, nil
 }
 
+func GetFilterWithUser(w http.ResponseWriter, r *http.Request, db *sql.DB, query string, categorypost []string) []PostWithUser {
+	var postsWithUser []PostWithUser
+	posts := Getpostbyfilter(r, db, query, categorypost)
+	if posts == nil {
+		utils.FileService("error.html", w, Err[0])
+		return []PostWithUser{}
+	}
+	for _, post := range posts {
+		// Fetch user for each post
+		user, err := GetFilterUserByID(db, post.UserID)
+		if err != nil {
+			fmt.Println("Error fetching user for post:", err)
+			continue
+		}
+		postsWithUser = append(postsWithUser, PostWithUser{
+			Post: post,
+			User: user,
+		})
+	}
+	return postsWithUser
+}
 
+func Getpostbyfilter(r *http.Request, db *sql.DB, query string, categorypost []string) []database.Post {
+	var Posts []database.Post
+	var categoryInterfaces []interface{}
+	for _, cat := range categorypost {
+		categoryInterfaces = append(categoryInterfaces, cat)
+	}
+
+	rows, err := db.Query(query, categoryInterfaces...)
+	if err != nil {
+		fmt.Println(err)
+		return []database.Post{}
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var post database.Post
+		if err := rows.Scan(&post.PostID, &post.UserID, &post.Title, &post.PhotoURL, &post.Content, &post.CreationDate); err != nil {
+			fmt.Println(err)
+			return []database.Post{}
+		}
+		categories, err := GetPostCategories(db, post.PostID)
+		if err != nil {
+			fmt.Println(err)
+			return []database.Post{}
+		}
+		post.Categories = categories
+		Posts = append(Posts, post)
+	}
+	if err := rows.Err(); err != nil {
+		fmt.Println(err)
+		return []database.Post{}
+	}
+	fmt.Println("posts", Posts)
+	return Posts
+}
+
+func GetFilterUserByID(db *sql.DB, userID int) (database.User, error) {
+	var user database.User
+	query := "SELECT user_id, username, firstname, lastname, email, password_hash, registration_date FROM Users WHERE user_id = ?"
+	err := db.QueryRow(query, userID).Scan(&user.UserID, &user.Username, &user.Firstname, &user.Lastname, &user.Email, &user.PasswordHash, &user.RegistrationDate)
+	if err != nil {
+		return user, err
+	}
+	return user, nil
+}

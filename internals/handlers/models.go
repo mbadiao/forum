@@ -59,6 +59,11 @@ var Routes = []Route{
 		Handler: LogoutHandler,
 		Method:  []string{"GET", "POST"},
 	},
+	{
+		Path:    "/comment",
+		Handler: CommentHandler,
+		Method:  []string{"GET", "POST"},
+	},
 }
 
 var Port = ":8080"

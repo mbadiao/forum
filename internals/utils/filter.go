@@ -46,19 +46,19 @@ func QueryFilter(categorypost, createdlikedpost []string, foundAll bool, Isconne
 		}
 		query += strings.Join(placeholders, ",") + ")"
 	case FoundQuery == "like" && Isconnected:
-		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date FROM Posts p JOIN LikesDislikes ld ON p.post_id = ld.post_id WHERE ld.user_id = " + strconv.Itoa(user.UserID) + " AND ld.like_dislike_type = 'like'"
+		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date  FROM Posts p  JOIN LikesDislikes ld ON p.post_id = ld.post_id  WHERE ld.user_id = " + strconv.Itoa(user.UserID) + "  AND ld.liked = TRUE"
 	case FoundQuery == "create" && Isconnected:
 		query = "SELECT post_id, user_id, title, PhotoURL, content, creation_date FROM Posts WHERE user_id =" + strconv.Itoa(user.UserID)
 	case FoundQuery == "createlike" && Isconnected:
-		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date FROM Posts p LEFT JOIN LikesDislikes ld ON p.post_id = ld.post_id LEFT JOIN Users u ON p.user_id = u.user_id WHERE p.user_id = " + strconv.Itoa(user.UserID) + " OR ld.user_id = " + strconv.Itoa(user.UserID) + " ORDER BY p.creation_date DESC"
+		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date  FROM Posts p  LEFT JOIN LikesDislikes ld ON p.post_id = ld.post_id  LEFT JOIN Users u ON p.user_id = u.user_id  WHERE p.user_id = " + strconv.Itoa(user.UserID) + " OR ld.user_id = " + strconv.Itoa(user.UserID) + "  ORDER BY p.creation_date DESC"
 	case FoundQuery == "likecategory" && Isconnected:
-		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date, c.name AS category_name FROM Posts p INNER JOIN PostCategories pc ON p.post_id = pc.post_id INNER JOIN Categories c ON pc.category_id = c.category_id INNER JOIN LikesDislikes ld ON p.post_id = ld.post_id AND ld.like_dislike_type = 'like' WHERE c.name IN ("
+		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date FROM Posts p INNER JOIN PostCategories pc ON p.post_id = pc.post_id INNER JOIN Categories c ON pc.category_id = c.category_id INNER JOIN LikesDislikes ld ON p.post_id = ld.post_id AND ld.liked = TRUE WHERE c.name IN ("
 		placeholders := make([]string, len(categorypost))
 		for i := range categorypost {
 			placeholders[i] = "?"
 		}
 		query += strings.Join(placeholders, ",") + ")"
-		query += "GROUP BY p.post_id, c.name ORDER BY p.creation_date DESC"
+		query += "GROUP BY p.post_id ORDER BY p.creation_date DESC"
 	case FoundQuery == "createcategory" && Isconnected:
 		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date FROM Posts p INNER JOIN Users u ON p.user_id = u.user_id INNER JOIN PostCategories pc ON p.post_id = pc.post_id INNER JOIN Categories c ON pc.category_id = c.category_id WHERE u.user_id = " + strconv.Itoa(user.UserID) + " AND c.name IN ("
 		placeholders := make([]string, len(categorypost))
@@ -67,13 +67,13 @@ func QueryFilter(categorypost, createdlikedpost []string, foundAll bool, Isconne
 		}
 		query += strings.Join(placeholders, ",") + ")"
 	case FoundQuery == "createlikecategory" && Isconnected:
-		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date, u.username, c.name AS category_name, COUNT(ld.like_dislike_id) AS likes_count FROM Posts p INNER JOIN Users u ON p.user_id = u.user_id LEFT JOIN PostCategories pc ON p.post_id = pc.post_id LEFT JOIN Categories c ON pc.category_id = c.category_id LEFT JOIN LikesDislikes ld ON p.post_id = ld.post_id AND ld.like_dislike_type = 'like' WHERE u.user_id = " + strconv.Itoa(user.UserID) + " AND c.name IN ("
+		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date FROM Posts p INNER JOIN Users u ON p.user_id = u.user_id LEFT JOIN PostCategories pc ON p.post_id = pc.post_id LEFT JOIN Categories c ON pc.category_id = c.category_id LEFT JOIN LikesDislikes ld ON p.post_id = ld.post_id AND ld.liked = TRUE WHERE u.user_id = " + strconv.Itoa(user.UserID) + " AND c.name IN ("
 		placeholders := make([]string, len(categorypost))
 		for i := range categorypost {
 			placeholders[i] = "?"
 		}
 		query += strings.Join(placeholders, ",") + ")"
-		query += " GROUP BY p.post_id, c.name, u.username ORDER BY p.creation_date DESC"
+		query += " GROUP BY p.post_id, u.username ORDER BY p.creation_date DESC"
 	default:
 		return "", "err"
 	}

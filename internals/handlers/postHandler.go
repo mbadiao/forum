@@ -6,7 +6,6 @@ import (
 	"forum/internals/database"
 	"forum/internals/utils"
 	"io"
-	"log"
 	"mime/multipart"
 	"net/http"
 	"os"
@@ -57,7 +56,8 @@ func PostHandler(w http.ResponseWriter, r *http.Request, userid database.User) {
 		thread := strings.TrimSpace(r.FormValue("thread"))
 		fmt.Println()
 		if len(CheckboxValues) == 0 || title == "" || thread == "" {
-			http.Redirect(w, r, "/", http.StatusSeeOther)
+			w.WriteHeader(400)
+			utils.FileService("error.html", w, Err[400])
 			return
 		}
 		a := Checkcategory(CheckboxValues)
@@ -73,7 +73,9 @@ func PostHandler(w http.ResponseWriter, r *http.Request, userid database.User) {
 		database.Insert(db, "Posts", "(user_id, title, PhotoURL, content)", PostS.UserID, PostS.Title, PostS.PhotoURL, PostS.Content)
 		err = db.QueryRow("SELECT last_insert_rowid()").Scan(&postID)
 		if err != nil {
-			log.Fatal(err)
+			w.WriteHeader(500)
+			utils.FileService("error.html", w, Err[500])
+			return
 		}
 		CategoriesId := getCategory(CheckboxValues)
 		for _, v := range CategoriesId {
@@ -176,8 +178,19 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) string {
 			fmt.Println("heres")
 			return "err400"
 		}
+		dirPath := "./web/static/upload"
+
+		// Check if the directory exists, if not create it
+		if _, err := os.Stat(dirPath); os.IsNotExist(err) {
+			err := os.MkdirAll(dirPath, 0755)
+			if err != nil {
+				fmt.Println("répertoire" + err.Error())
+				return "err500"
+			}
+		}
+
 		// Créez un fichier dans le répertoire temporaire du serveur
-		tempFile, err := os.CreateTemp("./web/static/upload", "upload-*"+filepath.Ext(handler.Filename))
+		tempFile, err := os.CreateTemp(dirPath, "upload-*"+filepath.Ext(handler.Filename))
 		if err != nil {
 			fmt.Println("répertoire" + err.Error())
 			return "err500"

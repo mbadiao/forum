@@ -25,7 +25,7 @@ func DisplayComment(w http.ResponseWriter, r *http.Request) []database.Comment {
 
 	for rows.Next() {
 		var comment database.Comment
-		err = rows.Scan(&comment.CommentID, &comment.PostID, &comment.UserID, &comment.Content, &comment.CreationDate)
+		err = rows.Scan(&comment.CommentID, &comment.PostID, &comment.UserID, &comment.Username, &comment.Content, &comment.CreationDate)
 		if err != nil {
 			fmt.Println(err.Error())
 			return nil
@@ -63,13 +63,22 @@ func RecordComment(w http.ResponseWriter, r *http.Request) {
 	var userId int
 	err = db.QueryRow("SELECT user_id FROM Sessions WHERE cookie_value=?", cookie.Value).Scan(&userId)
 	if err != nil {
-		http.Error(w, "User not found", http.StatusUnauthorized)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		fmt.Println(err.Error())
+		return
+	}
+	var username string
+	fmt.Println("user id:", userId)
+	errScanUser := db.QueryRow("SELECT userName FROM Users WHERE user_id=?", userId).Scan(&username)
+	if errScanUser != nil {
+		fmt.Println(errScanUser.Error())
 		return
 	}
 	comment := database.Comment{
-		PostID:  id,
-		UserID:  userId,
-		Content: r.FormValue("comment"),
+		PostID:   id,
+		UserID:   userId,
+		Username: username,
+		Content:  r.FormValue("comment"),
 	}
-	database.Insert(db, "Comments", "(post_id, user_id, content)", comment.PostID, comment.UserID, comment.Content)
+	database.Insert(db, "Comments", "(post_id, user_id, userName ,content)", comment.PostID, comment.UserID, comment.Username, comment.Content)
 }

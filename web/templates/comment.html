@@ -20,7 +20,16 @@
             </div>
         </div>
     </form>
-    {{.}}
+    <h1>Commentaires</h1>
+    <div id="comments">
+        {{range .}}
+        <div class="comment">
+            <h2>Commentaire par {{.Username}}</h2>
+            <p>{{.Content}}</p>
+            <p class="date">Publié le {{.CreationDate}}</p>
+        </div>
+        {{end}}
+    </div>
 </body>
 
 </html>

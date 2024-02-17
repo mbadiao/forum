@@ -55,6 +55,11 @@ var Routes = []Route{
 		Method:  []string{"POST"},
 	},
 	{
+		Path:    "/comment",
+		Handler: CommentHandler,
+		Method:  []string{"GET", "POST"},
+	},
+	{
 		Path:    "/logout",
 		Handler: LogoutHandler,
 		Method:  []string{"GET", "POST"},

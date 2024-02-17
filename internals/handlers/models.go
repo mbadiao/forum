@@ -25,7 +25,7 @@ var Err = map[int]Error{
 	405: {
 		http.StatusMethodNotAllowed,
 		http.StatusText(http.StatusMethodNotAllowed),
-	},	
+	},
 	0: {
 		0,
 		"Result",

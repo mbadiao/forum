@@ -32,6 +32,7 @@ type Comment struct {
 	Username     string
 	Content      string
 	CreationDate time.Time
+	Formatdate   string
 }
 
 type Category struct {

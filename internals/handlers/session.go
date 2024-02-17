@@ -107,7 +107,7 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 			utils.FileService("home.html", w, donnees)
 			return
 		}
-	}else if r.URL.Path == "/" && r.Method == "POST" {
+	} else if r.URL.Path == "/" && r.Method == "POST" {
 		ActualCookie := GetCookieHandler(w, r)
 		datas, err := database.Scan(db, "SELECT * FROM SESSIONS ", &database.Session{})
 		if err != nil {
@@ -160,14 +160,13 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 			}
 		}
 
-		if len(datas) ==  0 {
+		if len(datas) == 0 {
 			fmt.Println("filter sans compte")
-			CurrentUser.UserID =  0
+			CurrentUser.UserID = 0
 			FilterHandler(w, r, CurrentUser)
 		}
-	} 
+	}
 }
-
 
 func Getpost(r *http.Request, db *sql.DB) []database.Post {
 	var Posts []database.Post

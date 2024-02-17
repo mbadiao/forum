@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func DisplayComment(w http.ResponseWriter, r *http.Request) []database.Comment {
@@ -17,7 +18,7 @@ func DisplayComment(w http.ResponseWriter, r *http.Request) []database.Comment {
 		http.Error(w, "Invalid ID", http.StatusBadRequest)
 		return nil
 	}
-	rows, err := db.Query("SELECT * FROM Comments WHERE post_id=? ORDER BY creation_date DESC", id)
+	rows, err := db.Query("SELECT * FROM Comments WHERE post_id=?", id)
 	if err != nil {
 		fmt.Println(err.Error())
 		return nil
@@ -25,7 +26,8 @@ func DisplayComment(w http.ResponseWriter, r *http.Request) []database.Comment {
 
 	for rows.Next() {
 		var comment database.Comment
-		err = rows.Scan(&comment.CommentID, &comment.PostID, &comment.UserID, &comment.Content, &comment.Username, &comment.CreationDate)
+		err = rows.Scan(&comment.CommentID, &comment.PostID, &comment.UserID, &comment.Content, &comment.Username, &comment.Formatdate, &comment.CreationDate)
+		comment.Formatdate = utils.FormatTimeAgo(comment.CreationDate)
 		if err != nil {
 			fmt.Println(err.Error())
 			return nil
@@ -43,14 +45,13 @@ func DisplayComment(w http.ResponseWriter, r *http.Request) []database.Comment {
 func CommentHandler(w http.ResponseWriter, r *http.Request) {
 	idStr := r.URL.Query().Get("id")
 	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		return
+	}
 	if !CheckId(id) {
 		utils.FileService("error.html", w, Err[404])
 		return
 	}
-	if err != nil {
-		return
-	}
-
 	if strings.TrimSpace(r.FormValue("comment")) != "" {
 		RecordComment(w, r)
 	}
@@ -84,13 +85,13 @@ func RecordComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	comment := database.Comment{
-		PostID:   id,
-		UserID:   userId,
-		Username: username,
-		Content:  r.FormValue("comment"),
+		PostID:     id,
+		UserID:     userId,
+		Username:   username,
+		Formatdate: utils.FormatTimeAgo(time.Now()),
+		Content:    r.FormValue("comment"),
 	}
-	fmt.Println("Take comment")
-	database.Insert(db, "Comments", "(post_id, user_id, userName ,content)", comment.PostID, comment.UserID, comment.Username, comment.Content)
+	database.Insert(db, "Comments", "(post_id, user_id, userName, formatDate ,content)", comment.PostID, comment.UserID, comment.Username, comment.Formatdate, comment.Content)
 }
 
 func CheckId(id int) bool {

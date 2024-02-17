@@ -3,10 +3,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/comment.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
     <title>	Comment</title>
 </head>
 <body>
-    <header class="entete">
+    <header class="entetecomment">
+        <a id="arrowcomment" href="javascript:history.back()">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
         <h1>Commentary section</h1>
     </header>
     <div class="chat-container">
@@ -16,7 +20,7 @@
                 <div id="commentpp"><img src="./../static/assets/Group 60.svg" alt=""></div>
                 <div id="usercomment">
                     <div class="commentinfo">@{{.Username}}</div>
-                    <div class="commentinfo">{{.CreationDate}}</div>
+                    <div class="commentinfo">{{.Formatdate}}</div>
                 </div>
             </div>
             <div class="commentside">

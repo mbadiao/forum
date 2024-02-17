@@ -18,7 +18,7 @@ func DisplayComment(w http.ResponseWriter, r *http.Request) []database.Comment {
 		http.Error(w, "Invalid ID", http.StatusBadRequest)
 		return nil
 	}
-	rows, err := db.Query("SELECT * FROM Comments WHERE post_id=?", id)
+	rows, err := db.Query("SELECT * FROM Comments WHERE post_id=? ORDER BY creation_date DESC", id)
 	if err != nil {
 		fmt.Println(err.Error())
 		return nil
@@ -68,7 +68,7 @@ func RecordComment(w http.ResponseWriter, r *http.Request) {
 
 	cookie, err := r.Cookie("ForumCookie")
 	if err != nil {
-		http.Error(w, "Cookie not found", http.StatusUnauthorized)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
 	var userId int
@@ -91,6 +91,7 @@ func RecordComment(w http.ResponseWriter, r *http.Request) {
 		Formatdate: utils.FormatTimeAgo(time.Now()),
 		Content:    r.FormValue("comment"),
 	}
+	http.Redirect(w, r, "/comment?id="+idStr, http.StatusSeeOther)
 	database.Insert(db, "Comments", "(post_id, user_id, userName, formatDate ,content)", comment.PostID, comment.UserID, comment.Username, comment.Formatdate, comment.Content)
 }
 

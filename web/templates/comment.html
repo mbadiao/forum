@@ -8,7 +8,7 @@
 </head>
 <body>
     <header class="entetecomment">
-        <a id="arrowcomment" href="javascript:history.back()">
+        <a id="arrowcomment" href="/">
             <i class="fa-solid fa-arrow-left"></i>
         </a>
         <h1>Commentary section</h1>
@@ -20,7 +20,7 @@
                 <div id="commentpp"><img src="./../static/assets/Group 60.svg" alt=""></div>
                 <div id="usercomment">
                     <div class="commentinfo">@{{.Username}}</div>
-                    <div class="commentinfo">{{.Formatdate}}</div>
+                    <div class="commenttime">{{.Formatdate}}</div>
                 </div>
             </div>
             <div class="commentside">
@@ -32,7 +32,7 @@
         
         <div class="input-area">
             <form action="#" method="POST">
-                <textarea class="area" name="comment" id="text" placeholder="Your comment here..."></textarea>
+                <textarea class="area" name="comment" id="text" placeholder="Your comment here..." required></textarea>
                 <button class="btn" type="submit" id="soumettre">
                    <img src="./../static/assets/send-horizontal 1.svg" alt="comment">
                 </button>

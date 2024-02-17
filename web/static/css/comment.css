@@ -97,6 +97,11 @@ header{
     margin:0px 20px 10px 71px;
 }
 .commentinfo{
+    color: white;
+    font-family: 'Impact', 'Haettenschweiler', 'Arial Narrow Bold', sans-serif;
+    font-size: 13px;
+}
+.commenttime{
     color: #62707d;
     font-family: 'Impact', 'Haettenschweiler', 'Arial Narrow Bold', sans-serif;
     font-size: 13px;

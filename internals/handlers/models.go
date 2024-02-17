@@ -42,7 +42,7 @@ var Routes = []Route{
 	{
 		Path:    "/login",
 		Handler: LoginHandler,
-		Method:  []string{"GET"},
+		Method:  []string{"GET", "POST"},
 	},
 	{
 		Path:    "/",

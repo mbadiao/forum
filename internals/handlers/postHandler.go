@@ -24,15 +24,12 @@ var db = database.CreateTable()
 var postID int64 // Declare postID outside the if statement
 
 func PostHandler(w http.ResponseWriter, r *http.Request, userid database.User) {
-	// var Posts []database.Post
 	var PostS database.Post
-	// var MyPostCAt PostCAt
 	if r.Method == "POST" {
 		err := r.ParseMultipartForm(20 << 20)
-		fmt.Println(err)
 		if err != nil {
+			w.WriteHeader(400)
 			utils.FileService("error.html", w, Err[400])
-			// http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		CheckboxValues := r.Form["checkbox"]
@@ -45,10 +42,12 @@ func PostHandler(w http.ResponseWriter, r *http.Request, userid database.User) {
 		}
 		if PhotoURL != "NoPhoto" {
 			if PhotoURL == "err400" {
+				w.WriteHeader(400)
 				utils.FileService("error.html", w, Err[400])
 				return
 			}
 			if PhotoURL == "err500" {
+				w.WriteHeader(500)
 				utils.FileService("error.html", w, Err[500])
 				return
 			} else {
@@ -58,6 +57,7 @@ func PostHandler(w http.ResponseWriter, r *http.Request, userid database.User) {
 		thread := strings.TrimSpace(r.FormValue("thread"))
 		fmt.Println()
 		if len(CheckboxValues) == 0 || title == "" || thread == "" {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
 		a := Checkcategory(CheckboxValues)
@@ -79,7 +79,6 @@ func PostHandler(w http.ResponseWriter, r *http.Request, userid database.User) {
 		for _, v := range CategoriesId {
 			database.Insert(db, "PostCategories", "(post_id, category_id)", postID, v)
 		}
-		fmt.Println("here")
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 }

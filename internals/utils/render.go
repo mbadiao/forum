@@ -22,7 +22,6 @@ func FileService(str string, w http.ResponseWriter, data any) {
 	tmpl, err := template.ParseFiles("./web/templates/" + str)
 	if err != nil {
 		if str != "error.html" {
-			fmt.Println("ici")
 			w.WriteHeader(500)
 			FileService("error.html", w, Errs[500])
 			return

@@ -24,11 +24,11 @@ func FilterHandler(w http.ResponseWriter, r *http.Request, CurrentUser database.
 			return
 		}
 
-		// cette partie correspond au session
-		Isconnected := true
+		Isconnected := utils.Isconnected(CurrentUser)
+
 		categorypost, createdlikedpost, foundAll := utils.SplitFilter(checkboxfilter)
 
-		query, err := utils.QueryFilter(categorypost, createdlikedpost, foundAll, Isconnected)
+		query, err := utils.QueryFilter(categorypost, createdlikedpost, foundAll, Isconnected, CurrentUser)
 
 		if err == "err" {
 			data := Data{
@@ -60,6 +60,7 @@ func FilterHandler(w http.ResponseWriter, r *http.Request, CurrentUser database.
 			Isconnected: true,
 			Alldata:     AllData,
 		}
+
 		utils.FileService("home.html", w, donnees)
 		return
 	} else {
@@ -144,3 +145,20 @@ func GetFilterUserByID(db *sql.DB, userID int) (database.User, error) {
 	}
 	return user, nil
 }
+
+
+// var donnees Data
+// if Isconnected {
+// 	donnees = Data{
+// 		Status:      "logout",
+// 		ActualUser:  CurrentUser,
+// 		Isconnected: true,
+// 		Alldata:     AllData,
+// 	}
+// } else {
+// 	donnees = Data{
+// 		Status:      "login",
+// 		Isconnected: false,
+// 		Alldata:     AllData,
+// 	}
+// }

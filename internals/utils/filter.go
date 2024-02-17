@@ -2,6 +2,8 @@ package utils
 
 import (
 	"fmt"
+	"forum/internals/database"
+	"strconv"
 	"strings"
 )
 
@@ -30,7 +32,7 @@ func CompareCategorys(categoriesMap map[string]bool, categoryToCheck string) boo
 	return found
 }
 
-func QueryFilter(categorypost, createdlikedpost []string, foundAll bool, Isconnected bool) (string, string) {
+func QueryFilter(categorypost, createdlikedpost []string, foundAll bool, Isconnected bool, user database.User) (string, string) {
 	var query string
 	FoundQuery := CheckQuery(categorypost, createdlikedpost, foundAll)
 	fmt.Println("catpost", categorypost)
@@ -47,7 +49,7 @@ func QueryFilter(categorypost, createdlikedpost []string, foundAll bool, Isconne
 	case FoundQuery == "like" && Isconnected:
 		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date FROM Posts p JOIN LikesDislikes ld ON p.post_id = ld.post_id WHERE ld.user_id = ? AND ld.like_dislike_type = 'like'"
 	case FoundQuery == "create" && Isconnected:
-		query = "SELECT post_id, user_id, title, PhotoURL, content, creation_date FROM Posts WHERE user_id = ?"
+		query = "SELECT post_id, user_id, title, PhotoURL, content, creation_date FROM Posts WHERE user_id =" + strconv.Itoa(user.UserID)
 	case FoundQuery == "createlike" && Isconnected:
 		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date FROM Posts p LEFT JOIN LikesDislikes ld ON p.post_id = ld.post_id LEFT JOIN Users u ON p.user_id = u.user_id WHERE p.user_id = ? OR ld.user_id = ? ORDER BY p.creation_date DESC"
 	case FoundQuery == "likecategory" && Isconnected:
@@ -57,9 +59,9 @@ func QueryFilter(categorypost, createdlikedpost []string, foundAll bool, Isconne
 			placeholders[i] = "?"
 		}
 		query += strings.Join(placeholders, ",") + ")"
-		query += "GROUP BY p.post_id, c.name ORDER BY p.creation_date DESC;"
+		query += "GROUP BY p.post_id, c.name ORDER BY p.creation_date DESC"
 	case FoundQuery == "createcategory" && Isconnected:
-		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date, u.username, c.name AS category_name FROM Posts p INNER JOIN Users u ON p.user_id = u.user_id INNER JOIN PostCategories pc ON p.post_id = pc.post_id INNER JOIN Categories c ON pc.category_id = c.category_id WHERE u.user_id = ? AND c.name IN ("
+		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date FROM Posts p INNER JOIN Users u ON p.user_id = u.user_id INNER JOIN PostCategories pc ON p.post_id = pc.post_id INNER JOIN Categories c ON pc.category_id = c.category_id WHERE u.user_id = " + strconv.Itoa(user.UserID) + " AND c.name IN ("
 		placeholders := make([]string, len(categorypost))
 		for i := range categorypost {
 			placeholders[i] = "?"
@@ -125,5 +127,13 @@ func CheckQuery(categorypost, createdlikedpost []string, foundAll bool) string {
 			fmt.Println("trie sur create et category")
 			return "createcategory"
 		}
+	}
+}
+
+func Isconnected(user database.User) bool {
+	if user.UserID == 0 {
+		return false
+	} else {
+		return true
 	}
 }

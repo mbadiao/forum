@@ -28,9 +28,9 @@ func FilterHandler(w http.ResponseWriter, r *http.Request, CurrentUser database.
 
 		categorypost, createdlikedpost, foundAll := utils.SplitFilter(checkboxfilter)
 
-		query, err := utils.QueryFilter(categorypost, createdlikedpost, foundAll, Isconnected, CurrentUser)
+		query, noquery := utils.QueryFilter(categorypost, createdlikedpost, foundAll, Isconnected, CurrentUser)
 
-		if err == "err" {
+		if noquery == "err" {
 			data := Data{
 				Page: "signin",
 			}
@@ -42,23 +42,30 @@ func FilterHandler(w http.ResponseWriter, r *http.Request, CurrentUser database.
 		fmt.Println("filter by", query)
 
 		AllData, err1 := getAllFilter(w, r, query, categorypost)
-		fmt.Println("alldata", AllData)
-		if len(AllData.Posts) ==  0 {
+		if len(AllData.Posts) == 0 {
 			utils.FileService("error.html", w, Err[0])
 			return
 		}
 		if err1 != nil {
-			fmt.Println(err)
 			w.WriteHeader(400)
 			utils.FileService("error.html", w, Err[400])
 			return
 		}
 
-		donnees := Data{
-			Status:      "logout",
-			ActualUser:  CurrentUser,
-			Isconnected: true,
-			Alldata:     AllData,
+		var donnees Data
+		if Isconnected {
+			donnees = Data{
+				Status:      "logout",
+				ActualUser:  CurrentUser,
+				Isconnected: true,
+				Alldata:     AllData,
+			}
+		} else {
+			donnees = Data{
+				Status:      "login",
+				Isconnected: false,
+				Alldata:     AllData,
+			}
 		}
 
 		utils.FileService("home.html", w, donnees)
@@ -73,7 +80,6 @@ func FilterHandler(w http.ResponseWriter, r *http.Request, CurrentUser database.
 
 func getAllFilter(w http.ResponseWriter, r *http.Request, query string, categorypost []string) (AllData, error) {
 	Posts := GetFilterWithUser(w, r, db, query, categorypost)
-	fmt.Println("post vid", Posts)
 	DATA := AllData{
 		Posts: Posts,
 	}
@@ -126,13 +132,13 @@ func Getpostbyfilter(r *http.Request, db *sql.DB, query string, categorypost []s
 			return []database.Post{}
 		}
 		post.Categories = categories
+		post.FormatedDate = utils.FormatTimeAgo(post.CreationDate)
 		Posts = append(Posts, post)
 	}
 	if err := rows.Err(); err != nil {
 		fmt.Println(err)
 		return []database.Post{}
 	}
-	fmt.Println("posts", Posts)
 	return Posts
 }
 
@@ -145,20 +151,3 @@ func GetFilterUserByID(db *sql.DB, userID int) (database.User, error) {
 	}
 	return user, nil
 }
-
-
-// var donnees Data
-// if Isconnected {
-// 	donnees = Data{
-// 		Status:      "logout",
-// 		ActualUser:  CurrentUser,
-// 		Isconnected: true,
-// 		Alldata:     AllData,
-// 	}
-// } else {
-// 	donnees = Data{
-// 		Status:      "login",
-// 		Isconnected: false,
-// 		Alldata:     AllData,
-// 	}
-// }

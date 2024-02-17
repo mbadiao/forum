@@ -21,6 +21,7 @@ type Post struct {
 	PhotoURL     string
 	Content      string
 	CreationDate time.Time
+	FormatedDate string
 	Categories   []string
 }
 

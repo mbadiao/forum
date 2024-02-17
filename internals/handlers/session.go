@@ -141,9 +141,11 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 			fmt.Println(err.Error())
 			return
 		}
+		Found := false
 		for _, data := range datas {
 			u := data.(*database.Session)
 			if u.Cookie_value == ActualCookie {
+				Found = true
 				CurrentUser = database.User{}
 				query := "SELECT user_id, username, firstname, lastname, email, password_hash, registration_date FROM Users WHERE user_id=?"
 				err := db.QueryRow(query, u.UserID).Scan(&CurrentUser.UserID, &CurrentUser.Username, &CurrentUser.Firstname, &CurrentUser.Lastname, &CurrentUser.Email, &CurrentUser.PasswordHash, &CurrentUser.RegistrationDate)
@@ -152,6 +154,15 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 					return
 				}
 			}
+			FilterHandler(w, r, CurrentUser)
+			if !Found {
+				utils.FileService("login.html", w, nil)
+			}
+		}
+
+		if len(datas) ==  0 {
+			fmt.Println("filter sans compte")
+			CurrentUser.UserID =  0
 			FilterHandler(w, r, CurrentUser)
 		}
 	} 
@@ -180,6 +191,7 @@ func Getpost(r *http.Request, db *sql.DB) []database.Post {
 				return []database.Post{}
 			}
 			post.Categories = categories
+			post.FormatedDate = utils.FormatTimeAgo(post.CreationDate)
 			Posts = append(Posts, post)
 		}
 		if err := rows.Err(); err != nil {

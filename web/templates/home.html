@@ -55,7 +55,6 @@
         <!-- Center-side -->
         <div id="centerside">
             {{range .Alldata.Posts}}
-
             <div id="centercontainer">
                 <div id="postouz">
                     <div id="profileouz">
@@ -63,7 +62,7 @@
                         <div id="user">
                             <div id="name">{{.User.Firstname}}{{.User.Lastname}}</div>
                             <div id="username">@{{.User.Username}}</div>
-                            <div id="time">{{.Post.CreationDate}}</div>
+                            <div id="time">{{.Post.FormatedDate}}</div>
                         </div>
                     </div>
                     <div id="title">{{.Post.Title}}</div>
@@ -109,8 +108,6 @@
             </div>
             {{end}}
         </div>
-
-
 
         <!-- Right-side -->
         <div id="rightside">

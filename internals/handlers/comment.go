@@ -25,11 +25,12 @@ func DisplayComment(w http.ResponseWriter, r *http.Request) []database.Comment {
 
 	for rows.Next() {
 		var comment database.Comment
-		err = rows.Scan(&comment.CommentID, &comment.PostID, &comment.UserID, &comment.Username, &comment.Content, &comment.CreationDate)
+		err = rows.Scan(&comment.CommentID, &comment.PostID, &comment.UserID, &comment.Content, &comment.Username, &comment.CreationDate)
 		if err != nil {
 			fmt.Println(err.Error())
 			return nil
 		}
+		fmt.Println(comment.Username)
 		CommentData = append(CommentData, comment)
 	}
 

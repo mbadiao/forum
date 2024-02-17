@@ -58,6 +58,7 @@ func CommentHandler(w http.ResponseWriter, r *http.Request) {
 	utils.FileService("comment.html", w, DisplayComment(w, r))
 }
 
+
 func RecordComment(w http.ResponseWriter, r *http.Request) {
 	idStr := r.URL.Query().Get("id")
 	id, err := strconv.Atoi(idStr)

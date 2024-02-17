@@ -17,7 +17,7 @@ func DisplayComment(w http.ResponseWriter, r *http.Request) []database.Comment {
 		http.Error(w, "Invalid ID", http.StatusBadRequest)
 		return nil
 	}
-	rows, err := db.Query("SELECT * FROM Comments WHERE post_id=?", id)
+	rows, err := db.Query("SELECT * FROM Comments WHERE post_id=? ORDER BY creation_date DESC", id)
 	if err != nil {
 		fmt.Println(err.Error())
 		return nil
@@ -30,7 +30,6 @@ func DisplayComment(w http.ResponseWriter, r *http.Request) []database.Comment {
 			fmt.Println(err.Error())
 			return nil
 		}
-		fmt.Println(comment.Username)
 		CommentData = append(CommentData, comment)
 	}
 
@@ -42,6 +41,16 @@ func DisplayComment(w http.ResponseWriter, r *http.Request) []database.Comment {
 }
 
 func CommentHandler(w http.ResponseWriter, r *http.Request) {
+	idStr := r.URL.Query().Get("id")
+	id, err := strconv.Atoi(idStr)
+	if !CheckId(id) {
+		utils.FileService("error.html", w, Err[404])
+		return
+	}
+	if err != nil {
+		return
+	}
+
 	if strings.TrimSpace(r.FormValue("comment")) != "" {
 		RecordComment(w, r)
 	}
@@ -69,7 +78,6 @@ func RecordComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var username string
-	fmt.Println("user id:", userId)
 	errScanUser := db.QueryRow("SELECT userName FROM Users WHERE user_id=?", userId).Scan(&username)
 	if errScanUser != nil {
 		fmt.Println(errScanUser.Error())
@@ -81,5 +89,12 @@ func RecordComment(w http.ResponseWriter, r *http.Request) {
 		Username: username,
 		Content:  r.FormValue("comment"),
 	}
+	fmt.Println("Take comment")
 	database.Insert(db, "Comments", "(post_id, user_id, userName ,content)", comment.PostID, comment.UserID, comment.Username, comment.Content)
+}
+
+func CheckId(id int) bool {
+	var userid int
+	err := db.QueryRow("SELECT post_id FROM Posts WHERE post_id=?", id).Scan(&userid)
+	return err == nil
 }

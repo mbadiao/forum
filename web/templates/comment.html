@@ -1,35 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./static/css/comment.css">
-
-    <title></title>
+    <link rel="stylesheet" href="/static/css/comment.css">
+    <title>	Comment</title>
 </head>
-
 <body>
-    <form action="#" method="post">
-        <div class="sendcomment">
-            <div class="comment">
-            <textarea placeholder="add a comment..." class="textcomment" name="comment" id=""></textarea>
-            <button class="send-imgcomment">
-                <input type="image" src="./../assets/send-horizontal 1.svg" alt="Submit">
-            </button>
+    <header class="entete">
+        <h1>Commentary section</h1>
+    </header>
+    <div class="chat-container">
+        <div id="display-area">
+            {{range .}}
+            <div id="profilecomment">
+                <div id="commentpp"><img src="./../static/assets/Group 60.svg" alt=""></div>
+                <div id="usercomment">
+                    <div class="commentinfo">@{{.Username}}</div>
+                    <div class="commentinfo">{{.CreationDate}}</div>
+                </div>
             </div>
+            <div class="commentside">
+                <p>{{.Content}}</p>
+            </div>
+            <hr>
+            {{end}}
         </div>
-    </form>
-    <h1>Commentaires</h1>
-    <div id="comments">
-        {{range .}}
-        <div class="comment">
-            <h2>Commentaire par {{.Username}}</h2>
-            <p>{{.Content}}</p>
-            <p class="date">Publié le {{.CreationDate}}</p>
+        
+        <div class="input-area">
+            <form action="#" method="POST">
+                <textarea class="area" name="comment" id="text" placeholder="Your comment here..."></textarea>
+                <button class="btn" type="submit" id="soumettre">
+                   <img src="./../static/assets/send-horizontal 1.svg" alt="comment">
+                </button>
+            </form>
         </div>
-        {{end}}
     </div>
 </body>
-
 </html>

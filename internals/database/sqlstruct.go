@@ -23,6 +23,10 @@ type Post struct {
 	CreationDate time.Time
 	FormatedDate string
 	Categories   []string
+	StatusLiked string
+	StatusDisliked string
+	Nbrlike int
+	Nbrdislike int
 }
 
 type Comment struct {

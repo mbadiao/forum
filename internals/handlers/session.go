@@ -191,6 +191,15 @@ func Getpost(r *http.Request, db *sql.DB) []database.Post {
 			}
 			post.Categories = categories
 			post.FormatedDate = utils.FormatTimeAgo(post.CreationDate)
+
+			liked:=GetStatus(db,"liked",post.PostID,post.UserID)
+			post.StatusLiked=liked
+			disliked:=GetStatus(db,"disliked",post.PostID,post.UserID)
+			post.StatusDisliked=disliked
+			
+			post.Nbrlike=GetNbrStatus(db,"liked",post.PostID)
+			post.Nbrdislike=GetNbrStatus(db,"disliked",post.PostID)
+
 			Posts = append(Posts, post)
 		}
 		if err := rows.Err(); err != nil {

@@ -82,18 +82,24 @@
                     <div id="nbrcomment">10 comments</div>
                     <div id="info">
                         <div id="infocontainer">
-                            <button class="ldc">
-                                <div id="like">
-                                    <div><img src="./static/assets/like 1.svg" alt=""></div>
-                                    <div id="nbrlike">1k</div>
-                                </div>
-                            </button>
-                            <button class="ldc">
-                                <div id="dislike">
-                                    <div><img src="./static/assets/Group 66.svg" alt=""></div>
-                                    <div id="nbrdislike">0</div>
-                                </div>
-                            </button>
+                            <form action="/likedislike" method="post" style="width: 100%;">
+                                <input type="hidden" name="postidouz" value="{{.Post.PostID}}">
+                                <button class="ldc" type="submit" name="actionlike" value="{{.Post.StatusLiked}}">
+                                    <div id="like">
+                                        <div><img src="./static/assets/like 1.svg" alt=""></div>
+                                        <div id="nbrlike">{{.Post.Nbrlike}}</div>
+                                    </div>
+                                </button>
+                            </form>
+                            <form action="/likedislike" method="post" style="width: 100%;">
+                                <input type="hidden" name="postidouz" value="{{.Post.PostID}}">
+                                <button class="ldc" type="submit" name="actiondislike" value="{{.Post.StatusDisliked}}">
+                                    <div id="dislike">
+                                        <div><img src="./static/assets/Group 66.svg" alt=""></div>
+                                        <div id="nbrdislike">{{.Post.Nbrdislike}}</div>
+                                    </div>
+                                </button>
+                            </form>
                             <a href="/comment?id={{.Post.PostID}}" class="ldc comment-trigger">
                                 <button class="ldc comment-trigger">
                                     <div id="comment">

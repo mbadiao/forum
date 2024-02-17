@@ -46,12 +46,10 @@ CREATE TABLE IF NOT EXISTS PostCategories (
 CREATE TABLE IF NOT EXISTS LikesDislikes (
     like_dislike_id INTEGER PRIMARY KEY,
     post_id INTEGER,
-    comment_id INTEGER,
     user_id INTEGER,
-    like_dislike_type TEXT NOT NULL CHECK(like_dislike_type IN ('like', 'dislike')),
-    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    liked BOOLEAN NOT NULL DEFAULT FALSE,
+    disliked BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (post_id) REFERENCES Posts(post_id),
-    FOREIGN KEY (comment_id) REFERENCES Comments(comment_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 

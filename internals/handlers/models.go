@@ -64,6 +64,11 @@ var Routes = []Route{
 		Handler: LogoutHandler,
 		Method:  []string{"GET", "POST"},
 	},
+	{
+		Path:    "/likedislike",
+		Handler: LikeDislikeHandler,
+		Method:  []string{"POST"},
+	},
 }
 
 var Port = ":8080"

@@ -16,7 +16,7 @@ func LikeDislikeHandler(w http.ResponseWriter, r *http.Request) {
 		usercorrespondance := 0
 		actualcookie := GetCookieHandler(w, r)
 		if actualcookie == "" {
-			http.Redirect(w, r, "/", http.StatusSeeOther)
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		} else {
 
@@ -34,7 +34,7 @@ func LikeDislikeHandler(w http.ResponseWriter, r *http.Request) {
 
 			}
 			if usercorrespondance == 0 {
-				http.Redirect(w, r, "/", http.StatusSeeOther)
+				http.Redirect(w, r, "/login", http.StatusSeeOther)
 				return
 			} else {
 				found = true

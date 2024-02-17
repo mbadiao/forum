@@ -51,7 +51,6 @@ func FilterHandler(w http.ResponseWriter, r *http.Request, CurrentUser database.
 			utils.FileService("error.html", w, Err[400])
 			return
 		}
-
 		var donnees Data
 		if Isconnected {
 			donnees = Data{

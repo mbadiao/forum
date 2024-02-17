@@ -199,7 +199,6 @@ func Getpost(r *http.Request, db *sql.DB) []database.Post {
 			
 			post.Nbrlike=GetNbrStatus(db,"liked",post.PostID)
 			post.Nbrdislike=GetNbrStatus(db,"disliked",post.PostID)
-
 			Posts = append(Posts, post)
 		}
 		if err := rows.Err(); err != nil {

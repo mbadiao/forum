@@ -108,7 +108,7 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 			return
 		}
 	}
-	
+
 	if r.URL.Path == "/" && r.Method == "POST" {
 		ActualCookie := GetCookieHandler(w, r)
 		datas, err := database.Scan(db, "SELECT * FROM SESSIONS ", &database.Session{})
@@ -143,6 +143,9 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 			fmt.Println(err.Error())
 			return
 		}
+	
+		found := false 
+	
 		for _, data := range datas {
 			u := data.(*database.Session)
 			if u.Cookie_value == ActualCookie {
@@ -153,16 +156,23 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 					fmt.Println(err.Error())
 					return
 				}
+				found = true 
+				break        
 			}
+		}
+	
+		if found {
 			FilterHandler(w, r, CurrentUser)
 			return
 		}
-
+		
 		if len(datas) == 0 {
+			fmt.Println("here")
 			fmt.Println("filter sans compte")
 			CurrentUser.UserID = 0
-			FilterHandler(w, r, CurrentUser)
 		}
+	
+		FilterHandler(w, r, CurrentUser)
 	}
+	
 }
-

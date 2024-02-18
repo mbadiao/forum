@@ -84,24 +84,28 @@
                         <div id="infocontainer">
                             <form action="/likedislike" method="post" style="width: 100%;">
                                 <input type="hidden" name="postidouz" value="{{.Post.PostID}}">
-                                <button class="ldc" type="submit" name="actionlike" value="{{.Post.StatusLiked}}">
-                                    <div id="like">
-                                        <div><img src="./static/assets/like 1.svg" alt=""></div>
-                                        <div id="nbrlike">{{.Post.Nbrlike}}</div>
-                                    </div>
-                                </button>
+                                <div class="ldc">
+                                    <button class="ldc" style="width: 100%;" type="submit" name="actionlike" value="like">
+                                        <div id="like">
+                                            <div><img src="./static/assets/like 1.svg" alt=""></div>
+                                            <div id="nbrlike">{{.Post.Nbrlike}}</div>
+                                        </div>
+                                    </button>
+                                </div>
                             </form>
                             <form action="/likedislike" method="post" style="width: 100%;">
                                 <input type="hidden" name="postidouz" value="{{.Post.PostID}}">
-                                <button class="ldc" type="submit" name="actiondislike" value="{{.Post.StatusDisliked}}">
-                                    <div id="dislike">
-                                        <div><img src="./static/assets/Group 66.svg" alt=""></div>
-                                        <div id="nbrdislike">{{.Post.Nbrdislike}}</div>
-                                    </div>
-                                </button>
+                                <div class="ldc">
+                                    <button class="ldc" style="width: 100%;" type="submit" name="actiondislike" value="dislike">
+                                        <div id="dislike">
+                                            <div><img src="./static/assets/Group 66.svg" alt=""></div>
+                                            <div id="nbrdislike">{{.Post.Nbrdislike}}</div>
+                                        </div>
+                                    </button>
+                                </div>
                             </form>
                             <a href="/comment?id={{.Post.PostID}}" class="ldc comment-trigger">
-                                <button class="ldc comment-trigger">
+                                <button class="ldc  comment-trigger" style="width: 100%;">
                                     <div id="comment">
                                         <div><img src="./static/assets/message-circle-more 1.svg" alt=""></div>
                                         <div id="titlecomment">...</div>

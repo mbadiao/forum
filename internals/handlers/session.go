@@ -266,3 +266,19 @@ func GetUserByID(db *sql.DB, userID int) (database.User, error) {
 	}
 	return user, nil
 }
+
+// func GetMyLike(db *sql.DB, userID int, table string, colone string){
+// 	nbrmylike:=0
+// 	query:=`SELECT SUM(likes_count) AS total_likes
+// 	FROM (
+// 		SELECT COUNT(*) AS likes_count
+// 		FROM LikesDislikes
+// 		WHERE post_id IN (
+// 			SELECT post_id
+// 			FROM Posts
+// 			WHERE user_id = ?
+// 		) AND liked = true
+// 		GROUP BY post_id
+// 	) AS likes_per_post;`
+	
+// }

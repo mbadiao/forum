@@ -15,6 +15,8 @@ type Data struct {
 	Message     string
 	Status      string
 	Isconnected bool
+	Mylike int
+	Mypost int
 	Alldata    AllData	
 }
 func LoginHandler(w http.ResponseWriter, r *http.Request) {

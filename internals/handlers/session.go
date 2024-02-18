@@ -155,6 +155,7 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 				}
 			}
 			FilterHandler(w, r, CurrentUser)
+			return
 		}
 
 		if len(datas) == 0 {

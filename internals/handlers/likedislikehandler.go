@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 	"forum/internals/database"
 	"forum/internals/utils"
@@ -14,12 +13,33 @@ func LikeDislikeHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "POST" {
 		found := false
-		usercorrespondance, err := getUserIDFromCookie(w, r)
-		if err != nil {
-			handleError(w, r, err)
+		usercorrespondance := 0
+		actualcookie := GetCookieHandler(w, r)
+		if actualcookie == "" {
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
+		} else {
+
+			err := db.QueryRow("SELECT user_id FROM Sessions WHERE cookie_value =?", actualcookie).Scan(&usercorrespondance)
+			if err != nil {
+				if err == sql.ErrNoRows {
+					http.Redirect(w, r, "/login", http.StatusSeeOther)
+					return
+				} else {
+					fmt.Println("erreur at like dislike handler , with the query")
+					fmt.Println(err.Error())
+					utils.FileService("error.html", w, Err[500])
+					return
+				}
+
+			}
+			if usercorrespondance == 0 {
+				http.Redirect(w, r, "/login", http.StatusSeeOther)
+				return
+			} else {
+				found = true
+			}
 		}
-		found = true
 		if found {
 			postid, err := strconv.Atoi(r.FormValue("postidouz"))
 			if err != nil {
@@ -57,13 +77,15 @@ func LikeDislikeHandler(w http.ResponseWriter, r *http.Request) {
 					fmt.Println("no row found")
 					return
 				} else {
-					handleError(w, r, err2)
+					w.WriteHeader(500)
+					utils.FileService("error.html", w, Err[500])
 					return
 				}
 			}
-			if actionLike != "" && actionDislike != "" {
+			if (actionLike != "" && actionDislike != "") || (actionLike == "" && actionDislike == "") {
 				fmt.Println("c'est mort")
-				handleBadRequest(w, r, errors.New("impossible"))
+				w.WriteHeader(400)
+				utils.FileService("error.html", w,Err[400])
 				return
 			}
 			if actionLike != "" {
@@ -74,7 +96,7 @@ func LikeDislikeHandler(w http.ResponseWriter, r *http.Request) {
 						fmt.Println("error to uptade like or dislike")
 						return
 					}
-					http.Redirect(w, r, "/", http.StatusSeeOther)
+					http.Redirect(w,r,"/",http.StatusSeeOther)
 					return
 				}
 
@@ -85,12 +107,14 @@ func LikeDislikeHandler(w http.ResponseWriter, r *http.Request) {
 						fmt.Println("error to uptade like or dislike")
 						return
 					}
-					http.Redirect(w, r, "/", http.StatusSeeOther)
+					http.Redirect(w,r,"/",http.StatusSeeOther)
 					return
 				}
 
-				handleBadRequest(w, r, errors.New("no action specified"))
+				w.WriteHeader(400)
+				utils.FileService("error.html", w, Err[400])
 				return
+
 			}
 
 			if actionDislike != "" {
@@ -101,7 +125,7 @@ func LikeDislikeHandler(w http.ResponseWriter, r *http.Request) {
 						fmt.Println("error to uptade like or dislike")
 						return
 					}
-					http.Redirect(w, r, "/", http.StatusSeeOther)
+					http.Redirect(w,r,"/",http.StatusSeeOther)
 					return
 				}
 				if !liked && disliked {
@@ -111,47 +135,20 @@ func LikeDislikeHandler(w http.ResponseWriter, r *http.Request) {
 						fmt.Println("error to uptade like or dislike")
 						return
 					}
-					http.Redirect(w, r, "/", http.StatusSeeOther)
+					http.Redirect(w,r,"/",http.StatusSeeOther)
 					return
 				}
-				handleBadRequest(w, r, errors.New("no action specified"))
+				w.WriteHeader(400)
+				utils.FileService("error.html", w, Err[400])
 				return
 			}
-			handleBadRequest(w, r, errors.New("no action specified"))
+			w.WriteHeader(400)
+			utils.FileService("error.html", w, Err[400])
 			return
 		}
 	}
 }
 
-func getUserIDFromCookie(w http.ResponseWriter, r *http.Request) (int, error) {
-	actualCookie := GetCookieHandler(w, r)
-	if actualCookie == "" {
-		return 0, nil
-	}
-
-	var userID int
-	err := db.QueryRow("SELECT user_id FROM Sessions WHERE cookie_value = ?", actualCookie).Scan(&userID)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return 0, nil
-		}
-		return 0, err
-	}
-
-	return userID, nil
-}
-
-func handleBadRequest(w http.ResponseWriter, r *http.Request, err error) {
-	w.WriteHeader(400)
-	utils.FileService("error.html", w, Err[400])
-	fmt.Println("Bad request:", err)
-}
-
-func handleError(w http.ResponseWriter, r *http.Request, err error) {
-	w.WriteHeader(500)
-	utils.FileService("error.html", w, Err[500])
-	fmt.Println("Internal server error:", err)
-}
 
 func GetStatus(db *sql.DB, status string, postID int, userID int) string {
 	var etat bool

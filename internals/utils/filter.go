@@ -50,7 +50,7 @@ func QueryFilter(categorypost, createdlikedpost []string, foundAll bool, Isconne
 	case FoundQuery == "create" && Isconnected:
 		query = "SELECT post_id, user_id, title, PhotoURL, content, creation_date FROM Posts WHERE user_id =" + strconv.Itoa(user.UserID)
 	case FoundQuery == "createlike" && Isconnected:
-		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date  FROM Posts p  LEFT JOIN LikesDislikes ld ON p.post_id = ld.post_id  LEFT JOIN Users u ON p.user_id = u.user_id  WHERE p.user_id = " + strconv.Itoa(user.UserID) + " OR ld.user_id = " + strconv.Itoa(user.UserID) + "  ORDER BY p.creation_date DESC"
+		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date  FROM Posts p  LEFT JOIN LikesDislikes ld ON p.post_id = ld.post_id  LEFT JOIN Users u ON p.user_id = u.user_id  WHERE p.user_id = " + strconv.Itoa(user.UserID) + " AND ld.user_id = " + strconv.Itoa(user.UserID) + "  ORDER BY p.creation_date DESC"
 	case FoundQuery == "likecategory" && Isconnected:
 		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date FROM Posts p INNER JOIN PostCategories pc ON p.post_id = pc.post_id INNER JOIN Categories c ON pc.category_id = c.category_id INNER JOIN LikesDislikes ld ON p.post_id = ld.post_id AND ld.liked = TRUE WHERE c.name IN ("
 		placeholders := make([]string, len(categorypost))
@@ -77,7 +77,6 @@ func QueryFilter(categorypost, createdlikedpost []string, foundAll bool, Isconne
 	default:
 		return "", "err"
 	}
-	fmt.Println("queryfunc", query)
 	return query, ""
 }
 

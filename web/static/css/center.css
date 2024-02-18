@@ -162,15 +162,11 @@
 }
 
 .ldc {
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
     border-radius: 15px;
     border: none;
     cursor: pointer;
-    width: 80%;
+    width: auto;
     background-color: #62707d;
-   
 }
 
 @media screen and (max-width: 700px) {

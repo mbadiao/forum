@@ -15,7 +15,9 @@ func main() {
 		for _, route := range handlers.Routes {
 			http.Handle(route.Path, handlers.ErrorMiddleware(route.Handler))
 		}
-		fmt.Println("http://localhost" + handlers.Port)
+		fmt.Println("Server running at:") 
+		fmt.Println("> Localhost:    \033[34mhttp://localhost" + handlers.Port + "\033[0m")
+		fmt.Println("> disconnect:   \033[31mpress Ctrl+C\033[0m")
 		http.ListenAndServe(handlers.Port, nil)
 	}
 }

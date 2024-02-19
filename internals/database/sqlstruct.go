@@ -27,6 +27,7 @@ type Post struct {
 	StatusDisliked string
 	Nbrlike int
 	Nbrdislike int
+	Nbrcomments int
 }
 
 type Comment struct {

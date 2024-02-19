@@ -218,3 +218,13 @@ func TotalPostByUserID(db *sql.DB, userID int) (int, error){
 	return totalPost, nil
 }
 
+func CountCommentsByPostID(db *sql.DB, postID int) (int, error) {
+    var commentCount int
+    query := "SELECT COUNT(*) FROM Comments WHERE post_id = ?"
+    err := db.QueryRow(query, postID).Scan(&commentCount)
+    if err != nil {
+        return 0, err
+    }
+    return commentCount, nil
+}
+

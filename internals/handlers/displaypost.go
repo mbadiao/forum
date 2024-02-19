@@ -45,6 +45,9 @@ func ProcessPostRows(rows *sql.Rows, db *sql.DB, Posts []database.Post) []databa
 
 		post.Nbrlike = GetNbrStatus(db, "liked", post.PostID)
 		post.Nbrdislike = GetNbrStatus(db, "disliked", post.PostID)
+		nbrcomments,_:=CountCommentsByPostID(db,post.PostID)
+		post.Nbrcomments=nbrcomments
+
 		Posts = append(Posts, post)
 	}
 	if err := rows.Err(); err != nil {

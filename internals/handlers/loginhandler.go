@@ -12,7 +12,8 @@ type Data struct {
 	ActualUser  database.User
 	Page        string
 	Badpassword string
-	Message     string
+	Messagelg    string
+	Messagesg    string
 	Status      string
 	Isconnected bool
 	Mylike int
@@ -53,7 +54,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 				(!Empty(r.FormValue("login-name")) && Empty(r.FormValue("login-password"))) {
 				data := Data{
 					Page:    "signin",
-					Message: "All fields must be completed",
+					Messagelg: "All fields must be completed",
 				}
 				w.WriteHeader(400)
 				utils.FileService("login.html", w, data)
@@ -67,7 +68,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					data := Data{
 						Page:    "signin",
-						Message: "Invalid Email or Username",
+						Messagelg: "Invalid Email or Username",
 					}
 					w.WriteHeader(400)
 					utils.FileService("login.html", w, data)
@@ -114,7 +115,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 				if err1 != nil || err2 != nil || err3 != nil || err4 != nil || err5 != nil {
 					data1 := Data{
 						Page:    "signup",
-						Message: "all fields must be completed",
+						Messagesg: "all fields must be completed",
 					}
 					w.WriteHeader(400)
 					utils.FileService("login.html", w, data1)
@@ -133,7 +134,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 						fmt.Println("email already used")
 						data := Data{
 							Page:    "signup",
-							Message: "Email already used",
+							Messagesg: "Email already used",
 						}
 						w.WriteHeader(405)
 						utils.FileService("login.html", w, data)
@@ -143,7 +144,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 						fmt.Println("Username already used")
 						data := Data{
 							Page:    "signup",
-							Message: "Username already used",
+							Messagesg: "Username already used",
 						}
 						w.WriteHeader(405)
 						utils.FileService("login.html", w, data)

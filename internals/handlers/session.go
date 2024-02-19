@@ -58,6 +58,8 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 				return
 			}
 			donnees := Data{
+				Mylike: 0,
+				Mypost: 0,
 				Alldata: AllData,
 			}
 			utils.FileService("home.html", w, donnees)
@@ -84,10 +86,15 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 					fmt.Println(err)
 					return
 				}
+				mylike,_:=TotalLikesByUserID(db, CurrentUser.UserID)
+				mypost,_:=TotalPostByUserID(db, CurrentUser.UserID)
+				
 				donnees := Data{
 					Status:      "logout",
 					ActualUser:  CurrentUser,
 					Isconnected: true,
+					Mylike: mylike,
+					Mypost: mypost,
 					Alldata:     AllData,
 				}
 				utils.FileService("home.html", w, donnees)
@@ -101,6 +108,8 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 				return
 			}
 			donnees := Data{
+				Mylike: 0,
+				Mypost: 0,
 				Isconnected: false,
 				Alldata:     AllData,
 			}
@@ -170,9 +179,42 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 			fmt.Println("here")
 			fmt.Println("filter sans compte")
 			CurrentUser.UserID = 0
+			
 		}
 	
 		FilterHandler(w, r, CurrentUser)
 	}
-	
 }
+
+func TotalLikesByUserID(db *sql.DB, userID int) (int, error) {
+	var totalLikes int
+	query := `
+        SELECT SUM(likes_count) AS total_likes
+        FROM (
+            SELECT COUNT(*) AS likes_count
+            FROM LikesDislikes
+            WHERE post_id IN (
+                SELECT post_id
+                FROM Posts
+                WHERE user_id = ?
+            ) AND liked = true
+            GROUP BY post_id
+        ) AS likes_per_post
+    `
+	err := db.QueryRow(query, userID).Scan(&totalLikes)
+	if err != nil {
+		return 0, fmt.Errorf("erreur lors de l'exécution de la requête: %v", err)
+	}
+	return totalLikes, nil
+}
+
+func TotalPostByUserID(db *sql.DB, userID int) (int, error){
+	var totalPost int
+	query:=`SELECT COUNT(*) FROM Posts WHERE user_id = ?`
+	err := db.QueryRow(query, userID).Scan(&totalPost)
+	if err != nil {
+        return 0, fmt.Errorf("erreur lors de l'exécution de la requête: %v", err)
+    }
+	return totalPost, nil
+}
+

@@ -28,6 +28,7 @@ func FilterHandler(w http.ResponseWriter, r *http.Request, CurrentUser database.
 		categorypost, createdlikedpost, foundAll := utils.SplitFilter(checkboxfilter)
 
 		query, noquery := utils.QueryFilter(categorypost, createdlikedpost, foundAll, Isconnected, CurrentUser)
+		
 
 		if noquery == "err" {
 			data := Data{
@@ -50,17 +51,24 @@ func FilterHandler(w http.ResponseWriter, r *http.Request, CurrentUser database.
 			return
 		}
 		var donnees Data
+		mylike,_:=TotalLikesByUserID(db,CurrentUser.UserID)
+		mypost,_:=TotalPostByUserID(db,CurrentUser.UserID)
 		if Isconnected {
+			
 			donnees = Data{
 				Status:      "logout",
 				ActualUser:  CurrentUser,
 				Isconnected: true,
+				Mylike: mylike,
+				Mypost: mypost,
 				Alldata:     AllData,
 			}
 		} else {
 			donnees = Data{
 				Status:      "login",
 				Isconnected: false,
+				Mylike: mylike,
+				Mypost: mypost,
 				Alldata:     AllData,
 			}
 		}

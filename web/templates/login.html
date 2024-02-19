@@ -25,8 +25,8 @@
                 <p>Welcome back! Please login to your account.</p>
                 <form action="/login" method="post">
                     <div id="login-form">
-                        <p style="color: red;">{{.Message}}</p>
-                        <input type="email" name="login-name" id="email" placeholder="Email Adress" required><br>
+                        <p style="color: red;">{{.Messagelg}}</p>
+                        <input type="text" name="login-name" id="email" placeholder="Email Adress or Username" required><br>
                         <input type="password" name="login-password" id="password" placeholder="Password" required>
                         <p style="color: red; top: 0px !important;bottom: 0px !important;">{{.Badpassword}}</p>
                     </div>
@@ -50,7 +50,7 @@
                 </div>
                 <form action="/login" method="post">
                     <div id="signup-form">
-                        <div style="color: red;">{{.Message}}</div>
+                        <div style="color: red;">{{.Messagesg}}</div>
                         <input type="text" name="firstname" id="username" placeholder="Firstname" required><br>
                         <input type="text" name="lastname" id="username" placeholder="Lastname" required><br>
                         <input type="text" name="username" id="username" placeholder="Username" required><br>

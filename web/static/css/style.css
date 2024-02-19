@@ -89,3 +89,22 @@ input[type="file"] {
     opacity: 0;
     cursor: pointer; 
 }
+#medialog{
+    display: none;
+}
+@media only screen and (max-width: 600px) {
+    #all-page {
+        display: grid;
+        height: 100%;
+        grid-template-columns: 75% 25%;
+        overflow: auto;
+        height: 95%;
+    }
+    #leftside{
+        display: none;
+
+    }
+    #medialog{
+        display: contents;
+    }
+}

@@ -14,36 +14,26 @@ body {
     color: #f5f5f5;
 }
 
-#allcommentside{
+#allcommentside {
     margin: 0;
     height: 100%;
     padding: 0;
     overflow: hidden;
 }
 
-@keyframes fadeInDown {
-    0% {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
-header{
+header {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 }
 
-#arrowcomment{
+#arrowcomment {
     text-decoration: none;
     color: white;
     margin-right: 20px;
-  height: 10px;
+    height: 10px;
     width: 5px;
 }
 
@@ -67,12 +57,13 @@ header{
     background-color: #87B29E;
     color: #f5f5f5;
 }
+
 .btn:hover {
     background-color: #87B29E;
 }
 
 .chat-container {
-    margin:0% 0% 10% 10%;
+    margin: 0% 0% 10% 10%;
     height: 100%;
     width: 80%;
     border: 1px solid #06141D;
@@ -83,7 +74,7 @@ header{
 }
 
 #display-area {
-    height: 600px;
+    height: 70%;
     overflow-y: auto;
     padding: 1rem;
     margin-bottom: 1rem;
@@ -97,13 +88,13 @@ header{
     min-height: 70vh;
 }
 
-.input-area{
+.input-area {
     margin-bottom: 2rem;
 }
 
-.input-area form{
+.input-area form {
     height: 60px;
-    display:flex;
+    display: flex;
 }
 
 #profilecomment {
@@ -111,24 +102,27 @@ header{
     grid-template-columns: auto 93%;
 }
 
-.commentside{
-    margin:0px 20px 10px 71px;
+.commentside {
+    margin: 0px 20px 10px 71px;
 }
-.commentinfo{
+
+.commentinfo {
     color: white;
     font-family: 'Impact', 'Haettenschweiler', 'Arial Narrow Bold', sans-serif;
     font-size: 13px;
 }
-.commenttime{
+
+.commenttime {
     color: #62707d;
     font-family: 'Impact', 'Haettenschweiler', 'Arial Narrow Bold', sans-serif;
     font-size: 13px;
 }
 
-#usercomment{
+#usercomment {
     margin-left: 10px;
 }
 
-hr{
+hr {
     margin: 10px;
 }
+

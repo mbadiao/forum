@@ -207,4 +207,7 @@
     #pp{
         display: none;
     }
+    #login-right{
+        display: none;
+    }
 }

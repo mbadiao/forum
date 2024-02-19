@@ -44,6 +44,11 @@ func PostHandler(w http.ResponseWriter, r *http.Request, userid database.User) {
 				utils.FileService("error.html", w, Err[400])
 				return
 			}
+			if PhotoURL == "err408" {
+				w.WriteHeader(400)
+				utils.FileService("error.html", w, Err[1])
+				return
+			}
 			if PhotoURL == "err500" {
 				w.WriteHeader(500)
 				utils.FileService("error.html", w, Err[500])
@@ -111,7 +116,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) string {
 	err := r.ParseMultipartForm(20 << 20) // taille maximale autorisée pour les fichiers (20MB)
 	if err != nil {
 		fmt.Println("taille")
-		return "err400"
+		return "err408"
 	}
 	// Obtenez le fichier téléchargé à partir de la clé du formulaire
 	file, handler, err := r.FormFile("file")

@@ -44,13 +44,11 @@ This project consists in creating a web forum that allows :
 For more information, click [here](https://github.com/01-edu/public/tree/master/subjects/forum)
 
 
-## :sparkles: Features ##
+## Features
 
-:heavy_check_mark: Feature 1;\
-:heavy_check_mark: Feature 2;\
-:heavy_check_mark: Feature 3;
 
-## :rocket: Technologies ##
+
+## Technologies
 
 The following tools were used in this project:
 
@@ -60,7 +58,7 @@ The following tools were used in this project:
 - [Docker](docker)
 - [standard Go packages](standardGopackages)
 
-## :white_check_mark: Requirements ##
+## Requirements ##
 
 Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [Go](https://golang.org/doc/install) installed.
 
@@ -100,12 +98,6 @@ This project is under license from 01edu . For more details, see the [zone01](le
 
 &#xa0;
 
-
-<img alt="Language count" src="https://img.shields.io/badge/Languages-5-brightgreen">
-
-<img alt="Repository size" src="https://img.shields.io/badge/Repository%20size-3 MB-blue">
-
-<img alt="License" src="https://img.shields.io/badge/License-01edu-blue">
 
 </p>
 

@@ -30,6 +30,10 @@ var Err = map[int]Error{
 		0,
 		"Result",
 	},
+	1: {
+		400,
+		"create a post with an image larger than 20mb is not possible",
+	},
 }
 
 type Route struct {

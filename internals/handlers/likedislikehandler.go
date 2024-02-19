@@ -43,6 +43,11 @@ func LikeDislikeHandler(w http.ResponseWriter, r *http.Request) {
 		if found {
 			postidstr:=r.FormValue("postidouz")
 			postid, err := strconv.Atoi(postidstr)
+			if !CheckId(postid){
+				w.WriteHeader(400)
+				utils.FileService("error.html", w, Err[400])
+				return
+			}
 			if err != nil {
 				w.WriteHeader(400)
 				utils.FileService("error.html", w, Err[400])
@@ -149,6 +154,7 @@ func LikeDislikeHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
 
 
 func GetStatus(db *sql.DB, status string, postID int, userID int) string {

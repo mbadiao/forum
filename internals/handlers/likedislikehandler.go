@@ -41,7 +41,8 @@ func LikeDislikeHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		if found {
-			postid, err := strconv.Atoi(r.FormValue("postidouz"))
+			postidstr:=r.FormValue("postidouz")
+			postid, err := strconv.Atoi(postidstr)
 			if err != nil {
 				w.WriteHeader(400)
 				utils.FileService("error.html", w, Err[400])
@@ -96,7 +97,7 @@ func LikeDislikeHandler(w http.ResponseWriter, r *http.Request) {
 						fmt.Println("error to uptade like or dislike")
 						return
 					}
-					http.Redirect(w,r,"/",http.StatusSeeOther)
+					http.Redirect(w,r,"/#"+postidstr,http.StatusSeeOther)
 					return
 				}
 
@@ -107,7 +108,7 @@ func LikeDislikeHandler(w http.ResponseWriter, r *http.Request) {
 						fmt.Println("error to uptade like or dislike")
 						return
 					}
-					http.Redirect(w,r,"/",http.StatusSeeOther)
+					http.Redirect(w,r,"/#"+postidstr,http.StatusSeeOther)
 					return
 				}
 
@@ -125,7 +126,7 @@ func LikeDislikeHandler(w http.ResponseWriter, r *http.Request) {
 						fmt.Println("error to uptade like or dislike")
 						return
 					}
-					http.Redirect(w,r,"/",http.StatusSeeOther)
+					http.Redirect(w,r,"/#"+postidstr,http.StatusSeeOther)
 					return
 				}
 				if !liked && disliked {
@@ -135,7 +136,7 @@ func LikeDislikeHandler(w http.ResponseWriter, r *http.Request) {
 						fmt.Println("error to uptade like or dislike")
 						return
 					}
-					http.Redirect(w,r,"/",http.StatusSeeOther)
+					http.Redirect(w,r,"/#"+postidstr,http.StatusSeeOther)
 					return
 				}
 				w.WriteHeader(400)

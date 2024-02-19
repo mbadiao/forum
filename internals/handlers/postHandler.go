@@ -112,11 +112,10 @@ func GetPostCategories(db *sql.DB, postID int) ([]string, error) {
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) string {
 	var photoURL = "NoPhoto"
-	// ParseMultipartForm analyse la demande pour extraire les fichiers
-	err := r.ParseMultipartForm(20 << 20) // taille maximale autorisée pour les fichiers (20MB)
+
+	err := r.ParseMultipartForm(20 << 20)
 	if err != nil {
-		fmt.Println("taille")
-		return "err408"
+		return "err400"
 	}
 	// Obtenez le fichier téléchargé à partir de la clé du formulaire
 	file, handler, err := r.FormFile("file")
@@ -131,8 +130,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) string {
 		}
 		// Vérifiez la taille du fichier
 		if handler.Size > 20<<20 {
-			fmt.Println("heres")
-			return "err400"
+			return "err408"
 		}
 		dirPath := "./web/static/upload"
 

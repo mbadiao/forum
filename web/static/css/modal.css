@@ -365,6 +365,8 @@ textarea::placeholder {
 .Category-checkbox {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     height: 20%;
 }

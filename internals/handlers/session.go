@@ -139,7 +139,10 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 				}
 			}
 		}
-		PostHandler(w, r, CurrentUser)
+		if Found {
+			PostHandler(w, r, CurrentUser)
+			return
+		}
 		if !Found {
 			utils.FileService("login.html", w, nil)
 		}

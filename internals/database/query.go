@@ -22,12 +22,12 @@ func CreateTable() *sql.DB {
 	if errNofile != nil {
 		sqlcode, err := os.ReadFile("./internals/database/table.sql")
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err.Error())
 		}
 		_, err = db.Exec(string(sqlcode))
 
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err.Error())
 		}
 	}
 	return db

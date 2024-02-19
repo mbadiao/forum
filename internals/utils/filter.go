@@ -44,9 +44,9 @@ func QueryFilter(categorypost, createdlikedpost []string, foundAll bool, Isconne
 		for i := range categorypost {
 			placeholders[i] = "?"
 		}
-		query += strings.Join(placeholders, ",") + ")"
+		query += strings.Join(placeholders, ",") + ") ORDER BY creation_date DESC"
 	case FoundQuery == "like" && Isconnected:
-		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date  FROM Posts p  JOIN LikesDislikes ld ON p.post_id = ld.post_id  WHERE ld.user_id = " + strconv.Itoa(user.UserID) + "  AND ld.liked = TRUE"
+		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date  FROM Posts p  JOIN LikesDislikes ld ON p.post_id = ld.post_id  WHERE ld.user_id = " + strconv.Itoa(user.UserID) + "  AND ld.liked = TRUE ORDER BY creation_date DESC"
 	case FoundQuery == "create" && Isconnected:
 		query = "SELECT post_id, user_id, title, PhotoURL, content, creation_date FROM Posts WHERE user_id =" + strconv.Itoa(user.UserID)
 	case FoundQuery == "createlike" && Isconnected:
@@ -65,7 +65,7 @@ func QueryFilter(categorypost, createdlikedpost []string, foundAll bool, Isconne
 		for i := range categorypost {
 			placeholders[i] = "?"
 		}
-		query += strings.Join(placeholders, ",") + ")"
+		query += strings.Join(placeholders, ",") + ") ORDER BY creation_date DESC"
 	case FoundQuery == "createlikecategory" && Isconnected:
 		query = "SELECT DISTINCT p.post_id, p.user_id, p.title, p.PhotoURL, p.content, p.creation_date FROM Posts p INNER JOIN Users u ON p.user_id = u.user_id LEFT JOIN PostCategories pc ON p.post_id = pc.post_id LEFT JOIN Categories c ON pc.category_id = c.category_id LEFT JOIN LikesDislikes ld ON p.post_id = ld.post_id AND ld.liked = TRUE WHERE u.user_id = " + strconv.Itoa(user.UserID) + " AND c.name IN ("
 		placeholders := make([]string, len(categorypost))

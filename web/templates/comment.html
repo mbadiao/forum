@@ -1,43 +1,49 @@
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/comment.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
-    <title>	Comment</title>
+    <title> Comment</title>
 </head>
+
 <body>
-    <header class="entetecomment">
-        <a id="arrowcomment" href="/">
-            <i class="fa-solid fa-arrow-left"></i>
-        </a>
-        <h1>Commentary section</h1>
-    </header>
-    <div class="chat-container">
-        <div id="display-area">
-            {{range .}}
-            <div id="profilecomment">
-                <div id="commentpp"><img src="./../static/assets/Group 60.svg" alt=""></div>
-                <div id="usercomment">
-                    <div class="commentinfo">@{{.Username}}</div>
-                    <div class="commenttime">{{.Formatdate}}</div>
+    <div id="allcommentside">
+        <header class="entetecomment">
+            <a id="arrowcomment" href="/">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <h1>Commentary section</h1>
+        </header>
+        <div class="chat-container">
+            <div id="display-area">
+                {{range .}}
+                <div id="profilecomment">
+                    <div id="commentpp"><img src="./../static/assets/Group 60.svg" alt=""></div>
+                    <div id="usercomment">
+                        <div class="commentinfo">@{{.Username}}</div>
+                        <div class="commenttime">{{.Formatdate}}</div>
+                    </div>
                 </div>
+                <div class="commentside">
+                    <p>{{.Content}}</p>
+                </div>
+                <hr>
+                {{end}}
             </div>
-            <div class="commentside">
-                <p>{{.Content}}</p>
+
+            <div class="input-area">
+                <form action="#" method="POST">
+                    <textarea class="area" name="comment" id="text" placeholder="Your comment here..."
+                        required></textarea>
+                    <button class="btn" type="submit" id="soumettre">
+                        <img src="./../static/assets/send-horizontal 1.svg" alt="comment">
+                    </button>
+                </form>
             </div>
-            <hr>
-            {{end}}
-        </div>
-        
-        <div class="input-area">
-            <form action="#" method="POST">
-                <textarea class="area" name="comment" id="text" placeholder="Your comment here..." required></textarea>
-                <button class="btn" type="submit" id="soumettre">
-                   <img src="./../static/assets/send-horizontal 1.svg" alt="comment">
-                </button>
-            </form>
         </div>
     </div>
 </body>
+
 </html>

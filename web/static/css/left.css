@@ -60,6 +60,7 @@
     justify-content: center;
     align-items: center;
 }
+
 #logout{
     background: #1B2730;
     border: solid #354450;
@@ -71,9 +72,11 @@
     border-radius: 23px;
     cursor: pointer;
 }
+
 #logout:hover {
     background-color: #87B29E;
 }
+
 .count p {
     color: #87B29E;
     font-size: 1.5vw !important;

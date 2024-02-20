@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"unicode/utf8"
 )
 
 type Category struct {
@@ -39,8 +40,8 @@ func PostHandler(w http.ResponseWriter, r *http.Request, userid database.User) {
 			utils.FileService("error.html", w, Err[400])
 			return
 		}
-		if len(title) > 83 {
-			fmt.Println("title kilometrique")
+		runeCount := utf8.RuneCountInString(title)
+		if runeCount > 38 {
 			w.WriteHeader(400)
 			utils.FileService("error.html", w, Err[400])
 			return

@@ -22,3 +22,6 @@ function commentModal(){
 function toggleModal(){
     modalContainer.classList.toggle("active");
 }
+document.getElementById('file-input').addEventListener('change', function() {
+    document.querySelector('.Photo').style.border = '2px solid #519e7a';
+});

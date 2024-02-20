@@ -60,6 +60,40 @@ body {
     align-items: center;
 }
 
+
+textarea.textarea-title::-webkit-input-placeholder {
+    text-align: center;
+}
+
+textarea.textarea-title:-moz-placeholder {
+    text-align: center;
+}
+
+textarea.textarea-title::-moz-placeholder {
+    text-align: center;
+}
+
+textarea.textarea-title:-ms-input-placeholder {
+    text-align: center;
+}
+textarea.text::-webkit-input-placeholder {
+    text-align: center;
+}
+
+textarea.text:-moz-placeholder {
+    text-align: center;
+}
+
+textarea.text::-moz-placeholder {
+    text-align: center;
+}
+
+textarea.text:-ms-input-placeholder {
+    text-align: center;
+}
+
+
+
 .modal {
     position: absolute;
     width: max-content;
@@ -74,6 +108,7 @@ body {
     border-radius: 15px;
     transform: translate(-50%, -50%);
 }
+
 
 .login {
     background-color: #1B2730;
@@ -337,6 +372,7 @@ textarea::placeholder {
     background-color: #212d37;
     border: 2px solid #444f5a;
 }
+
 
 
 .img-button-photo {

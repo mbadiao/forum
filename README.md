@@ -60,7 +60,7 @@ The following tools were used in this project:
 
 ## Requirements ##
 
-Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [Go](https://golang.org/doc/install) installed.
+Before starting, you need to have [Git](https://git-scm.com) and [Go](https://golang.org/doc/install) installed.
 
 ## Starting ##
 
@@ -84,13 +84,13 @@ $ cd forum
 # The server will initialize in the <http://localhost:8080>
 ```
 
-## :memo: License ##
+## License ##
 
 This project is under license from 01edu . For more details, see the [zone01](learn.zone01dakar.sn) file.
 
 
 
-## :memo: Author ##
+## Author ##
 - [mbadiao](https://learn.zone01dakar.sn/git/mbadiao)
 - [ousmasene](https://learn.zone01dakar.sn/git/ousmasene)
 - [emalo](https://learn.zone01dakar.sn/git/emalo)

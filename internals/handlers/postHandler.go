@@ -32,12 +32,26 @@ func PostHandler(w http.ResponseWriter, r *http.Request, userid database.User) {
 		}
 		CheckboxValues := r.Form["checkbox"]
 		title := strings.TrimSpace(r.FormValue("title"))
-		PhotoURL := uploadHandler(w, r)
-		fmt.Println(CheckboxValues)
-		fmt.Println(title)
-		if PhotoURL == "NoPhoto" {
-			fmt.Println(PhotoURL)
+		thread := strings.TrimSpace(r.FormValue("thread"))
+		fmt.Println()
+		if len(CheckboxValues) == 0 || title == "" || thread == "" {
+			w.WriteHeader(400)
+			utils.FileService("error.html", w, Err[400])
+			return
 		}
+		if len(title) > 83 {
+			fmt.Println("title kilometrique")
+			w.WriteHeader(400)
+			utils.FileService("error.html", w, Err[400])
+			return
+		}
+		a := utils.Checkcategory(CheckboxValues)
+		if !a {
+			w.WriteHeader(400)
+			utils.FileService("error.html", w, Err[400])
+			return
+		}
+		PhotoURL := uploadHandler(w, r)
 		if PhotoURL != "NoPhoto" {
 			if PhotoURL == "err400" {
 				w.WriteHeader(400)
@@ -56,17 +70,6 @@ func PostHandler(w http.ResponseWriter, r *http.Request, userid database.User) {
 			} else {
 				PhotoURL = PhotoURL[5:]
 			}
-		}
-		thread := strings.TrimSpace(r.FormValue("thread"))
-		fmt.Println()
-		if len(CheckboxValues) == 0 || title == "" || thread == "" {
-			w.WriteHeader(400)
-			utils.FileService("error.html", w, Err[400])
-			return
-		}
-		a := utils.Checkcategory(CheckboxValues)
-		if !a {
-			return
 		}
 		PostS = database.Post{
 			UserID:   userid.UserID,

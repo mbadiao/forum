@@ -57,6 +57,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 				Empty(r.FormValue("firstname")) && Empty(r.FormValue("lastname")) && Empty(r.FormValue("username")) &&
 				Empty(r.FormValue("signup-email")) && Empty(r.FormValue("signup-password"))) || (Empty(r.FormValue("login-name")) && !Empty(r.FormValue("login-password"))) ||
 				(!Empty(r.FormValue("login-name")) && Empty(r.FormValue("login-password"))) {
+					fmt.Println("b@b.com")
 				data = Data{
 					Page:      "signin",
 					Messagelg: "All fields must be completed",
@@ -64,29 +65,25 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 				w.WriteHeader(400)
 				utils.FileService("login.html", w, data)
 				return
-			}
-			if !utils.IsValidEmail(r.FormValue("signup-email")) {
+			} else if !utils.IsValidEmail(r.FormValue("signup-email")) && (Empty(r.FormValue("login-name")) && Empty(r.FormValue("login-password"))) {
 				fmt.Println(r.FormValue("signup-email"))
 				data = Data{
-					Page:      "signin",
-					Messagelg: "Email must be valid",
+					Page:      "signup",
+					Messagesg: "Email must be valid",
 				}
 				w.WriteHeader(400)
 				utils.FileService("login.html", w, data)
 				return
-			}
-			if !utils.IsValidPassword(r.FormValue("signup-password")) {
+			} else if !utils.IsValidPassword(r.FormValue("signup-password"))  && (Empty(r.FormValue("login-name")) && Empty(r.FormValue("login-password")))  {
 				fmt.Println(len(r.FormValue("signup-password")))
 				data = Data{
-					Page:      "signin",
-					Messagelg: "Password must contain at least 5 characters.",
+					Page:      "signup",
+					Messagesg: "Password must contain at least 5 characters.",
 				}
 				w.WriteHeader(400)
 				utils.FileService("login.html", w, data)
 				return
-			}
-
-			if !Empty(r.FormValue("login-name")) && !Empty(r.FormValue("login-password")) {
+			} else if !Empty(r.FormValue("login-name")) && !Empty(r.FormValue("login-password")) {
 				var (
 					id             int
 					passwordhashed string

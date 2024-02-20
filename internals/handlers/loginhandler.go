@@ -1,4 +1,5 @@
 package handlers
+
 import (
 	"fmt"
 	"forum/internals/database"
@@ -6,19 +7,21 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+
 	"golang.org/x/crypto/bcrypt"
 )
+
 type Data struct {
 	ActualUser  database.User
 	Page        string
 	Badpassword string
-	Messagelg    string
-	Messagesg    string
+	Messagelg   string
+	Messagesg   string
 	Status      string
 	Isconnected bool
-	Mylike int
-	Mypost int
-	Alldata    AllData	
+	Mylike      int
+	Mypost      int
+	Alldata     AllData
 }
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -49,18 +52,41 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		} else if r.Method == "POST" {
+			var data Data
 			if (Empty(r.FormValue("login-name")) && Empty(r.FormValue("login-password")) &&
 				Empty(r.FormValue("firstname")) && Empty(r.FormValue("lastname")) && Empty(r.FormValue("username")) &&
 				Empty(r.FormValue("signup-email")) && Empty(r.FormValue("signup-password"))) || (Empty(r.FormValue("login-name")) && !Empty(r.FormValue("login-password"))) ||
 				(!Empty(r.FormValue("login-name")) && Empty(r.FormValue("login-password"))) {
-				data := Data{
-					Page:    "signin",
+				data = Data{
+					Page:      "signin",
 					Messagelg: "All fields must be completed",
 				}
 				w.WriteHeader(400)
 				utils.FileService("login.html", w, data)
 				return
-			} else if !Empty(r.FormValue("login-name")) && !Empty(r.FormValue("login-password")) {
+			}
+			if !utils.IsValidEmail(r.FormValue("signup-email")) {
+				fmt.Println(r.FormValue("signup-email"))
+				data = Data{
+					Page:      "signin",
+					Messagelg: "Email must be valid",
+				}
+				w.WriteHeader(400)
+				utils.FileService("login.html", w, data)
+				return
+			}
+			if !utils.IsValidPassword(r.FormValue("signup-password")) {
+				fmt.Println(len(r.FormValue("signup-password")))
+				data = Data{
+					Page:      "signin",
+					Messagelg: "Password must contain at least 5 characters.",
+				}
+				w.WriteHeader(400)
+				utils.FileService("login.html", w, data)
+				return
+			}
+
+			if !Empty(r.FormValue("login-name")) && !Empty(r.FormValue("login-password")) {
 				var (
 					id             int
 					passwordhashed string
@@ -68,7 +94,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 				err := db.QueryRow("SELECT user_id, password_hash FROM Users WHERE email = ? OR username = ?", r.FormValue("login-name"), r.FormValue("login-name")).Scan(&id, &passwordhashed)
 				if err != nil {
 					data := Data{
-						Page:    "signin",
+						Page:      "signin",
 						Messagelg: "Invalid Email or Username",
 					}
 					w.WriteHeader(400)
@@ -115,7 +141,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 				password, err5 := IsEmpty(r.FormValue("signup-password"))
 				if err1 != nil || err2 != nil || err3 != nil || err4 != nil || err5 != nil {
 					data1 := Data{
-						Page:    "signup",
+						Page:      "signup",
 						Messagesg: "all fields must be completed",
 					}
 					w.WriteHeader(400)
@@ -134,7 +160,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 					if nbremail > 0 {
 						fmt.Println("email already used")
 						data := Data{
-							Page:    "signup",
+							Page:      "signup",
 							Messagesg: "Email already used",
 						}
 						w.WriteHeader(405)
@@ -144,7 +170,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 					if nbrusername > 0 {
 						fmt.Println("Username already used")
 						data := Data{
-							Page:    "signup",
+							Page:      "signup",
 							Messagesg: "Username already used",
 						}
 						w.WriteHeader(405)

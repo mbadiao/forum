@@ -15,19 +15,19 @@ type User struct {
 }
 
 type Post struct {
-	PostID       int
-	UserID       int
-	Title        string
-	PhotoURL     string
-	Content      string
-	CreationDate time.Time
-	FormatedDate string
-	Categories   []string
-	StatusLiked string
+	PostID         int
+	UserID         int
+	Title          string
+	PhotoURL       string
+	Content        string
+	CreationDate   time.Time
+	FormatedDate   string
+	Categories     []string
+	StatusLiked    string
 	StatusDisliked string
-	Nbrlike int
-	Nbrdislike int
-	Nbrcomments int
+	Nbrlike        int
+	Nbrdislike     int
+	Nbrcomments    int
 }
 
 type Comment struct {
@@ -35,6 +35,8 @@ type Comment struct {
 	PostID       int
 	UserID       int
 	Username     string
+	Firstname    string
+	Lastname     string
 	Content      string
 	CreationDate time.Time
 	Formatdate   string

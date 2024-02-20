@@ -40,7 +40,6 @@ func DisplayComment(w http.ResponseWriter, r *http.Request) CommentData {
 		utils.FileService("error.html", w, Err[400])
 		// return
 	}
-	fmt.Println(allData)
 
 	rows, err := db.Query("SELECT * FROM Comments WHERE post_id=? ORDER BY creation_date DESC", id)
 	if err != nil {
@@ -50,7 +49,7 @@ func DisplayComment(w http.ResponseWriter, r *http.Request) CommentData {
 
 	for rows.Next() {
 		var comment database.Comment
-		err = rows.Scan(&comment.CommentID, &comment.PostID, &comment.UserID, &comment.Content, &comment.Username, &comment.Formatdate, &comment.CreationDate)
+		err = rows.Scan(&comment.CommentID, &comment.PostID, &comment.UserID, &comment.Content, &comment.Username, &comment.Firstname, &comment.Lastname, &comment.Formatdate, &comment.CreationDate)
 		comment.Formatdate = utils.FormatTimeAgo(comment.CreationDate)
 		if err != nil {
 			fmt.Println(err.Error())
@@ -105,8 +104,11 @@ func RecordComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var username string
-	errScanUser := db.QueryRow("SELECT userName FROM Users WHERE user_id=?", userId).Scan(&username)
+	var firstname string
+	var lastname string
+	errScanUser := db.QueryRow("SELECT userName, firstname, lastname FROM Users WHERE user_id=?", userId).Scan(&username, &firstname, &lastname)
 	if errScanUser != nil {
+		fmt.Println("1")
 		fmt.Println(errScanUser.Error())
 		return
 	}
@@ -114,11 +116,13 @@ func RecordComment(w http.ResponseWriter, r *http.Request) {
 		PostID:     id,
 		UserID:     userId,
 		Username:   username,
+		Lastname:   lastname,
+		Firstname:  firstname,
 		Formatdate: utils.FormatTimeAgo(time.Now()),
 		Content:    r.FormValue("comment"),
 	}
 	http.Redirect(w, r, "/comment?id="+idStr, http.StatusSeeOther)
-	database.Insert(db, "Comments", "(post_id, user_id, userName, formatDate ,content)", comment.PostID, comment.UserID, comment.Username, comment.Formatdate, comment.Content)
+	database.Insert(db, "Comments", "(post_id, user_id, userName, firstname, lastname, formatDate, content)", comment.PostID, comment.UserID, comment.Username, comment.Firstname, comment.Lastname, comment.Formatdate, comment.Content)
 }
 
 func CheckId(id int) bool {

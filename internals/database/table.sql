@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS Users (
     user_id INTEGER PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
-    firstname TEXT UNIQUE NOT NULL,
-    lastname TEXT UNIQUE NOT NULL,
+    firstname TEXT  NOT NULL,
+    lastname TEXT  NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
     registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -24,6 +24,8 @@ CREATE TABLE IF NOT EXISTS Comments (
     user_id INTEGER NOT NULL,
     content TEXT NOT NULL,
     userName TEXT NOT NULL,
+    firstname TEXT  NOT NULL,
+    lastname TEXT  NOT NULL,
     formatDate TEXT NOT NULL,
     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (post_id) REFERENCES Posts(post_id),

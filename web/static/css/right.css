@@ -160,3 +160,19 @@
         font-weight: 500;
     }
 }
+
+@media screen and (max-width: 778px) {
+    #addpost {
+        font-size: small;
+        white-space: nowrap;
+        font-weight: 500;
+    }
+}
+
+@media screen and (max-width: 470px) {
+    #addpost {
+        font-size: x-small;
+        white-space: nowrap;
+        font-weight: 300;
+    }
+}

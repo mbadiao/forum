@@ -20,6 +20,7 @@ type Data struct {
 	Mypost int
 	Alldata    AllData	
 }
+
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	db := database.CreateTable()
 	if r.URL.Path == "/login" {
@@ -177,12 +178,14 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
 func IsEmpty(str string) (string, error) {
 	if strings.TrimSpace(str) == "" {
 		return "", fmt.Errorf("all fields must be completed")
 	}
 	return str, nil
 }
+
 func Empty(str string) bool {
 	if strings.TrimSpace(str) == "" {
 		return true

@@ -14,7 +14,7 @@
 
 <body>
     <div class="entete">
-        <a href="./home.html">
+        <a href="/">
             <div>
                 <img src="./static/assets/0.svg" alt="">
                 <img src="./static/assets/1.svg" alt="">
@@ -32,9 +32,14 @@
                 <div id="profile">
                     <div id="bg-profile">
                         <div id="test">
+                            {{if .Isconnected}}
+                            <div><img src="https://ui-avatars.com/api/?name={{.ActualUser.Firstname}}+' '+{{.ActualUser.Lastname}}&bold=true
+                                &background=ffffff&color=000&rounded=true&uppercase=true" alt=""></div>
+                            {{else}}
                             <div><img src="./static/assets/profilepic.svg" alt=""></div>
+                            {{end}}
                             <div style="font-size: 1.1vw;">{{.ActualUser.Firstname}} {{.ActualUser.Lastname}}</div>
-                            <div style="font-size: 0.9vw;">@{{.ActualUser.Username}}</div>
+                            <!-- <div style="font-size: 0.9vw;">@{{.ActualUser.Username}}</div> -->
                         </div>
                     </div>
                 </div>
@@ -59,7 +64,8 @@
             <div id="centercontainer">
                 <div id="postouz">
                     <div id="profileouz">
-                        <div id="pp"><img src="./static/assets/Group 60.svg" alt=""></div>
+                        <div id="pp"><img src="https://ui-avatars.com/api/?name={{.User.Firstname}}+' '+{{.User.Lastname}}&bold=true
+                            &background=87B29E&color=fff&rounded=true&uppercase=true" alt=""></div>
                         <div id="user">
                             <div id="name">{{.User.Firstname}} {{.User.Lastname}}</div>
                             <div id="username">@{{.User.Username}}</div>
@@ -86,7 +92,8 @@
                             <form action="/likedislike" method="post" style="width: 100%;">
                                 <input type="hidden" name="postidouz" value="{{.Post.PostID}}">
                                 <div class="ldc">
-                                    <button class="ldc" style="width: 100%;" type="submit" name="actionlike" value="like">
+                                    <button class="ldc" style="width: 100%;" type="submit" name="actionlike"
+                                        value="like">
                                         <div id="like">
                                             <div><img src="./static/assets/like 1.svg" alt=""></div>
                                             <div id="nbrlike">{{.Post.Nbrlike}}</div>
@@ -97,7 +104,8 @@
                             <form action="/likedislike" method="post" style="width: 100%;">
                                 <input type="hidden" name="postidouz" value="{{.Post.PostID}}">
                                 <div class="ldc">
-                                    <button class="ldc" style="width: 100%;" type="submit" name="actiondislike" value="dislike">
+                                    <button class="ldc" style="width: 100%;" type="submit" name="actiondislike"
+                                        value="dislike">
                                         <div id="dislike">
                                             <div><img src="./static/assets/Group 66.svg" alt=""></div>
                                             <div id="nbrdislike">{{.Post.Nbrdislike}}</div>
@@ -169,7 +177,7 @@
                                         <div class="button-circle"></div>
                                         <span class="button-label">Edu</span>
                                     </label>
-                                    {{if  .Isconnected}}
+                                    {{if .Isconnected}}
                                     <label class="button">
                                         <input type="checkbox" name="Category" id="LikedPost" value="Like">
                                         <div class="button-circle"></div>
@@ -194,8 +202,8 @@
                     </div>
                 </div>
                 <div id="logout-button">
-                    <div id="medialog"> 
-                    <a href="/logout"><button id="logout"><span id="statusplace"></span></button></a>
+                    <div id="medialog">
+                        <a href="/logout"><button id="logout"><span id="statusplace"></span></button></a>
                     </div>
                 </div>
             </div>
@@ -295,15 +303,16 @@
                 </form>
             </div>
         </div>
+    </div>
 
-        <!-- comment post -->
-        <script>
-            var defaultStatus = "{{.Status}}";
-            if (defaultStatus === "") {
-                defaultStatus = "login"
-            }
-            document.getElementById("statusplace").innerText = defaultStatus;
-        </script>
+    <!-- comment post -->
+    <script>
+        var defaultStatus = "{{.Status}}";
+        if (defaultStatus === "") {
+            defaultStatus = "login"
+        }
+        document.getElementById("statusplace").innerText = defaultStatus;
+    </script>
 </body>
 
 </html>

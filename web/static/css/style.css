@@ -24,35 +24,10 @@ a{
 
 #all-page {
     display: grid;
-    /* display: flex;
-    flex-direction: row;
-    justify-content: start; */
     height: 100%;
-    /* grid-row-start: auto; */
-    grid-template-columns: 25% 50% 25%;
+    grid-template-columns: 25% 55% 20%;
     overflow: auto;
-    height: 95%;
 }
-
-/* #leftside {
-    position: sticky;
-    top: 200px;
-} */
-/* #leftside{
-    background: red;
-}
-#centerside{
-    background-color: blue;
-}
-#rightside{
-    background-color: green;
-} */
-/* @media only screen and (max-width: 600px) {
-    #all-page {
-      display: flex;
-      flex-direction: column;
-    }
-  } */
 
 
 .entete {
@@ -60,10 +35,9 @@ a{
     justify-content: space-between;
     margin-bottom: 30px;
     position: sticky;
-    z-index: -1;
+    z-index: 1000;
     top: 0;
     background-color: #06141D;
-    height: 5%;
 }
 
 .Photo {

@@ -10,18 +10,42 @@ import (
 	"time"
 )
 
-func DisplayComment(w http.ResponseWriter, r *http.Request) []database.Comment {
+type CommentData struct {
+	Comment []database.Comment
+	AllData AllData
+}
+
+func CommentPost(w http.ResponseWriter, r *http.Request, query string) (*AllData, string) {
+	allData, err1 := getAllcomment(w, r, query)
+	if err1 != nil {
+		http.Error(w, "Error processing request", http.StatusInternalServerError)
+		return nil, "err" // Return nil for the pointer type
+	}
+	return &allData, "" // Return a pointer to allData
+}
+
+func DisplayComment(w http.ResponseWriter, r *http.Request) CommentData {
+	var comment CommentData
 	var CommentData []database.Comment
 	idStr := r.URL.Query().Get("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		http.Error(w, "Invalid ID", http.StatusBadRequest)
-		return nil
+		// return nil
 	}
+	query := "SELECT * FROM Posts WHERE post_id=" + idStr
+	allData, err1 := CommentPost(w, r, query)
+	if err1 == "err" {
+		w.WriteHeader(400)
+		utils.FileService("error.html", w, Err[400])
+		// return
+	}
+	fmt.Println(allData)
+
 	rows, err := db.Query("SELECT * FROM Comments WHERE post_id=? ORDER BY creation_date DESC", id)
 	if err != nil {
 		fmt.Println(err.Error())
-		return nil
+		// return nil
 	}
 
 	for rows.Next() {
@@ -30,16 +54,18 @@ func DisplayComment(w http.ResponseWriter, r *http.Request) []database.Comment {
 		comment.Formatdate = utils.FormatTimeAgo(comment.CreationDate)
 		if err != nil {
 			fmt.Println(err.Error())
-			return nil
+			// return nil
 		}
 		CommentData = append(CommentData, comment)
 	}
 
 	if err = rows.Err(); err != nil {
 		fmt.Println(err.Error())
-		return nil
+		// return nil
 	}
-	return CommentData
+	comment.Comment = CommentData
+	comment.AllData = *allData
+	return comment
 }
 
 func CommentHandler(w http.ResponseWriter, r *http.Request) {
@@ -57,7 +83,6 @@ func CommentHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	utils.FileService("comment.html", w, DisplayComment(w, r))
 }
-
 
 func RecordComment(w http.ResponseWriter, r *http.Request) {
 	idStr := r.URL.Query().Get("id")

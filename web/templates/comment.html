@@ -1,49 +1,83 @@
-<html lang="fr">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/comment.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
-    <title> Comment</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <title>Document</title>
 </head>
 
 <body>
-    <div id="allcommentside">
-        <header class="entetecomment">
-            <a id="arrowcomment" href="/">
-                <i class="fa-solid fa-arrow-left"></i>
-            </a>
-            <h1>Commentary section</h1>
-        </header>
-        <div class="chat-container">
-            <div id="display-area">
-                {{range .}}
-                <div id="profilecomment">
-                    <div id="commentpp"><img src="./../static/assets/Group 60.svg" alt=""></div>
-                    <div id="usercomment">
-                        <div class="commentinfo">@{{.Username}}</div>
-                        <div class="commenttime">{{.Formatdate}}</div>
+<header style="position: sticky;z-index: 1000; top:0;background-color: #06141D;">
+    <a href="/">
+        <div class="sign-logo">
+            <img src="./static/assets/0.svg" alt="">
+            <img src="./static/assets/1.svg" alt="">
+        </div>
+    </a>
+</header>
+    <div class="allcommentside">
+        <div class="leftcomment"></div>
+        <div class="centercomment">
+            <div class="postside">
+                {{range .AllData.Posts}}
+                <div class="profilecomment">
+                    <img src="https://ui-avatars.com/api/?name={{.User.Firstname}}+' '+{{.User.Lastname}}&bold=true
+                            &background=87B29E&color=fff&rounded=true&uppercase=true" alt="">
+                    <div class="usernh">
+                        <p style="color:white; font-size: 19.53px;">@{{.User.Username}}</p>
+                        <p style="color: #62707D;font-size: 13px;margin-top: 12px;">{{.Post.FormatedDate}}</p>
                     </div>
                 </div>
-                <div class="commentside">
-                    <p>{{.Content}}</p>
+                <div class="postcomcontent">
+                    <p style="font-weight: 900; color: white; margin-bottom: 10px;">{{.Post.Title}}</p>
+                    <p style="font-size: 14px; color: white; margin-bottom: 10px;">
+                        {{.Post.Content}}
+                    </p>
+                    <div id="categories">
+                        {{range .Post.Categories}}
+                        <div>#{{.}}</div>
+                        {{end}}
+                    </div>
                 </div>
-                <hr>
+
                 {{end}}
             </div>
-
-            <div class="input-area">
-                <form action="#" method="POST">
-                    <textarea class="area" name="comment" id="text" placeholder="Your comment here..."
-                        required></textarea>
-                    <button class="btn" type="submit" id="soumettre">
-                        <img src="./../static/assets/send-horizontal 1.svg" alt="comment">
+            <div class="commentside">
+                <form class="commentinput" action="" method="POST">
+                    <textarea name="comment" id="text" placeholder="Your comment here..."></textarea>
+                    <button class="submitcomment">
+                        <input type="submit" value="Comment">
                     </button>
                 </form>
+                <hr style="margin-top: 50px;">
+                {{range .Comment}}
+                <div class="commentcontent">
+                    <div class="profilecomment">
+                        <img src="https://ui-avatars.com/api/?name={{.Username}}&bold=true
+                            &background=87B29E&color=fff&rounded=true&uppercase=true" alt="">
+                        <div class="usernh">
+                            <p style="color:white; font-size: 19.53px;">@{{.Username}}</p>
+                            <p style="color: #62707D;font-size: 13px;margin-top: 12px;">{{.Formatdate}}</p>
+                        </div>
+                    </div>
+                    <div class="postcomcontent">
+                        <p style="font-size: 14px; color: white;">
+                            {{.Content}}
+                        </p>
+                    </div>
+                    <hr style="margin-top: 20px;">
+                </div>
+                {{end}}
             </div>
         </div>
+        <div class="rightcomment"></div>
     </div>
 </body>
+
 
 </html>

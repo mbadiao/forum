@@ -158,3 +158,46 @@ func Getpostbyfilter(r *http.Request, db *sql.DB, query string, categorypost []s
 	defer rows.Close()
 	return ProcessPostRows(rows, db, Posts)
 }
+
+func getAllcomment(w http.ResponseWriter, r *http.Request, query string) (AllData, error) {
+	Posts := GetcommentWithUser(w, r, db, query)
+	DATA := AllData{
+		Posts: Posts,
+	}
+	return DATA, nil
+}
+
+func GetcommentWithUser(w http.ResponseWriter, r *http.Request, db *sql.DB, query string) []PostWithUser {
+	var postsWithUser []PostWithUser
+	posts := Getpostbycomment(r, db, query)
+	if posts == nil {
+		return []PostWithUser{}
+	}
+	for _, post := range posts {
+		// Fetch user for each post
+		user, err := GetUserByID(db, post.UserID)
+		if err != nil {
+			fmt.Println("Error fetching user for post:", err)
+			continue
+		}
+		postsWithUser = append(postsWithUser, PostWithUser{
+			Post: post,
+			User: user,
+		})
+	}
+	return postsWithUser
+}
+
+func Getpostbycomment(r *http.Request, db *sql.DB, query string) []database.Post {
+	var Posts []database.Post
+	if r.Method == "GET" {
+		rows, err := db.Query(query)
+		if err != nil {
+			fmt.Println(err)
+			return []database.Post{}
+		}
+		defer rows.Close()
+		return ProcessPostRows(rows, db, Posts)
+	}
+	return []database.Post{}
+}

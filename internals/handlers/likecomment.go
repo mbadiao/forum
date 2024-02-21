@@ -47,16 +47,22 @@ func LikeCommentHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		if found {
 			commentidstr := r.FormValue("commentidlike")
+
 			commentid, err00 := strconv.Atoi(commentidstr)
+			fmt.Println(commentid,"like")
 			if err00 != nil {
 				w.WriteHeader(400)
 				utils.FileService("error.html", w, Err[400])
-				fmt.Println("6")
-
 				return
+			}
+			if !CheckIdlike(commentid){
+				w.WriteHeader(400)
+                utils.FileService("error.html", w, Err[400])
+                return
 			}
 			postouzid := r.FormValue("postouzid")
 			postouzidnbr, err01 := strconv.Atoi(postouzid)
+			fmt.Println(postouzidnbr,"postid")
 			if err01 != nil {
 				w.WriteHeader(400)
 				utils.FileService("error.html", w, Err[400])
@@ -67,18 +73,8 @@ func LikeCommentHandler(w http.ResponseWriter, r *http.Request) {
 			if !CheckId(postouzidnbr) {
 				w.WriteHeader(400)
 				utils.FileService("error.html", w, Err[400])
-				fmt.Println("2")
-
 				return
 			}
-			// if err != nil {
-			// 	w.WriteHeader(400)
-			// 	utils.FileService("error.html", w, Err[400])
-			// 	fmt.Println("3")
-
-			// 	return
-			// }
-
 			actionLike := r.FormValue("likecomment")
 			actionDislike := r.FormValue("dislikecomment")
 			countage := 0
@@ -111,14 +107,12 @@ func LikeCommentHandler(w http.ResponseWriter, r *http.Request) {
 					fmt.Println("no row found")
 					return
 				} else {
-					fmt.Println("there")
 					w.WriteHeader(500)
 					utils.FileService("error.html", w, Err[500])
 					return
 				}
 			}
 			if (actionLike != "" && actionDislike != "") || (actionLike == "" && actionDislike == "") {
-				fmt.Println("c'est mort")
 				w.WriteHeader(400)
 				utils.FileService("error.html", w, Err[400])
 
@@ -150,8 +144,6 @@ func LikeCommentHandler(w http.ResponseWriter, r *http.Request) {
 
 				w.WriteHeader(400)
 				utils.FileService("error.html", w, Err[400])
-				fmt.Println("4")
-
 				return
 
 			}

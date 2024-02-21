@@ -76,8 +76,8 @@ func CommentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if !CheckId(id) {
-		w.WriteHeader(404)
-		utils.FileService("error.html", w, Err[404])
+		w.WriteHeader(400)
+		utils.FileService("error.html", w, Err[400])
 		return
 	}
 	if strings.TrimSpace(r.FormValue("comment")) == "" && r.Method == "POST" {
@@ -113,7 +113,6 @@ func RecordComment(w http.ResponseWriter, r *http.Request) {
 	var lastname string
 	errScanUser := db.QueryRow("SELECT userName, firstname, lastname FROM Users WHERE user_id=?", userId).Scan(&username, &firstname, &lastname)
 	if errScanUser != nil {
-		fmt.Println("1")
 		fmt.Println(errScanUser.Error())
 		return
 	}
@@ -133,5 +132,11 @@ func RecordComment(w http.ResponseWriter, r *http.Request) {
 func CheckId(id int) bool {
 	var userid int
 	err := db.QueryRow("SELECT post_id FROM Posts WHERE post_id=?", id).Scan(&userid)
+	return err == nil
+}
+
+func CheckIdlike(id int) bool {
+	var userid int
+	err := db.QueryRow("SELECT like_dislike_id FROM CommentLikes WHERE like_dislike_id=?", id).Scan(&userid)
 	return err == nil
 }

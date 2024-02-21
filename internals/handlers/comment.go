@@ -76,6 +76,7 @@ func CommentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if !CheckId(id) {
+		w.WriteHeader(404)
 		utils.FileService("error.html", w, Err[404])
 		return
 	}

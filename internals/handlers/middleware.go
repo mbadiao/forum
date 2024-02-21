@@ -14,6 +14,7 @@ func ErrorMiddleware(next http.Handler) http.Handler {
 		for _, route := range Routes {
 			if strings.HasPrefix(route.Path, "/comment") {
 				if !IdCheck(w, r) {
+					w.WriteHeader(404)
 					utils.FileService("error.html", w, Err[404])
 					return
 				}

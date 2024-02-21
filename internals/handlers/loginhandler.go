@@ -88,7 +88,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 					id             int
 					passwordhashed string
 				)
-				err := db.QueryRow("SELECT user_id, password_hash FROM Users WHERE email = ? OR username = ?", r.FormValue("login-name"), r.FormValue("login-name")).Scan(&id, &passwordhashed)
+				err := db.QueryRow("SELECT user_id, password_hash FROM Users WHERE email = ? OR username = ?", strings.ToLower(r.FormValue("login-name")), strings.ToLower(r.FormValue("login-name"))).Scan(&id, &passwordhashed)
 				if err != nil {
 					data := Data{
 						Page:      "signin",
@@ -155,8 +155,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 						return
 					}
 					var nbremail, nbrusername int
-					err := db.QueryRow("SELECT COUNT(*) FROM Users WHERE email=?", email).Scan(&nbremail)
-					err1 := db.QueryRow("SELECT COUNT(*) FROM Users WHERE username=?", username).Scan(&nbrusername)
+					err := db.QueryRow("SELECT COUNT(*) FROM Users WHERE email=?", strings.ToLower(email)).Scan(&nbremail)
+					err1 := db.QueryRow("SELECT COUNT(*) FROM Users WHERE username=?", strings.ToLower(username)).Scan(&nbrusername)
 					if err1 != nil || err != nil {
 						fmt.Println("database error")
 						w.WriteHeader(500)
@@ -190,7 +190,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 						utils.FileService("error.html", w, Err[500])
 						return
 					}
-					database.Insert(db, "Users", "(username, firstname, lastname, email, password_hash)", username, firstname, lastname, email, string(hashedpassword))
+					database.Insert(db, "Users", "(username, firstname, lastname, email, password_hash)", strings.ToLower(username), firstname, lastname, strings.ToLower(email), string(hashedpassword))
 				}
 				data := Data{
 					Page: "signin",

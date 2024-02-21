@@ -66,6 +66,12 @@ input[type="file"] {
 #medialog{
     display: none;
 }
+.phone{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 20%;
+}
 @media only screen and (max-width: 600px) {
     #all-page {
         display: grid;
@@ -74,11 +80,12 @@ input[type="file"] {
         overflow: auto;
         height: 95%;
     }
+    #logouthide{
+        display: block;
+        margin: 4% 0% 0% 20%;
+    }
     #leftside{
         display: none;
 
-    }
-    #medialog{
-        display: contents;
     }
 }

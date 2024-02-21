@@ -189,11 +189,33 @@
     #dislike {
         font-size: medium;
     }
+    
 }
 
-@media screen and (max-width: 500px) {
+#logouthide{
+    background: #1B2730;
+    border: solid #354450;
+    color: white;
+    font-size: 1.5vw;
+    bottom: 10px;
+    width: 10vw;
+    height: 3vw;
+    border-radius: 23px;
+    cursor: pointer;
+    display: none;
+}
+
+#logouthide:hover {
+    background-color: #87B29E;
+}
+
+@media only screen and (max-width: 500px) {
     #profile{
         display: none;
+    }
+    #logouthide{
+        display: block;
+        margin: 4% 0% 0% 20%;
     }
     #like,
     #dislike {

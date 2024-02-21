@@ -60,7 +60,6 @@
         <!-- Center-side -->
         <div id="centerside">
             {{range .Alldata.Posts}}
-            <div id="{{.Post.PostID}}"></div>
             <div id="centercontainer">
                 <div id="postouz">
                     <div id="profileouz">
@@ -117,7 +116,7 @@
                                 <button class="ldc  comment-trigger" style="width: 100%;">
                                     <div id="comment">
                                         <div><img src="./static/assets/message-circle-more 1.svg" alt=""></div>
-                                        <div id="titlecomment">...</div>
+                                        <div id="titlecomment">{{.Post.Nbrcomments}}</div>
                                     </div>
                                 </button>
                             </a>
@@ -201,11 +200,19 @@
                         </form>
                     </div>
                 </div>
-                <div id="logout-button">
-                    <div id="medialog">
-                        <a href="/logout"><button id="logout"><span id="statusplace"></span></button></a>
-                    </div>
-                </div>
+                {{if .Isconnected}}
+                <a href="/logout">
+                    <button id="logouthide">
+                        <span id="statusplace">logout</span>
+                    </button>
+                </a>
+                {{else}}
+                <a href="/logout">
+                    <button id="logouthide">
+                        <span id="statusplace">login</span>
+                    </button>
+                </a>
+                {{end}}
             </div>
         </div>
 

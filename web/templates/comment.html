@@ -35,6 +35,11 @@
                 </div>
                 <div class="postcomcontent">
                     <p style="font-weight: 900; color: white; margin-bottom: 10px;">{{.Post.Title}}</p>
+                    {{ if ne .Post.PhotoURL "NoPhoto" }}
+                    <div id="image">
+                        <div id="imgcontainer"><img src="{{.Post.PhotoURL}}" alt="Photo"></div>
+                    </div>
+                    {{ end }}
                     <p style="font-size: 14px; color: white; margin-bottom: 10px;">
                         {{.Post.Content}}
                     </p>

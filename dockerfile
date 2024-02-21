@@ -1,4 +1,4 @@
-# Stage 1: Build
+ # Stage 1: Build
 FROM golang:alpine
 
 # Metadata and labels
@@ -20,13 +20,10 @@ RUN apk update && \
 # Exécuter la commande 'go mod download' pour télécharger les dépendances du module Go
 RUN go mod download
 
+RUN CGO_ENABLED=1 GOOS=linux go build -o forum
 
 EXPOSE 8080
 # Exécuter la commande 'go build' pour compiler l'application, en créant un exécutable nommé "forum" dans le répertoire de travail
-# RUN CGO_ENABLED=1 GOOS=linux go build -o forum
 
 # Commande par défaut à exécuter lorsque le conteneur est démarré
 CMD go run .
-
-
-

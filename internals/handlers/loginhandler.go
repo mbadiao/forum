@@ -58,7 +58,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 				Empty(r.FormValue("firstname")) && Empty(r.FormValue("lastname")) && Empty(r.FormValue("username")) &&
 				Empty(r.FormValue("signup-email")) && Empty(r.FormValue("signup-password"))) || (Empty(r.FormValue("login-name")) && !Empty(r.FormValue("login-password"))) ||
 				(!Empty(r.FormValue("login-name")) && Empty(r.FormValue("login-password"))) {
-				fmt.Println("b@b.com")
 				data = Data{
 					Page:      "signin",
 					Messagelg: "All fields must be completed",

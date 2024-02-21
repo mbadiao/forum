@@ -68,6 +68,7 @@ func DisplayComment(w http.ResponseWriter, r *http.Request) CommentData {
 }
 
 func CommentHandler(w http.ResponseWriter, r *http.Request) {
+
 	idStr := r.URL.Query().Get("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
@@ -77,7 +78,9 @@ func CommentHandler(w http.ResponseWriter, r *http.Request) {
 		utils.FileService("error.html", w, Err[404])
 		return
 	}
-	if strings.TrimSpace(r.FormValue("comment")) != "" {
+	if strings.TrimSpace(r.FormValue("comment")) == "" && r.Method == "POST" {
+		http.Redirect(w, r, "/comment?id="+idStr, http.StatusSeeOther)
+	} else if strings.TrimSpace(r.FormValue("comment")) != "" && r.Method == "POST" {
 		RecordComment(w, r)
 	}
 	utils.FileService("comment.html", w, DisplayComment(w, r))

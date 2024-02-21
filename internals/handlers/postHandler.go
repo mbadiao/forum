@@ -36,18 +36,21 @@ func PostHandler(w http.ResponseWriter, r *http.Request, userid database.User) {
 		thread := strings.TrimSpace(r.FormValue("thread"))
 		fmt.Println()
 		if len(CheckboxValues) == 0 || title == "" || thread == "" {
+			fmt.Println("value vide")
 			w.WriteHeader(400)
 			utils.FileService("error.html", w, Err[400])
 			return
 		}
 		runeCount := utf8.RuneCountInString(title)
 		if runeCount > 38 {
+			fmt.Println("tile long")
 			w.WriteHeader(400)
 			utils.FileService("error.html", w, Err[400])
 			return
 		}
 		a := utils.Checkcategory(CheckboxValues)
 		if !a {
+			fmt.Println("category incorrect")
 			w.WriteHeader(400)
 			utils.FileService("error.html", w, Err[400])
 			return

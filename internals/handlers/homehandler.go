@@ -16,7 +16,6 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	db := database.CreateTable()
 	ActualCookie := GetCookieHandler(w, r)
-	fmt.Println(ActualCookie)
 	stmt, err := db.Prepare(`DELETE FROM Sessions WHERE cookie_value =?`)
 	if err != nil {
 		fmt.Println(err.Error())

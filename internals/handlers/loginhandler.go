@@ -5,7 +5,6 @@ import (
 	"forum/internals/database"
 	"forum/internals/utils"
 	"net/http"
-	"regexp"
 	"strconv"
 	"strings"
 
@@ -145,7 +144,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 					utils.FileService("login.html", w, data1)
 					return
 				} else {
-					if !IsAlphaSpace(firstname) || !IsAlphaSpace(lastname) || !IsAlphaSpace(username) {
+					if !utils.IsAlphaSpace(firstname) || !utils.IsAlphaSpace(lastname){
 						data1 := Data{
 							Page:      "signup",
 							Messagesg: "use alphanumeric characters between 2 and 15",
@@ -224,10 +223,4 @@ func Empty(str string) bool {
 	} else {
 		return false
 	}
-}
-
-func IsAlphaSpace(input string) bool {
-	pattern := `^[a-zA-Z\s]{2,15}$`
-	re := regexp.MustCompile(pattern)
-	return re.MatchString(input)
 }

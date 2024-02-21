@@ -42,8 +42,6 @@ func GeneratePrepare(text string) string {
 func Insert(db *sql.DB, table, values string, data ...interface{}) {
 	prepare := GeneratePrepare(values)
 	Query := fmt.Sprintf("INSERT INTO %v %v values %v", table, values, prepare)
-
-	fmt.Println(Query)
 	insert, err := db.Prepare(Query)
 	if err != nil {
 		fmt.Println(err.Error())

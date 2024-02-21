@@ -32,7 +32,7 @@ func Trimname(name string) string {
 }
 
 func IsAlphaSpace(input string) bool {
-	pattern := `^[a-zA-Z\s]{2,15}$`
+	pattern := `^[a-zA-Z0-9\s]{2,15}$`
 	re := regexp.MustCompile(pattern)
 	return re.MatchString(input)
 }

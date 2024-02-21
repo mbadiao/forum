@@ -181,7 +181,6 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		}
 		
 		if len(datas) == 0 {
-			fmt.Println("here")
 			fmt.Println("filter sans compte")
 			CurrentUser.UserID = 0
 			

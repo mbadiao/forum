@@ -73,6 +73,11 @@ var Routes = []Route{
 		Handler: LikeDislikeHandler,
 		Method:  []string{"POST"},
 	},
+	{
+		Path:    "/likecomment",
+		Handler: LikeCommentHandler,
+		Method:  []string{"POST"},
+	},
 }
 
 var Port = ":8080"

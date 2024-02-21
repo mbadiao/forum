@@ -38,6 +38,8 @@ type Comment struct {
 	Firstname    string
 	Lastname     string
 	Content      string
+	NbrLike      int
+	NbrDislike   int
 	CreationDate time.Time
 	Formatdate   string
 }
@@ -59,6 +61,15 @@ type LikeDislike struct {
 	UserID          int
 	LikeDislikeType string
 	CreationDate    time.Time
+}
+
+type CommentLike struct {
+	CommentID    int
+	PostID       int
+	UserID       int
+	NbrLike      int
+	NbrDislike   int
+	CreationDate time.Time
 }
 
 type Session struct {

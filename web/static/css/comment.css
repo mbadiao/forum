@@ -21,6 +21,7 @@ body {
     display: flex;
     justify-content: center;
 }
+
 #imgcontainer img {
     max-width: 100%;
     min-width: 50%;
@@ -61,7 +62,8 @@ body {
     height: max-content;
     padding: 2%;
 }
-.sign-logo{
+
+.sign-logo {
     margin-top: 10px;
     margin-left: 10px;
     display: flex;
@@ -99,14 +101,6 @@ body {
     background-color: #28343E;
 }
 
-.buttonside {
-    width: 60%;
-    display: flex;
-    justify-content: space-between;
-    margin-left: 20%;
-    margin-right: 20%;
-    margin-top: 3%;
-}
 
 .button-container span {
     margin-left: 30px;
@@ -159,9 +153,39 @@ body {
     }
 
 }
+
 #categories {
-    display: flex; 
+    display: flex;
     font-size: 16px;
     color: #87B29E;
     font-family: 'Impact', 'Haettenschweiler', 'Arial Narrow Bold', sans-serif;
+}
+
+
+
+.likecomment {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.likecomment img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.buttonside {
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 90px;
+    margin-top: 3%;
+}
+
+.likecomment button {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
 }

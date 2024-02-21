@@ -55,6 +55,8 @@ func DisplayComment(w http.ResponseWriter, r *http.Request) CommentData {
 			fmt.Println(err.Error())
 			// return nil
 		}
+		comment.NbrLike = GetNbrStatusComment(db, "liked", comment.CommentID)
+		comment.NbrDislike = GetNbrStatusComment(db, "disliked", comment.CommentID)
 		CommentData = append(CommentData, comment)
 	}
 
@@ -68,7 +70,6 @@ func DisplayComment(w http.ResponseWriter, r *http.Request) CommentData {
 }
 
 func CommentHandler(w http.ResponseWriter, r *http.Request) {
-
 	idStr := r.URL.Query().Get("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {

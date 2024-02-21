@@ -12,14 +12,14 @@
 </head>
 
 <body>
-<header style="position: sticky;z-index: 1000; top:0;background-color: #06141D;">
-    <a href="/">
-        <div class="sign-logo">
-            <img src="./static/assets/0.svg" alt="">
-            <img src="./static/assets/1.svg" alt="">
-        </div>
-    </a>
-</header>
+    <header style="position: sticky;z-index: 1000; top:0;background-color: #06141D;">
+        <a href="/">
+            <div class="sign-logo">
+                <img src="./static/assets/0.svg" alt="">
+                <img src="./static/assets/1.svg" alt="">
+            </div>
+        </a>
+    </header>
     <div class="allcommentside">
         <div class="leftcomment"></div>
         <div class="centercomment">
@@ -75,6 +75,29 @@
                             {{.Content}}
                         </p>
                     </div>
+                    <div class="buttonside">
+                        <form action="/likecomment" method="post">
+                            <input type="hidden" name="commentidlike" value="{{.CommentID}}">
+                            <input type="hidden" name="postouzid" value="{{.PostID}}">
+                            <div class="likecomment">
+                                <button value="likecomment" type="submit" name="likecomment">
+                                    <img src="./static/assets/heart.svg" alt="">
+                                </button>
+                                <span style="color: white;display: inline-block;">{{.NbrLike}} like(s)</span>
+                        </form>
+
+                        <form action="/likecomment" method="post">
+                            <input type="hidden" name="commentidlike" value="{{.CommentID}}">
+                            <input type="hidden" name="postouzid" value="{{.PostID}}">
+                            <div class="likecomment">
+                                <button value="dislikecomment" type="submit" name="dislikecomment">
+                                    <img src="./static/assets/heart-off.svg" alt="">
+                                </button>
+                                <span style="color: white; display: inline-block;">{{.NbrDislike}} dislike(s)</span>
+                            </div>
+                        </form>
+                    </div>
+
                     <hr style="margin-top: 20px;">
                 </div>
                 {{end}}

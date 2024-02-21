@@ -81,6 +81,8 @@ func CookieHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 					fmt.Println(err.Error())
 					return
 				}
+				CurrentUser.Firstname=utils.Trimname(CurrentUser.Firstname)
+				CurrentUser.Lastname=utils.Trimname(CurrentUser.Lastname)
 				AllData, err := getAll(r)
 				if err != nil {
 					fmt.Println(err)

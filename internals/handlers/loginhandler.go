@@ -5,6 +5,7 @@ import (
 	"forum/internals/database"
 	"forum/internals/utils"
 	"net/http"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -57,7 +58,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 				Empty(r.FormValue("firstname")) && Empty(r.FormValue("lastname")) && Empty(r.FormValue("username")) &&
 				Empty(r.FormValue("signup-email")) && Empty(r.FormValue("signup-password"))) || (Empty(r.FormValue("login-name")) && !Empty(r.FormValue("login-password"))) ||
 				(!Empty(r.FormValue("login-name")) && Empty(r.FormValue("login-password"))) {
-					fmt.Println("b@b.com")
+				fmt.Println("b@b.com")
 				data = Data{
 					Page:      "signin",
 					Messagelg: "All fields must be completed",
@@ -74,7 +75,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 				w.WriteHeader(400)
 				utils.FileService("login.html", w, data)
 				return
-			} else if !utils.IsValidPassword(r.FormValue("signup-password"))  && (Empty(r.FormValue("login-name")) && Empty(r.FormValue("login-password")))  {
+			} else if !utils.IsValidPassword(r.FormValue("signup-password")) && (Empty(r.FormValue("login-name")) && Empty(r.FormValue("login-password"))) {
 				fmt.Println(len(r.FormValue("signup-password")))
 				data = Data{
 					Page:      "signup",
@@ -145,6 +146,15 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 					utils.FileService("login.html", w, data1)
 					return
 				} else {
+					if !IsAlphaSpace(firstname) || !IsAlphaSpace(lastname) || !IsAlphaSpace(username) {
+						data1 := Data{
+							Page:      "signup",
+							Messagesg: "use alphanumeric characters between 2 and 15",
+						}
+						w.WriteHeader(400)
+						utils.FileService("login.html", w, data1)
+						return
+					}
 					var nbremail, nbrusername int
 					err := db.QueryRow("SELECT COUNT(*) FROM Users WHERE email=?", email).Scan(&nbremail)
 					err1 := db.QueryRow("SELECT COUNT(*) FROM Users WHERE username=?", username).Scan(&nbrusername)
@@ -206,7 +216,7 @@ func IsEmpty(str string) (string, error) {
 	if strings.TrimSpace(str) == "" {
 		return "", fmt.Errorf("all fields must be completed")
 	}
-	return str, nil
+	return strings.TrimSpace(str), nil
 }
 
 func Empty(str string) bool {
@@ -215,4 +225,10 @@ func Empty(str string) bool {
 	} else {
 		return false
 	}
+}
+
+func IsAlphaSpace(input string) bool {
+	pattern := `^[a-zA-Z\s]{2,15}$`
+	re := regexp.MustCompile(pattern)
+	return re.MatchString(input)
 }

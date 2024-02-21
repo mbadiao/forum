@@ -53,6 +53,8 @@ func FilterHandler(w http.ResponseWriter, r *http.Request, CurrentUser database.
 		var donnees Data
 		mylike,_:=TotalLikesByUserID(db,CurrentUser.UserID)
 		mypost,_:=TotalPostByUserID(db,CurrentUser.UserID)
+		CurrentUser.Firstname=utils.Trimname(CurrentUser.Firstname)
+		CurrentUser.Lastname=utils.Trimname(CurrentUser.Lastname)
 		if Isconnected {
 			
 			donnees = Data{

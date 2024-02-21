@@ -8,32 +8,22 @@ import (
 	"net/http"
 )
 
-func Getpost(r *http.Request, db *sql.DB) []database.Post {
-	var Posts []database.Post
-	if r.Method == "GET" {
-		query := "SELECT post_id, user_id, title, PhotoURL, content, creation_date FROM Posts ORDER BY creation_date DESC"
-		rows, err := db.Query(query)
-		if err != nil {
-			fmt.Println(err)
-			return []database.Post{}
-		}
-		defer rows.Close()
-		return ProcessPostRows(rows, db, Posts)
+func getPosts(db *sql.DB, query string, args ...interface{}) ([]database.Post, error) {
+	var posts []database.Post
+	rows, err := db.Query(query, args...)
+	if err != nil {
+		return nil, err
 	}
-	return []database.Post{}
-}
+	defer rows.Close()
 
-func ProcessPostRows(rows *sql.Rows, db *sql.DB, Posts []database.Post) []database.Post {
 	for rows.Next() {
 		var post database.Post
 		if err := rows.Scan(&post.PostID, &post.UserID, &post.Title, &post.PhotoURL, &post.Content, &post.CreationDate); err != nil {
-			fmt.Println(err)
-			return []database.Post{}
+			return nil, err
 		}
 		categories, err := GetPostCategories(db, post.PostID)
 		if err != nil {
-			fmt.Println(err)
-			return []database.Post{}
+			return nil, err
 		}
 		post.Categories = categories
 		post.FormatedDate = utils.FormatTimeAgo(post.CreationDate)
@@ -45,92 +35,33 @@ func ProcessPostRows(rows *sql.Rows, db *sql.DB, Posts []database.Post) []databa
 
 		post.Nbrlike = GetNbrStatus(db, "liked", post.PostID)
 		post.Nbrdislike = GetNbrStatus(db, "disliked", post.PostID)
-		nbrcomments,_:=CountCommentsByPostID(db,post.PostID)
-		post.Nbrcomments=nbrcomments
+		nbrcomments, _ := CountCommentsByPostID(db, post.PostID)
+		post.Nbrcomments = nbrcomments
 
-		Posts = append(Posts, post)
-	}
-	if err := rows.Err(); err != nil {
-		fmt.Println(err)
-		return []database.Post{}
-	}
-	return Posts
-}
-
-func GetUser(db *sql.DB) ([]database.User, error) {
-	var Users []database.User
-	query := "SELECT user_id, username, firstname, lastname, email, password_hash, registration_date FROM Users"
-	rows, err := db.Query(query)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	for rows.Next() {
-		var CurrentUser database.User
-		if err := rows.Scan(&CurrentUser.UserID, &CurrentUser.Username, &CurrentUser.Firstname, &CurrentUser.Lastname, &CurrentUser.Email, &CurrentUser.PasswordHash, &CurrentUser.RegistrationDate); err != nil {
-			return nil, err
-		}
-		Users = append(Users, CurrentUser)
+		posts = append(posts, post)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
-	return Users, nil
+	return posts, nil
 }
 
-func getAll(r *http.Request) (AllData, error) {
-	Posts := GetPostsWithUser(r, db)
-	DATA := AllData{
-		Posts: Posts,
-	}
-	return DATA, nil
-}
-
-func GetPostsWithUser(r *http.Request, db *sql.DB) []PostWithUser {
-	var postsWithUser []PostWithUser
-	posts := Getpost(r, db)
-	for _, post := range posts {
-		// Fetch user for each post
-		user, err := GetUserByID(db, post.UserID)
-		if err != nil {
-			fmt.Println("Error fetching user for post:", err)
-			continue
-		}
-		postsWithUser = append(postsWithUser, PostWithUser{
-			Post: post,
-			User: user,
-		})
-	}
-	return postsWithUser
-}
-
-func GetUserByID(db *sql.DB, userID int) (database.User, error) {
+func getUser(db *sql.DB, userID int) (database.User, error) {
 	var user database.User
 	query := "SELECT user_id, username, firstname, lastname, email, password_hash, registration_date FROM Users WHERE user_id = ?"
 	err := db.QueryRow(query, userID).Scan(&user.UserID, &user.Username, &user.Firstname, &user.Lastname, &user.Email, &user.PasswordHash, &user.RegistrationDate)
+	return user, err
+}
+
+func getPostsWithUser(db *sql.DB, query string, args ...interface{}) ([]PostWithUser, error) {
+	posts, err := getPosts(db, query, args...)
 	if err != nil {
-		return user, err
+		return nil, err
 	}
-	return user, nil
-}
 
-func getAllFilter(w http.ResponseWriter, r *http.Request, query string, categorypost []string) (AllData, error) {
-	Posts := GetFilterWithUser(w, r, db, query, categorypost)
-	DATA := AllData{
-		Posts: Posts,
-	}
-	return DATA, nil
-}
-
-func GetFilterWithUser(w http.ResponseWriter, r *http.Request, db *sql.DB, query string, categorypost []string) []PostWithUser {
 	var postsWithUser []PostWithUser
-	posts := Getpostbyfilter(r, db, query, categorypost)
-	if posts == nil {
-		return []PostWithUser{}
-	}
 	for _, post := range posts {
-		// Fetch user for each post
-		user, err := GetUserByID(db, post.UserID)
+		user, err := getUser(db, post.UserID)
 		if err != nil {
 			fmt.Println("Error fetching user for post:", err)
 			continue
@@ -140,64 +71,43 @@ func GetFilterWithUser(w http.ResponseWriter, r *http.Request, db *sql.DB, query
 			User: user,
 		})
 	}
-	return postsWithUser
+	return postsWithUser, nil
 }
 
-func Getpostbyfilter(r *http.Request, db *sql.DB, query string, categorypost []string) []database.Post {
-	var Posts []database.Post
+func getAll(r *http.Request) (AllData, error) {
+	query := "SELECT post_id, user_id, title, PhotoURL, content, creation_date FROM Posts ORDER BY creation_date DESC"
+	postsWithUser, err := getPostsWithUser(db, query)
+	if err != nil {
+		return AllData{}, err
+	}
+	DATA := AllData{
+		Posts: postsWithUser,
+	}
+	return DATA, nil
+}
+
+func getAllFilter(w http.ResponseWriter, r *http.Request, query string, categorypost []string) (AllData, error) {
 	var categoryInterfaces []interface{}
 	for _, cat := range categorypost {
 		categoryInterfaces = append(categoryInterfaces, cat)
 	}
-
-	rows, err := db.Query(query, categoryInterfaces...)
+	postsWithUser, err := getPostsWithUser(db, query, categoryInterfaces...)
 	if err != nil {
-		fmt.Println(err)
-		return []database.Post{}
+		return AllData{}, err
 	}
-	defer rows.Close()
-	return ProcessPostRows(rows, db, Posts)
-}
-
-func getAllcomment(w http.ResponseWriter, r *http.Request, query string) (AllData, error) {
-	Posts := GetcommentWithUser(w, r, db, query)
 	DATA := AllData{
-		Posts: Posts,
+		Posts: postsWithUser,
 	}
 	return DATA, nil
 }
 
-func GetcommentWithUser(w http.ResponseWriter, r *http.Request, db *sql.DB, query string) []PostWithUser {
-	var postsWithUser []PostWithUser
-	posts := Getpostbycomment(r, db, query)
-	if posts == nil {
-		return []PostWithUser{}
+func getAllcomment(w http.ResponseWriter, r *http.Request, query string) (AllData, error) {
+	postsWithUser, err := getPostsWithUser(db, query)
+	if err != nil {
+		return AllData{}, err
 	}
-	for _, post := range posts {
-		// Fetch user for each post
-		user, err := GetUserByID(db, post.UserID)
-		if err != nil {
-			fmt.Println("Error fetching user for post:", err)
-			continue
-		}
-		postsWithUser = append(postsWithUser, PostWithUser{
-			Post: post,
-			User: user,
-		})
+	DATA := AllData{
+		Posts: postsWithUser,
 	}
-	return postsWithUser
-}
-
-func Getpostbycomment(r *http.Request, db *sql.DB, query string) []database.Post {
-	var Posts []database.Post
-	if r.Method == "GET" {
-		rows, err := db.Query(query)
-		if err != nil {
-			fmt.Println(err)
-			return []database.Post{}
-		}
-		defer rows.Close()
-		return ProcessPostRows(rows, db, Posts)
-	}
-	return []database.Post{}
+	return DATA, nil
 }

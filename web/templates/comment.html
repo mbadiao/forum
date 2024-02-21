@@ -29,7 +29,7 @@
                     <img src="https://ui-avatars.com/api/?name={{.User.Firstname}}+' '+{{.User.Lastname}}&bold=true
                             &background=87B29E&color=fff&rounded=true&uppercase=true" alt="">
                     <div class="usernh">
-                        <p style="color:white; font-size: 19.53px;">@{{.User.Username}}</p>
+                        <p class="paragraphe">@{{.User.Username}}</p>
                         <p style="color: #62707D;font-size: 13px;margin-top: 12px;">{{.Post.FormatedDate}}</p>
                     </div>
                 </div>
@@ -66,7 +66,7 @@
                         <img src="https://ui-avatars.com/api/?name={{.Firstname}}+' '+{{.Lastname}}&bold=true
                             &background=87B29E&color=fff&rounded=true&uppercase=true" alt="">
                         <div class="usernh">
-                            <p style="color:white; font-size: 19.53px;">@{{.Username}}</p>
+                            <p class="paragraphe">@{{.Username}}</p>
                             <p style="color: #62707D;font-size: 13px;margin-top: 12px;">{{.Formatdate}}</p>
                         </div>
                     </div>
@@ -76,35 +76,34 @@
                         </p>
                     </div>
                     <div class="buttonside">
-                        <form action="/likecomment" method="post">
-                            <input type="hidden" name="commentidlike" value="{{.CommentID}}">
-                            <input type="hidden" name="postouzid" value="{{.PostID}}">
-                            <div class="likecomment">
+                        <div class="likecomment">
+                            <form action="/likecomment" method="post">
+                                <input type="hidden" name="commentidlike" value="{{.CommentID}}">
+                                <input type="hidden" name="postouzid" value="{{.PostID}}">
                                 <button value="likecomment" type="submit" name="likecomment">
                                     <img src="./static/assets/heart.svg" alt="">
                                 </button>
-                                <span style="color: white;display: inline-block;">{{.NbrLike}} like(s)</span>
-                        </form>
+                                <span style="color: white;display: inline-block;">{{.NbrLike}}</span>
+                            </form>
+                        </div>
 
-                        <form action="/likecomment" method="post">
-                            <input type="hidden" name="commentidlike" value="{{.CommentID}}">
-                            <input type="hidden" name="postouzid" value="{{.PostID}}">
-                            <div class="likecomment">
+                        <div class="likecomment">
+                            <form action="/likecomment" method="post">
+                                <input type="hidden" name="commentidlike" value="{{.CommentID}}">
+                                <input type="hidden" name="postouzid" value="{{.PostID}}">
                                 <button value="dislikecomment" type="submit" name="dislikecomment">
                                     <img src="./static/assets/heart-off.svg" alt="">
                                 </button>
-                                <span style="color: white; display: inline-block;">{{.NbrDislike}} dislike(s)</span>
-                            </div>
-                        </form>
+                                <span style="color: white; display: inline-block;">{{.NbrDislike}}</span>
+                            </form>
+                        </div>
                     </div>
-
                     <hr style="margin-top: 20px;">
+                    {{end}}
                 </div>
-                {{end}}
             </div>
+            <div class="rightcomment"></div>
         </div>
-        <div class="rightcomment"></div>
-    </div>
 </body>
 
 

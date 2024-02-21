@@ -55,7 +55,7 @@ func LikeCommentHandler(w http.ResponseWriter, r *http.Request) {
 
 				return
 			}
-			postouzid:=r.FormValue("postouzid")
+			postouzid := r.FormValue("postouzid")
 			postouzidnbr, err01 := strconv.Atoi(postouzid)
 			if err01 != nil {
 				w.WriteHeader(400)
@@ -83,7 +83,7 @@ func LikeCommentHandler(w http.ResponseWriter, r *http.Request) {
 			actionDislike := r.FormValue("dislikecomment")
 			countage := 0
 			query := "SELECT COUNT(*) FROM CommentLikes WHERE user_id = ? AND comment_id = ?"
-			fmt.Println(usercorrespondance,commentid)
+			fmt.Println(usercorrespondance, commentid)
 			err1 := db.QueryRow(query, usercorrespondance, commentid).Scan(&countage)
 			if err1 != nil {
 				if err1 == sql.ErrNoRows {
@@ -129,6 +129,7 @@ func LikeCommentHandler(w http.ResponseWriter, r *http.Request) {
 					query := "UPDATE CommentLikes SET liked = ?, disliked = ? WHERE user_id = ? AND comment_id = ?"
 					_, err := db.Exec(query, true, false, usercorrespondance, commentid)
 					if err != nil {
+						http.Redirect(w, r, "/login", http.StatusSeeOther)
 						fmt.Println("error to uptade like or dislike")
 						return
 					}

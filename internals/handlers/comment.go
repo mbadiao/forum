@@ -72,6 +72,9 @@ func DisplayComment(w http.ResponseWriter, r *http.Request) CommentData {
 func CommentHandler(w http.ResponseWriter, r *http.Request) {
 	idStr := r.URL.Query().Get("id")
 	id, err := strconv.Atoi(idStr)
+	if len(r.FormValue("comment")) > 100 {
+		http.Redirect(w, r, "/comment?id="+idStr, http.StatusSeeOther)
+	}
 	if err != nil {
 		return
 	}

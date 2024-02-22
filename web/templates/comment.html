@@ -53,13 +53,17 @@
                 {{end}}
             </div>
             <div class="commentside">
-                <form class="commentinput" action="" method="POST">
-                    <textarea name="comment" id="text" placeholder="Your comment here..."></textarea>
-                    <button class="submitcomment">
-                        <input type="submit" value="Comment">
+                <form class="commentinput" action="" method="POST" onsubmit="toggleSubmitButton(event)">
+                    <textarea name="comment" id="text" placeholder="Your comment here..." oninput="updateCharacterCount()"></textarea>
+                    <button class="submitcomment" id="submitBtn" type="submit" disabled>
+                        <input type="submit" value="Comment" style="background-color: transparent; border: none;">
                     </button>
                 </form>
-                <hr style="margin-top: 50px;">
+                <div style="color: white;" id="charCount">0 / 100</div>
+                <div class="progress">
+                    <div id="progressBar"></div>
+                </div>
+                <hr style="margin-top: 50px; margin-left: 10px;">
                 {{range .Comment}}
                 <div class="commentcontent">
                     <div class="profilecomment">
@@ -71,7 +75,7 @@
                         </div>
                     </div>
                     <div class="postcomcontent">
-                        <p style="font-size: 14px; color: white;">
+                        <p style="font-size: 14px; color: white;word-wrap: break-word;">
                             {{.Content}}
                         </p>
                     </div>
@@ -105,6 +109,59 @@
             <div class="rightcomment"></div>
         </div>
 </body>
+
+<script>
+    window.onload = function () {
+        // Appel de la fonction pour initialiser le bouton transparent
+        toggleSubmitButton();
+    }
+
+    function toggleSubmitButton(event) {
+        var commentInput = document.getElementById("text");
+        var submitBtn = document.getElementById("submitBtn");
+
+        if (commentInput.value.trim() !== "") {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = 1;
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = 0.5;
+            // Empêcher l'action par défaut du formulaire
+            if (event) {
+                event.preventDefault();
+            }
+        }
+    }
+    function updateCharacterCount() {
+        var commentInput = document.getElementById("text");
+        var charCount = document.getElementById("charCount");
+
+        var currentLength = commentInput.value.length;
+        var maxLength = 100; // Limite de caractères
+
+        if (currentLength > maxLength) {
+            commentInput.value = commentInput.value.substring(0, maxLength);
+            currentLength = maxLength;
+        }
+
+        charCount.textContent = currentLength + " / " + maxLength;
+
+        // Mise à jour de la barre de progression
+        var progress = (currentLength / maxLength) * 100;
+        progressBar.style.width = progress + "%";
+
+        // Mise à jour du bouton de soumission en fonction de la longueur du commentaire
+        var submitBtn = document.getElementById("submitBtn");
+        if (currentLength > 0 && currentLength <= maxLength) {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = 1;
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = 0.5;
+        }
+    }
+</script>
+
 
 
 </html>

@@ -137,6 +137,6 @@ func CheckId(id int) bool {
 
 func CheckIdlike(id int) bool {
 	var userid int
-	err := db.QueryRow("SELECT like_dislike_id FROM CommentLikes WHERE like_dislike_id=?", id).Scan(&userid)
+	err := db.QueryRow("SELECT comment_id FROM Comments WHERE comment_id=?", id).Scan(&userid)
 	return err == nil
 }

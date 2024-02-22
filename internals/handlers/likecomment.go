@@ -49,7 +49,6 @@ func LikeCommentHandler(w http.ResponseWriter, r *http.Request) {
 			commentidstr := r.FormValue("commentidlike")
 
 			commentid, err00 := strconv.Atoi(commentidstr)
-			fmt.Println(commentid,"like")
 			if err00 != nil {
 				w.WriteHeader(400)
 				utils.FileService("error.html", w, Err[400])
